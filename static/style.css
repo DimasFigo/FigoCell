@@ -1,9 +1,14 @@
-
-.navbar{
-    background-color: red!important;
+* {
+    font-family: Arial, sans-serif;
 }
 
+.navbar {
+    background-color: #740938;
+}
 #logo {
     width: 50px;
     margin-left: 100px;
+}
+.btn {
+    border-radius: 50px;
 }
