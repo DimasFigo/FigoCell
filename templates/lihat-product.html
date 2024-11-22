@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <link rel="stylesheet" href="../static/style.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <title>Hello, world!</title>
+
+    <style>
+      #cards-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Memusatkan konten secara horizontal */
+        gap: 15px;
+        margin: 0 auto;
+        max-width: 800px; /* Membatasi lebar maksimum */
+      }
+
+      .product-card {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%; /* Menyesuaikan lebar dengan container */
+      }
+
+      .product-card img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 20px;
+      }
+
+      .product-card .product-details {
+        flex-grow: 1;
+      }
+
+      .product-card .product-details h5 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .product-card .product-details p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .product-card .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .product-card .action-buttons button {
+        width: 100px;
+      }
+    </style>
+
+    <script>
+      $(document).ready(function () {
+        listing();
+      });
+      function listing() {
+        $.ajax({
+          type: "GET",
+          url: "/produk",
+          data: {},
+          success: function (response) {
+            let rows = response["produk"];
+            for (let i = 0; i < rows.length; i++) {
+              let nama = rows[i]["nama"];
+              let jenis = rows[i]["jenis"];
+              let stok = rows[i]["stok"];
+              let harga = rows[i]["harga"];
+              let file = rows[i]["file"];
+              let temp_html = `
+  <div class="product-card">
+    <img src="../${file}" alt="${nama}" />
+    <div class="product-details">
+      <h5>${nama}</h5>
+      <p>Jenis: ${jenis}</p>
+      <p>Stok: ${stok}</p>
+      <p>Harga: ${harga}</p>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-primary btn-sm">Edit</button>
+      <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
+    </div>
+  </div>
+`;
+
+              $("#cards-box").append(temp_html);
+            }
+          },
+        });
+      }
+
+      function hapusData(nama) {
+        $.ajax({
+          type: "POST",
+          url: "/produk/delete",
+          data: { nama_give: nama },
+          success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+          },
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <a class="navbar-brand me-auto" href="#"><img id="logo" src="../static/Asset/log.svg" alt=""/></a>
+          <ul class="navbar-nav">
+            <li class="nav-item me-5">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="#">Produk</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="#">Kontak</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="#"><i class="bi bi-cart3"></i> Keranjangggggg</a>
+            </li>
+            <li class="nav-item me-5">
+              <button class="btn btn-primary">Login</button>
+            </li>
+            <li class="nav-item me-5">
+              <button class="btn btn-danger">Register</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Content Start -->
+    <div class="row justify-content-start" id="cards-box">
+        <h1>Produk List</h1>
+
+    </div>
+    <!-- Content End -->
+
+    <!-- Footer Start -->
+    <footer class="mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col m-4">
+            <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
+            <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
+            <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
+          </div>
+          <div class="col">
+            <h2>Hubungi Kami</h2>
+            <a href=""><i class="bi bi-instagram">124587124781629</i></a> <br />
+            <a href=""><i class="bi bi-instagram">124587124781629</i></a>
+          </div>
+        </div>
+        <hr />
+        <p class="text-center">Copyright © 2024, Intel Celeron Tim 7</p>
+      </div>
+    </footer>
+    <!-- Footer End -->
+  </body>
+</html>
