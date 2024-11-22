@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = '12092004'
 bcrypt = Bcrypt(app)
 
-client = MongoClient('mongodb+srv://figocahyo:figo123@cluster0.jjl9s.mongodb.net/')
+client = MongoClient('mongodb+srv://figoood99:figocell17@figocell.wxlz7.mongodb.net/')
 db = client['user_management']
 users_collection = db['users']
 
@@ -74,6 +74,7 @@ def logout():
     session.clear()
     flash('You have been logged out.')
     return redirect(url_for('login'))
+
 @app.route("/produk", methods=["GET"])
 def produk_get():
     produk_list = list(db.produk.find({}, {'_id': False}))
