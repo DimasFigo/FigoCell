@@ -1,0 +1,90 @@
+<!-- <h2>Welcome, User {{ username }}</h2> -->
+<!-- <a href="/logout">Logout</a> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Figo Cell</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jost:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
+    <!-- BS Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- My Css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body text-light">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/product">Produk</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/contact">Kontak</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/login">Keranjang <i class="bi bi-cart-check"></i></a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
+              </li>
+
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- user -->
+    <section><h1 class="text-dark">Hallo saya {{username}}</h1></section>
+    <!-- footer -->
+    <footer class="fixed-bottom p-4 bg-dark text-light">
+      <div class="container">
+        <div class="row ms-auto flex-sm-column flex-md-row">
+          <div class="col mt-4">
+            <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
+            <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
+            <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
+          </div>
+          <div class="col">
+            <h2>Hubungi Kami</h2>
+            <a href="" class="text-light" style="text-decoration: none"><i class="bi bi-telephone-fill"></i>+62818281828</a>
+            <br /><a href=""><i class="bi bi-chat-left-fill"></i> </a>
+          </div>
+        </div>
+        <hr />
+        <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
+      </div>
+    </footer>
+
+    <!-- My AOS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
