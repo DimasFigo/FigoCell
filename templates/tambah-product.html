@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Hello, world!</title>
+
+
+
+    <script>
+        function simpanData() {
+            let nama= $('#nama').val();
+            let jenis = $('#jenis').val();
+            let stok = $('#stok').val();
+            let harga = $('#harga').val();
+            let file = $("#image").prop("files")[0];
+    
+            let formData = new FormData();
+            formData.append('nama_give', nama);
+            formData.append('jenis_give', jenis);
+            formData.append('stok_give', stok);
+            formData.append('harga_give', harga);
+            formData.append('file_give', file);
+
+            $.ajax({
+                type: 'POST',
+                url: '/produk',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    alert(response['msg']);
+                    window.location.reload();
+                }
+            });
+        }
+        </script>
+  </head>
+  
+  <body>
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <a class="navbar-brand me-auto" href="#"><img id="logo" src="../static/Asset/log.svg" alt=""></a>
+            <ul class="navbar-nav">
+              <li class="nav-item me-5">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="#">Produk</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="#">Kontak</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="#"><i class="bi bi-cart3"></i> Keranjangggggg</a>
+              </li>
+              <li class="nav-item me-5">
+                <button class="btn btn-primary">Login</button>
+              </li>
+              <li class="nav-item me-5">
+                <button class="btn btn-danger">Register</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+<!-- Navbar End -->
+
+    
+
+<!-- Content Start -->
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="container p-4 shadow rounded" style="max-width: 500px; background-color: #f8f9fa;">
+        <div class="text-center mb-4">
+            <h1>Tambahkan Produk</h1>
+        </div>
+
+        <form>
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama Produk</label>
+                <input type="text" class="form-control" placeholder="Masukkan nama Produk" id="nama">
+            </div>
+            <div class="mb-3 custom-file">
+                <label for="gambar" class="form-label">Gambar Produk</label>
+                <input type="file" class="form-control" id="image" />
+            </div>
+            <div class="mb-3">
+                <label for="stok" class="form-label">Stok</label>
+                <input type="text" class="form-control" placeholder="Masukkan jumlah stok" id="stok">
+            </div>
+            <div class="mb-3">
+                <label for="stok" class="form-label">Harga</label>
+                <input type="text" class="form-control" placeholder="Masukkan harga produk" id="harga">
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
+                <select class="form-select" id="jenis">
+                  <option selected>Choose...</option>
+                  <option value="Rokok">Rokok</option>
+                  <option value="Sembako">Sembako</option>
+                </select>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary" onclick="simpanData()">Simpan Data</button>
+                <a href="/daftar-produk" class="btn btn-secondary">Lihat Daftar Produk</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Content End -->
+
+
+<!-- Footer Start -->
+  <footer class="mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col m-4">
+          <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
+          <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
+          <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
+        </div>
+        <div class="col">
+          <h2>Hubungi Kami</h2>
+          <a href=""><i class="bi bi-instagram">124587124781629</i></a> <br>
+          <a href=""><i class="bi bi-instagram">124587124781629</i></a>
+        </div>
+      </div>
+      <hr>
+      <p class="text-center">Copyright © 2024, Intel Celeron Tim 7</p>
+    </div>
+  </footer>
+  <!-- Footer End -->
+
+  </body>
+</html>
+
