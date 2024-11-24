@@ -100,7 +100,7 @@ def produk_post():
     produk_list = list(db.produk.find({'nama': nama_receive}, {'_id': False}))
     
     if produk_list:
-        return jsonify({'msg': 'Nama sudah terdaftar, silahkan mengehcek nama produk nya!'})
+        return jsonify({'msg': 'Nama sudah terdaftar, silahkan mengecek nama produknya!'})
     
     doc = {
         'nama': nama_receive,
