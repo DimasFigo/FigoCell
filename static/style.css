@@ -6,7 +6,7 @@
   opacity: 50%;
   transition: all ease-in-out 0.3s;
 }
-.btn:hover {
+.navbar .btn:hover {
   opacity: 80%;
   transition: all ease-in-out 0.3s;
 }
