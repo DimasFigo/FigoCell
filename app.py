@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, flash,redirect, url_for, sess
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-
-
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 app.secret_key = '12092004'
@@ -129,20 +128,27 @@ def produk_delete():
     } )
     return jsonify({'msg': 'Delete success!'})
 
-@app.route("/produk/update", methods=['POST'])
+@app.route("/produk/update", methods=["POST"])
 def produk_update():
-    nama_receive = request.form.get('nama_give')
-    jenis_receive = request.form.get('jenis_give')
-    stok_receive = request.form.get('stok_give')
-    file = request.files["file_give"]
+    id_receive = request.form.get('id')
+
+    # Cek jika ID kosong
+    if not id_receive:
+        return jsonify({'msg': 'ID tidak valid atau tidak ditemukan!'}), 400
+
+
+    nama_receive = request.form.get('nama')
+    jenis_receive = request.form.get('jenis')
+    stok_receive = request.form.get('stok')
+    harga_receive = request.form.get('harga')
 
     db.produk.update_one(
-        {'nama': nama_receive},
+        {'_id': ObjectId(id_receive)},
         {'$set': {
             'nama': nama_receive,
             'jenis': jenis_receive,
             'stok': stok_receive,
-            'file': file
+            'harga': harga_receive,
         }}
     )
     return jsonify({'msg': 'Data updated successfully'})

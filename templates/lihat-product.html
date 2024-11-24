@@ -104,7 +104,7 @@
       <p>Harga: ${harga}</p>
     </div>
     <div class="action-buttons">
-      <button class="btn btn-primary btn-sm">Edit</button>
+      <button class="btn btn-primary btn-sm" onclick="editData('${rows[i]["id"]}', '${nama}', '${jenis}', '${stok}', '${harga}')">Edit</button>
       <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
     </div>
   </div>
@@ -127,6 +127,44 @@
           },
         });
       }
+
+      function editData(id, nama, jenis, stok, harga) {
+        $("#editId").val(id); // Isi ID ke input hidden
+        $("#editNama").val(nama);
+        $("#editJenis").val(jenis);
+        $("#editStok").val(stok);
+        $("#editHarga").val(harga);
+
+    // Tampilkan modal
+    $("#editModal").modal("show");
+
+    // Tangani submit form
+    $("#editForm").off("submit").on("submit", function (e) {
+        e.preventDefault(); // Cegah pengiriman form bawaan
+
+        let formData = new FormData(this); // Ambil data dari form
+        console.log(formData);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/produk/update",
+            data: formData,
+            processData: false, // Untuk FormData
+            contentType: false, // Untuk FormData
+            success: function (response) {
+                alert(response["msg"]); // Tampilkan pesan
+                $("#editModal").modal("hide"); // Tutup modal
+                window.location.reload(); // Reload halaman
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error); // Log error di konsol
+                alert("Terjadi kesalahan saat menyimpan perubahan.");
+            },
+        });
+    });
+}
+
     </script>
 
   </head>
@@ -177,6 +215,48 @@
             <h1>Produk List</h1>
       </div>
       <!-- Content End -->
+       
+      <!-- Modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">Edit Produk</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="editForm">
+                <input type="hidden" id="editId" />
+                <div class="mb-3">
+                  <label for="editNama" class="form-label">Nama</label>
+                  <input type="text" class="form-control" id="editNama" name="nama"/>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
+                  <select class="form-select" id="editJenis" name="jenis">
+                    <option value="Rokok">Rokok</option>
+                    <option value="Sembako">Sembako</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="editStok" class="form-label" name="stok">Stok</label>
+                  <input type="number" class="form-control" id="editStok" />
+                </div>
+                <div class="mb-3">
+                  <label for="editHarga" class="form-label" name="harga">Harga</label>
+                  <input type="number" class="form-control" id="editHarga" />
+                  <input type="hidden" id="editId" name="id" />
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+       <!-- Modal End -->
+    
 
     <!-- Footer -->
     <footer class="fixed-bottom p-4 bg-dark text-light">
