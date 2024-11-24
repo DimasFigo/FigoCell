@@ -130,10 +130,11 @@ def produk_delete():
 
 @app.route("/produk/update", methods=["POST"])
 def produk_update():
-    id_receive = request.form.get('id')
-
-    # Cek jika ID kosong
-    if not id_receive:
+    
+    nama_receive = request.form.get('nama')
+    
+    # Cek jika nama kosong
+    if not nama_receive:
         return jsonify({'msg': 'ID tidak valid atau tidak ditemukan!'}), 400
 
 
@@ -143,7 +144,7 @@ def produk_update():
     harga_receive = request.form.get('harga')
 
     db.produk.update_one(
-        {'_id': ObjectId(id_receive)},
+        {'nama': nama_receive},
         {'$set': {
             'nama': nama_receive,
             'jenis': jenis_receive,
@@ -152,6 +153,10 @@ def produk_update():
         }}
     )
     return jsonify({'msg': 'Data updated successfully'})
+
+@app.route('/keranjang', methods=["GET"])
+def keranjang():
+   return render_template ('keranjang.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

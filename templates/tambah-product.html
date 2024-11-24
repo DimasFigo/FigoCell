@@ -17,35 +17,34 @@
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-
     <script>
       function simpanData() {
-          let nama= $('#nama').val();
-          let jenis = $('#jenis').val();
-          let stok = $('#stok').val();
-          let harga = $('#harga').val();
-          let file = $("#image").prop("files")[0];
-  
-          let formData = new FormData();
-          formData.append('nama_give', nama);
-          formData.append('jenis_give', jenis);
-          formData.append('stok_give', stok);
-          formData.append('harga_give', harga);
-          formData.append('file_give', file);
+        let nama = $('#nama').val();
+        let jenis = $('#jenis').val();
+        let stok = $('#stok').val();
+        let harga = $('#harga').val();
+        let file = $('#image').prop('files')[0];
 
-          $.ajax({
-              type: 'POST',
-              url: '/produk',
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function(response) {
-                  alert(response['msg']);
-                  window.location.reload();
-              }
-          });
+        let formData = new FormData();
+        formData.append('nama_give', nama);
+        formData.append('jenis_give', jenis);
+        formData.append('stok_give', stok);
+        formData.append('harga_give', harga);
+        formData.append('file_give', file);
+
+        $.ajax({
+          type: 'POST',
+          url: '/produk',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+          },
+        });
       }
-      </script>
+    </script>
   </head>
 
   <body>
@@ -61,64 +60,53 @@
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body text-light">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
-              </li>
-              <!-- <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
-              </li> -->
-            </ul>
-          </div>
         </div>
       </div>
     </nav>
     <!-- End Navbar -->
 
-    
     <!-- Content Start -->
-<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-  <div class="container p-4 shadow rounded" style="max-width: 500px; background-color: #f8f9fa;">
-      <div class="text-center mb-4">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh; margin: 10em 0 2em 0">
+      <div class="container p-4 shadow rounded" style="max-width: 500px; background-color: #f8f9fa">
+        <div class="text-center mb-4">
           <h1>Tambahkan Produk</h1>
-      </div>
+        </div>
 
-      <form>
+        <form>
           <div class="mb-3">
-              <label for="nama" class="form-label">Nama Produk</label>
-              <input type="text" class="form-control" placeholder="Masukkan nama Produk" id="nama">
+            <input type="hidden" id="editId" name="id" />
+            <label for="nama" class="form-label">Nama Produk</label>
+            <input type="text" class="form-control" placeholder="Masukkan nama Produk" id="nama" />
           </div>
           <div class="mb-3 custom-file">
-              <label for="gambar" class="form-label">Gambar Produk</label>
-              <input type="file" class="form-control" id="image" />
+            <label for="gambar" class="form-label">Gambar Produk</label>
+            <input type="file" class="form-control" id="image" />
           </div>
           <div class="mb-3">
-              <label for="stok" class="form-label">Stok</label>
-              <input type="text" class="form-control" placeholder="Masukkan jumlah stok" id="stok">
+            <label for="stok" class="form-label">Stok</label>
+            <input type="text" class="form-control" placeholder="Masukkan jumlah stok" id="stok" />
           </div>
           <div class="mb-3">
-              <label for="stok" class="form-label">Harga</label>
-              <input type="text" class="form-control" placeholder="Masukkan harga produk" id="harga">
+            <label for="stok" class="form-label">Harga</label>
+            <input type="text" class="form-control" placeholder="Masukkan harga produk" id="harga" />
           </div>
           <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
-              <select class="form-select" id="jenis">
-                <option selected>Choose...</option>
-                <option value="Rokok">Rokok</option>
-                <option value="Sembako">Sembako</option>
-              </select>
+            <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
+            <select class="form-select" id="jenis">
+              <option selected>Choose...</option>
+              <option value="Rokok">Rokok</option>
+              <option value="Sembako">Sembako</option>
+            </select>
           </div>
-          
-          <div class="d-grid gap-2">
-              <button type="button" class="btn btn-primary" onclick="simpanData()">Simpan Data</button>
-              <a href="/daftar-produk" class="btn btn-secondary">Lihat Daftar Produk</a>
-          </div>
-      </form>
-  </div>
-</div>
-<!-- Content End -->
 
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary" onclick="simpanData()">Simpan Data</button>
+            <a href="/daftar-produk" class="btn btn-secondary">Lihat Daftar Produk</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Content End -->
 
     <!-- Footer Start-->
     <footer class="p-3 bg-dark text-light">

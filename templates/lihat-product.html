@@ -21,96 +21,47 @@
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-    <style>
-      #cards-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Memusatkan konten secara horizontal */
-        gap: 15px;
-        margin: 0 auto;
-        max-width: 800px; /* Membatasi lebar maksimum */
-      }
-
-      .product-card {
-        display: flex;
-        align-items: center;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background-color: #f8f9fa;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        width: 100%; /* Menyesuaikan lebar dengan container */
-      }
-
-      .product-card img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-right: 20px;
-      }
-
-      .product-card .product-details {
-        flex-grow: 1;
-      }
-
-      .product-card .product-details h5 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-      }
-
-      .product-card .product-details p {
-        margin: 5px 0;
-        font-size: 14px;
-        color: #666;
-      }
-
-      .product-card .action-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .product-card .action-buttons button {
-        width: 100px;
-      }
-    </style>
-
     <script>
       $(document).ready(function () {
         listing();
       });
       function listing() {
         $.ajax({
-          type: "GET",
-          url: "/produk",
+          type: 'GET',
+          url: '/produk',
           data: {},
           success: function (response) {
-            let rows = response["produk"];
+            let rows = response['produk'];
             for (let i = 0; i < rows.length; i++) {
-              let nama = rows[i]["nama"];
-              let jenis = rows[i]["jenis"];
-              let stok = rows[i]["stok"];
-              let harga = rows[i]["harga"];
-              let file = rows[i]["file"];
+              let nama = rows[i]['nama'];
+              let jenis = rows[i]['jenis'];
+              let stok = rows[i]['stok'];
+              let harga = rows[i]['harga'];
+              let file = rows[i]['file'];
               let temp_html = `
-  <div class="product-card">
-    <img src="../${file}" alt="${nama}" />
-    <div class="product-details">
-      <h5>${nama}</h5>
-      <p>Jenis: ${jenis}</p>
-      <p>Stok: ${stok}</p>
-      <p>Harga: ${harga}</p>
-    </div>
-    <div class="action-buttons">
-      <button class="btn btn-primary btn-sm" onclick="editData('${rows[i]["id"]}', '${nama}', '${jenis}', '${stok}', '${harga}')">Edit</button>
-      <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
-    </div>
-  </div>
-`;
 
-              $("#cards-box").append(temp_html);
+        <div class="card mb-3 mt-5" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="../${file}" alt="${nama}" class="img-fluid rounded mt-2" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">${nama}</h5>
+              <p class="card-text">Jenis :  ${jenis}</p>
+              <p class="card-text">Stok : ${stok}</p>
+               <p class="card-text">Harga : Rp. ${harga}</p>
+            </div>
+            <div class="action-buttons m-3">
+            <button class="btn btn-primary btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${jenis}', '${stok}', '${harga}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
+          </div>
+          </div>
+        </div>
+      </div>
+      `;
+
+              $('#cards-box').append(temp_html);
             }
           },
         });
@@ -118,55 +69,56 @@
 
       function hapusData(nama) {
         $.ajax({
-          type: "POST",
-          url: "/produk/delete",
+          type: 'POST',
+          url: '/produk/delete',
           data: { nama_give: nama },
           success: function (response) {
-            alert(response["msg"]);
+            alert(response['msg']);
             window.location.reload();
           },
         });
       }
 
       function editData(id, nama, jenis, stok, harga) {
-        $("#editId").val(id); // Isi ID ke input hidden
-        $("#editNama").val(nama);
-        $("#editJenis").val(jenis);
-        $("#editStok").val(stok);
-        $("#editHarga").val(harga);
+        $('#editId').val(id); // Isi ID ke input hidden
+        $('#editNama').val(nama);
+        $('#editJenis').val(jenis);
+        $('#editStok').val(stok);
+        $('#editHarga').val(harga);
 
-    // Tampilkan modal
-    $("#editModal").modal("show");
+        // Tampilkan modal
+        $('#editModal').modal('show');
 
-    // Tangani submit form
-    $("#editForm").off("submit").on("submit", function (e) {
-        e.preventDefault(); // Cegah pengiriman form bawaan
+        // Tangani submit form
+        $('#editForm')
+          .off('submit')
+          .on('submit', function (e) {
+            e.preventDefault(); // Cegah pengiriman form bawaan
 
-        let formData = new FormData(this); // Ambil data dari form
-        console.log(formData);
+            let formData = new FormData(this); // Ambil data dari form
+            formData.append('id', $('#editId').val()); // pastikan ID ikut terkirim
+            // console.log(formData);
+            console.log(id);
 
-
-        $.ajax({
-            type: "POST",
-            url: "/produk/update",
-            data: formData,
-            processData: false, // Untuk FormData
-            contentType: false, // Untuk FormData
-            success: function (response) {
-                alert(response["msg"]); // Tampilkan pesan
-                $("#editModal").modal("hide"); // Tutup modal
+            $.ajax({
+              type: 'POST',
+              url: '/produk/update',
+              data: formData,
+              processData: false, // Untuk FormData
+              contentType: false, // Untuk FormData
+              success: function (response) {
+                alert(response['msg']); // Tampilkan pesan
+                $('#editModal').modal('hide'); // Tutup modal
                 window.location.reload(); // Reload halaman
-            },
-            error: function (xhr, status, error) {
-                console.error("Error:", error); // Log error di konsol
-                alert("Terjadi kesalahan saat menyimpan perubahan.");
-            },
-        });
-    });
-}
-
+              },
+              error: function (xhr, status, error) {
+                console.error('Error:', error); // Log error di konsol
+                alert('Terjadi kesalahan saat menyimpan perubahan.');
+              },
+            });
+          });
+      }
     </script>
-
   </head>
 
   <body>
@@ -211,55 +163,53 @@
     <!-- End Navbar -->
 
     <!-- Content Start -->
-        <div class="row justify-content-start" id="cards-box">
-            <h1>Produk List</h1>
-      </div>
-      <!-- Content End -->
-       
-      <!-- Modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Edit Produk</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="editForm">
-                <input type="hidden" id="editId" />
-                <div class="mb-3">
-                  <label for="editNama" class="form-label">Nama</label>
-                  <input type="text" class="form-control" id="editNama" name="nama"/>
-                </div>
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
-                  <select class="form-select" id="editJenis" name="jenis">
-                    <option value="Rokok">Rokok</option>
-                    <option value="Sembako">Sembako</option>
-                  </select>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="editStok" class="form-label" name="stok">Stok</label>
-                  <input type="number" class="form-control" id="editStok" />
-                </div>
-                <div class="mb-3">
-                  <label for="editHarga" class="form-label" name="harga">Harga</label>
-                  <input type="number" class="form-control" id="editHarga" />
-                  <input type="hidden" id="editId" name="id" />
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-              </form>
-            </div>
+    <div class="row justify-content-center m-5" id="cards-box">
+      <h1>Produk List</h1>
+    </div>
+    <!-- Content End -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit Produk</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm">
+              <input type="hidden" id="editId" name="id" />
+              <div class="mb-3">
+                <label for="editNama" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="editNama" name="nama" />
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
+                <select class="form-select" id="editJenis" name="jenis">
+                  <option value="Rokok">Rokok</option>
+                  <option value="Sembako">Sembako</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="editStok" class="form-label" name="stok">Stok</label>
+                <input type="number" class="form-control" id="editStok" name="stok" />
+              </div>
+              <div class="mb-3">
+                <label for="editHarga" class="form-label" name="harga">Harga</label>
+                <input type="number" class="form-control" id="editHarga" name="harga" />
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
           </div>
         </div>
       </div>
-      
-       <!-- Modal End -->
-    
+    </div>
+
+    <!-- Modal End -->
 
     <!-- Footer -->
-    <footer class="fixed-bottom p-4 bg-dark text-light">
+    <footer class="p-4 bg-dark text-light">
       <div class="container">
         <div class="row ms-auto flex-sm-column flex-md-row">
           <div class="col mt-4">
