@@ -17,6 +17,65 @@
 
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <style>
+        .card {
+            padding: 1em;
+            max-width: 30em;
+            flex-direction: row;
+        }
+        .card img {
+            max-width: 25%;
+            margin: auto;
+            padding: 0.5em;
+            border-radius: 0.7em;
+        }
+    </style>
+
+    <script>
+      $(document).ready(function () {
+        listing();
+      });
+      function listing() {
+        $.ajax({
+          type: 'GET',
+          url: '/produk',
+          data: {},
+          success: function (response) {
+            let rows = response['produk'];
+            for (let i = 0; i < rows.length; i++) {
+              let nama = rows[i]['nama'];
+              let jenis = rows[i]['jenis'];
+              let stok = rows[i]['stok'];
+              let harga = rows[i]['harga'];
+              let file = rows[i]['file'];
+              let temp_html = `
+            <div class="card">
+                <img src="${file}" class="card-img-top" alt="${nama}">
+                <div class="card-body">
+                    <div class="text-section">
+                        <h5 class="card-title">${nama}</h5>
+                        <p class="card-text">Jenis : ${jenis}</p>
+                        <p class="card-text">Stok : ${stok}</p>
+                    </div>
+                    <div class="cta-section">
+                        <div>Rp. ${harga}</div>
+                        <a href="/detail" class="btn btn-primary">Pesan Sekarang</a>
+                    </div>
+            </div>
+        </div>
+      `;
+
+              $('#cards-box').append(temp_html);
+            }
+          },
+        });
+      }
+
+    </script>
   </head>
 
   <body>
@@ -60,33 +119,13 @@
     </nav>
     <!-- End Navbar -->
 
-    <!-- Admin -->
-    <section>
-      <div class="container">
-        <h1 class="text-center mb-4">Menu Admin</h1>
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="card text-center shadow">
-              <div class="card-body">
-                <h5 class="card-title">Tambah Produk</h5>
-                <p class="card-text">Gunakan menu ini untuk menambahkan produk baru ke database Anda.</p>
-                <a href="/tambah-produk" class="btn btn-primary">Tambah Produk</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card text-center shadow">
-              <div class="card-body">
-                <h5 class="card-title">Lihat Produk</h5>
-                <p class="card-text">Lihat daftar produk yang sudah tersedia di toko Anda.</p>
-                <a href="/daftar-produk" class="btn btn-primary">Lihat Produk</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- End Admin -->
+    <!-- Content Start -->
+    <div class="row justify-content-center m-5" id="cards-box">
+      <h1>Produk List</h1>
+    </div>
+    <!-- Content End -->
+
+
 
     <!-- Footer -->
     <footer class="p-4 bg-dark text-light">

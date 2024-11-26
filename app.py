@@ -158,6 +158,16 @@ def produk_update():
 def keranjang():
    return render_template ('keranjang.html')
 
+@app.route('/product', methods=["GET"])
+def product():
+   return render_template ('product.html')
+
+@app.route('/detail', methods=["GET"])
+def detail():
+   return render_template ('detail-product.html')
+
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
 
