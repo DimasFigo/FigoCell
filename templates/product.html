@@ -20,64 +20,16 @@
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-    <style>
-        .card {
-            padding: 1em;
-            max-width: 30em;
-            flex-direction: row;
-        }
-        .card img {
-            max-width: 25%;
-            margin: auto;
-            padding: 0.5em;
-            border-radius: 0.7em;
-        }
-    </style>
-
-    <script>
-      $(document).ready(function () {
-        listing();
-      });
-      function listing() {
-        $.ajax({
-          type: 'GET',
-          url: '/produk',
-          data: {},
-          success: function (response) {
-            let rows = response['produk'];
-            for (let i = 0; i < rows.length; i++) {
-              let nama = rows[i]['nama'];
-              let jenis = rows[i]['jenis'];
-              let stok = rows[i]['stok'];
-              let harga = rows[i]['harga'];
-              let file = rows[i]['file'];
-              let temp_html = `
-            <div class="card">
-                <img src="${file}" class="card-img-top" alt="${nama}">
-                <div class="card-body">
-                    <div class="text-section">
-                        <h5 class="card-title">${nama}</h5>
-                        <p class="card-text">Jenis : ${jenis}</p>
-                        <p class="card-text">Stok : ${stok}</p>
-                    </div>
-                    <div class="cta-section">
-                        <div>Rp. ${harga}</div>
-                        <a href="/detail" class="btn btn-primary">Pesan Sekarang</a>
-                    </div>
-            </div>
-        </div>
-      `;
-
-              $('#cards-box').append(temp_html);
-            }
-          },
-        });
-      }
-
-    </script>
   </head>
+  <style>
+    /* responsive ye */
 
+    @media (min-width: 991.98px) {
+      .card img {
+        margin: 10px;
+      }
+    }
+  </style>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
@@ -108,10 +60,6 @@
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
               </li>
-
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
-              </li>
             </ul>
           </div>
         </div>
@@ -120,15 +68,90 @@
     <!-- End Navbar -->
 
     <!-- Content Start -->
-     <section>
-      <div class="row justify-content-center m-5" id="cards-box">
-        <h1>Produk List</h1>
+    <section style="margin: 120px 0">
+      <h1 class="text-center">Produk List</h1>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores magni ex laudantium? Repellendus sunt excepturi fuga maiores amet saepe, placeat consequuntur corrupti reiciendis quos rerum, similique vel, architecto dolor non!</p>
+    </section>
+
+    <!-- Content Start -->
+
+    <div class="row justify-content-center m-2">
+      <div class="col-md-4">
+        <h2 class="mt-5 text-center">Pulsa</h2>
+        <div class="card col-md-12">
+          <p class="m-5 text-center">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus enim explicabo itaque repellat possimus assumenda qui, quisquam dolor facere voluptatem voluptas et beatae accusantium quae, veniam velit autem cupiditate
+            hic rerum totam? Iste accusantium incidunt molestiae veritatis deserunt eaque pariatur obcaecati perspiciatis cum quisquam vel dolorem quas doloribus, possimus omnis.
+          </p>
+          <div class="btn btn-secondary" style="max-width: 10em; margin: 10px auto">Beli Pulsa</div>
+        </div>
       </div>
-     </section>
+    </div>
+    <!-- Kontainer untuk produk -->
+    <div class="container" id="produk-container"></div>
+    <script>
+      $(document).ready(function () {
+        DaftarProdukbyJenis();
+      });
+      function DaftarProdukbyJenis() {
+        // Request produk dari server
+        $.ajax({
+          url: '/produk',
+          type: 'GET',
+          success: function (response) {
+            let produkContainer = $('#produk-container');
+            produkContainer.empty();
+            let produkByJenis = {};
+
+            response.produk.forEach(function (produk) {
+              if (!produkByJenis[produk.jenis]) {
+                produkByJenis[produk.jenis] = [];
+              }
+              produkByJenis[produk.jenis].push(produk);
+            });
+
+            for (let jenis in produkByJenis) {
+              let daftarProduk = `
+                 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="mt-5 text-center">${jenis}</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                    `;
+
+              produkByJenis[jenis].forEach(function (produk) {
+                daftarProduk += `
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="/${produk.file}" alt="${produk.nama}" class="img-fluid rounded  image-fluid" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${produk.nama}</h5>
+                                                <p class="card-text">Stok: ${produk.stok}</p>
+                                                <p class="card-text">Harga: Rp${produk.harga}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+              });
+
+              daftarProduk += `</div>`;
+
+              produkContainer.append(daftarProduk);
+            }
+          },
+        });
+      }
+    </script>
 
     <!-- Content End -->
-
-
 
     <!-- Footer -->
     <footer class="p-4 bg-dark text-light">
