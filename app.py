@@ -166,6 +166,9 @@ def product():
 def detail():
    return render_template ('detail-product.html')
 
+@app.route('/contact', methods=["GET"])
+def contact():
+   return render_template ('contact.html')
 
 
 if __name__ == '__main__':
