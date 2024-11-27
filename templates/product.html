@@ -30,6 +30,69 @@
       }
     }
   </style>
+
+<script>
+  $(document).ready(function () {
+    DaftarProdukbyJenis();
+  });
+  function DaftarProdukbyJenis() {
+    // Request produk dari server
+    $.ajax({
+      url: '/produk',
+      type: 'GET',
+      success: function (response) {
+        let produkContainer = $('#produk-container');
+        produkContainer.empty();
+        let produkByJenis = {};
+
+        response.produk.forEach(function (produk) {
+          if (!produkByJenis[produk.jenis]) {
+            produkByJenis[produk.jenis] = [];
+          }
+          produkByJenis[produk.jenis].push(produk);
+        });
+
+        for (let jenis in produkByJenis) {
+          let daftarProduk = `
+             
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="mt-5 text-center">${jenis}</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                `;
+
+          produkByJenis[jenis].forEach(function (produk) {
+            daftarProduk += `
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="/${produk.file}" alt="${produk.nama}" class="img-fluid rounded  image-fluid" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${produk.nama}</h5>
+                                            <p class="card-text">Stok: ${produk.stok}</p>
+                                            <p class="card-text">Harga: Rp${produk.harga}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          daftarProduk += `</div>`;
+
+          produkContainer.append(daftarProduk);
+        }
+      },
+    });
+  }
+</script>
+
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
@@ -90,67 +153,6 @@
     </div>
     <!-- Kontainer untuk produk -->
     <div class="container" id="produk-container"></div>
-    <script>
-      $(document).ready(function () {
-        DaftarProdukbyJenis();
-      });
-      function DaftarProdukbyJenis() {
-        // Request produk dari server
-        $.ajax({
-          url: '/produk',
-          type: 'GET',
-          success: function (response) {
-            let produkContainer = $('#produk-container');
-            produkContainer.empty();
-            let produkByJenis = {};
-
-            response.produk.forEach(function (produk) {
-              if (!produkByJenis[produk.jenis]) {
-                produkByJenis[produk.jenis] = [];
-              }
-              produkByJenis[produk.jenis].push(produk);
-            });
-
-            for (let jenis in produkByJenis) {
-              let daftarProduk = `
-                 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2 class="mt-5 text-center">${jenis}</h2>
-                            </div>
-                        </div>
-                        <div class="row">
-                    `;
-
-              produkByJenis[jenis].forEach(function (produk) {
-                daftarProduk += `
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <img src="/${produk.file}" alt="${produk.nama}" class="img-fluid rounded  image-fluid" />
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${produk.nama}</h5>
-                                                <p class="card-text">Stok: ${produk.stok}</p>
-                                                <p class="card-text">Harga: Rp${produk.harga}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-              });
-
-              daftarProduk += `</div>`;
-
-              produkContainer.append(daftarProduk);
-            }
-          },
-        });
-      }
-    </script>
 
     <!-- Content End -->
 
