@@ -51,7 +51,7 @@
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="/" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
+        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -59,6 +59,38 @@
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body text-light">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/product">Produk</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/contact">Kontak</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
+              </li>
+
+                {% if 'username' in session %}
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
+                </li>
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                </li>
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+                </li>
+                {% endif %}
+            </ul>
           </div>
         </div>
       </div>
