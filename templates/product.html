@@ -29,6 +29,56 @@
         margin: 10px;
       }
     }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%; /* Pastikan gambar sesuai lebar card */
+      height: 200px; /* Tetapkan tinggi seragam */
+      object-fit: contain; /* Gambar akan tampil sepenuhnya */
+      background-color: #f8f9fa; /* Tambahkan latar belakang untuk estetika */
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .card-body {
+      text-align: center;
+    }
+
+    .card-title {
+      font-weight: bold;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #333;
+    }
+
+    .card-text {
+      font-family: 'Comic Neue', cursive;
+      color: #555;
+    }
+
+    .btn-primary {
+      background-color: #825b32;
+      border: none;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #633a21;
+    }
+
+    
+    
+    
   </style>
 
   <script>
@@ -74,29 +124,23 @@
                             <h2 class="mt-5 text-center">${jenis}</h2>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row g-4">
                 `;
 
             produkByJenis[jenis].forEach(function (produk) {
               daftarProduk += `
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="/${produk.file}" alt="${produk.nama}" class="img-fluid rounded  image-fluid" />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${produk.nama}</h5>
-                                            <p class="card-text">Stok: ${produk.stok}</p>
-                                            <p class="card-text">Harga: Rp${produk.harga}</p>
-                                            <button class="btn btn-primary" onclick="addToCart('${produk.nama}')">Add to Cart</button>
+          <div class="col-md-4 col-sm-6">
+        <div class="card">
+          <img src="${produk.file}" class="card-img-top" alt="${produk.nama}" />
+          <div class="card-body">
+            <h5 class="card-title">${produk.nama}</h5>
+            <p class="card-text">Stok: ${produk.stok}</p>
+            <p class="card-text">Harga: Rp.${produk.harga}</p>
+            <button class="btn btn-primary" onclick="addToCart('${produk.nama}')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     `;
             });
 
@@ -160,30 +204,40 @@
     <!-- End Navbar -->
 
     <!-- Content Start -->
-    <section style="margin: 120px 0">
-      <h1 class="text-center">Produk List</h1>
-      <div class="row justify-content-center m-2">
-        <div class="col-md-4">
-          <h2 class="mt-5 text-center">Pulsa Regular</h2>
-          <div class="card col-md-12">
-            <div class="btn" onclick="window.location.href='/pulsa/regular';" style="max-width: 10em; margin: 10px auto; text-align: center; background-color: #825b32; color: white">Beli Pulsa</div>
+    <section class="margin: 120px 0" style="margin-top: 200px; margin-bottom: 20px;">
+      <div class="container">
+        <h1 class="text-center mb-5" style="font-family: 'Jost', sans-serif; color: #333;">Produk Kami</h1>
+        <h2 class="mt-5 text-center">Pulsa</h2>
+        <div class="row g-4">
+          <div class="col-md-6 col-sm-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <h5 class="card-title">Pulsa Regular</h5>
+                <p class="card-text">Isi ulang pulsa dengan mudah dan cepat.</p>
+                <button class="btn btn-primary" onclick="window.location.href='/pulsa/regular';">Beli Pulsa</button>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="col-md-4">
-          <h2 class="mt-5 text-center">Token Listrik</h2>
-          <div class="card col-md-12">
-            <div class="btn" onclick="window.location.href='/pulsa/listrik';" style="max-width: 10em; margin: 10px auto; background-color: #825b32; color: white">Beli Token</div>
+          <div class="col-md-6 col-sm-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <h5 class="card-title">Token Listrik</h5>
+                <p class="card-text">Beli token listrik dengan harga terbaik.</p>
+                <button class="btn btn-primary" onclick="window.location.href='/pulsa/listrik';">Beli Token</button>
+              </div>
+            </div>
           </div>
+    
         </div>
       </div>
     </section>
-
+    
     <!-- Content Start -->
 
     <!-- Kontainer untuk produk -->
     <section style="margin: 120px 0">
-      <div class="container" id="produk-container"></div>
+      <div class="container" id="produk-container">
+      </div>
     </section>
 
     <!-- Content End -->
