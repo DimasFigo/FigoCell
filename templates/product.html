@@ -31,29 +31,43 @@
     }
   </style>
 
-<script>
-  $(document).ready(function () {
-    DaftarProdukbyJenis();
-  });
-  function DaftarProdukbyJenis() {
-    // Request produk dari server
-    $.ajax({
-      url: '/produk',
-      type: 'GET',
-      success: function (response) {
-        let produkContainer = $('#produk-container');
-        produkContainer.empty();
-        let produkByJenis = {};
+  <script>
+    $(document).ready(function () {
+      DaftarProdukbyJenis();
+    });
+    function addToCart(productName) {
+      $.ajax({
+        url: '/keranjang/add', // Route untuk menambahkan produk ke keranjang
+        type: 'POST',
+        data: { nama_produk: productName },
+        success: function (response) {
+          alert(response.msg); // Tampilkan pesan sukses
+        },
+        error: function (error) {
+          console.log('Error:', error);
+        },
+      });
+    }
 
-        response.produk.forEach(function (produk) {
-          if (!produkByJenis[produk.jenis]) {
-            produkByJenis[produk.jenis] = [];
-          }
-          produkByJenis[produk.jenis].push(produk);
-        });
+    function DaftarProdukbyJenis() {
+      // Request produk dari server
+      $.ajax({
+        url: '/produk',
+        type: 'GET',
+        success: function (response) {
+          let produkContainer = $('#produk-container');
+          produkContainer.empty();
+          let produkByJenis = {};
 
-        for (let jenis in produkByJenis) {
-          let daftarProduk = `
+          response.produk.forEach(function (produk) {
+            if (!produkByJenis[produk.jenis]) {
+              produkByJenis[produk.jenis] = [];
+            }
+            produkByJenis[produk.jenis].push(produk);
+          });
+
+          for (let jenis in produkByJenis) {
+            let daftarProduk = `
              
                     <div class="row">
                         <div class="col-md-12">
@@ -63,8 +77,8 @@
                     <div class="row">
                 `;
 
-          produkByJenis[jenis].forEach(function (produk) {
-            daftarProduk += `
+            produkByJenis[jenis].forEach(function (produk) {
+              daftarProduk += `
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="row g-0">
@@ -76,22 +90,24 @@
                                             <h5 class="card-title">${produk.nama}</h5>
                                             <p class="card-text">Stok: ${produk.stok}</p>
                                             <p class="card-text">Harga: Rp${produk.harga}</p>
+                                            <button class="btn btn-primary" onclick="addToCart('${produk.nama}')">Add to Cart</button>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
-          });
+            });
 
-          daftarProduk += `</div>`;
+            daftarProduk += `</div>`;
 
-          produkContainer.append(daftarProduk);
-        }
-      },
-    });
-  }
-</script>
+            produkContainer.append(daftarProduk);
+          }
+        },
+      });
+    }
+  </script>
 
   <body>
     <!-- Navbar -->
@@ -120,8 +136,13 @@
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
               </li>
+
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
+                {% if 'username' in session %}
+                <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                {% endif %}
               </li>
             </ul>
           </div>
@@ -137,14 +158,14 @@
         <div class="col-md-4">
           <h2 class="mt-5 text-center">Pulsa Regular</h2>
           <div class="card col-md-12">
-            <div class="btn" onclick="window.location.href='/pulsa/regular';" style="max-width: 10em; margin: 10px auto; text-align: center; background-color: #825b32; color:white;">Beli Pulsa</div>
+            <div class="btn" onclick="window.location.href='/pulsa/regular';" style="max-width: 10em; margin: 10px auto; text-align: center; background-color: #825b32; color: white">Beli Pulsa</div>
           </div>
         </div>
-  
+
         <div class="col-md-4">
           <h2 class="mt-5 text-center">Token Listrik</h2>
           <div class="card col-md-12">
-            <div class="btn " onclick="window.location.href='/pulsa/listrik';" style="max-width: 10em; margin: 10px auto; background-color: #825b32; color:white;">Beli Token</div>
+            <div class="btn" onclick="window.location.href='/pulsa/listrik';" style="max-width: 10em; margin: 10px auto; background-color: #825b32; color: white">Beli Token</div>
           </div>
         </div>
       </div>
@@ -156,7 +177,6 @@
     <section style="margin: 120px 0">
       <div class="container" id="produk-container"></div>
     </section>
-
 
     <!-- Content End -->
 

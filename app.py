@@ -154,9 +154,41 @@ def produk_update():
     )
     return jsonify({'msg': 'Data updated successfully'})
 
-@app.route('/keranjang', methods=["GET"])
-def keranjang():
-   return render_template ('keranjang.html')
+@app.route('/keranjang', methods=['GET'])
+def view_cart():
+    if 'username' in session:
+        username = session['username']
+        keranjang = db.keranjang.find_one({'username': username})
+        if keranjang:
+            produk_keranjang = keranjang.get('produk', [])
+            # Pastikan harga dikonversi menjadi integer/float sebelum dijumlahkan
+            total_harga = sum(int(produk['harga']) for produk in produk_keranjang)
+            return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga)
+        return render_template('keranjang.html', produk_keranjang=[], total_harga=0)
+    flash('Anda harus login untuk melihat keranjang!')
+    return redirect(url_for('login'))
+
+
+@app.route('/keranjang/add', methods=['POST'])
+def add_to_cart():
+    if 'username' in session:  # Cek apakah user sudah login
+        nama_produk = request.form.get('nama_produk')
+        username = session['username']
+        
+        # Cari produk berdasarkan nama
+        produk = db.produk.find_one({'nama': nama_produk})
+        
+        if produk:
+            # Tambahkan produk ke keranjang user
+            db.keranjang.update_one(
+                {'username': username},
+                {'$push': {'produk': produk}},
+                upsert=True
+            )
+            return jsonify({'msg': 'Produk berhasil ditambahkan ke keranjang!'})
+        else:
+            return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
+    return jsonify({'msg': 'Anda harus login untuk menambahkan ke keranjang!'}), 401
 
 @app.route('/product', methods=["GET"])
 def product():

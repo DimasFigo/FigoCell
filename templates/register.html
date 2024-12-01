@@ -43,14 +43,22 @@
     </nav>
     <!-- End Navbar -->
 
-    <section style="max-width: 800px; margin: 15em auto">
+    <section style="max-width: 500px; margin: 15em auto">
       <div class="container">
         <h2 class="text-center">Register</h2>
 
         <form method="POST" action="/register" autocomplete="off">
           <div class="form-floating mb-3">
-            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="" required />
-            <label for="floatingInput">Username</label>
+            <input type="text" name="fullName" class="form-control" id="floatingInput" placeholder="" required />
+            <label for="">Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="" placeholder="" required />
+            <label for="">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="" required />
+            <label for="">Username</label>
           </div>
           <div class="form-floating">
             <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
@@ -61,7 +69,7 @@
 
           <div class="form-floating">
             <select class="form-select" name="role" id="floatingSelect" aria-label="Floating label select example" required>
-              <option value="admin">Admin</option>
+              <option value="admin" disabled>Admin</option>
               <option value="user">User</option>
             </select>
             <label for="floatingSelect">Works with selects</label>
