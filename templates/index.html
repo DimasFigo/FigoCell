@@ -14,6 +14,9 @@
 
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
 
   <body>
@@ -57,53 +60,67 @@
     <!-- End Navbar -->
 
     <!-- About Us Section -->
-    <section data-aos="fade-up" style="margin: 120px 0; padding-top: 100px;">
-      <div class="jumbotron text-center">
+    <section style="margin: 120px 0; padding-top: 100px">
+      <div class="jumbotron text-center" data-aos="fade-up">
         <h1 class="display-4">Hello 👋</h1>
         <!-- <p class="lead">Selamat datang di website <span class="fw-bold">Figo Cell</span></p> -->
         <div id="text" class="text-container"></div>
         <hr class="my-4" />
-        <p>Kini kamu dapat memesan produk yang tersedia di <span class="fw-bold">Figo Cell</span> dengan mudah, cepat dan aman tentunya. Tunggu apalagi? buruan pesan sekarang.</p>
-        <a class="btn btn-lg text-light" style="background-color: #825b32" href="/login" role="button">Pesan Sekarang</a>
+        <p class="col-md-6 m-auto">Kini kamu dapat memesan produk yang tersedia di <span class="fw-bold">Figo Cell</span> dengan mudah, cepat dan aman tentunya. <br />Tunggu apalagi? buruan pesan sekarang.</p>
+        <a class="btn btn-lg text-light mt-4" style="background-color: #825b32" href="/login" role="button">Pesan Sekarang <i class="bi bi-arrow-up-right-square"></i></a>
       </div>
     </section>
     <!-- End About Us -->
 
     <!-- Kategori Section -->
-    <section id="kategori" style="margin: 120px 0; padding-top: 100px;">
+    <section id="kategori" style="margin: 120px 0; padding-top: 100px">
       <div class="container mb-5">
         <div class="row">
-          <div class="col">
+          <div class="col" data-aos="fade-up">
             <h2 class="titleSection">Kategori Produk</h2>
-            <p>
+            <p class="col-md-6 m-auto">
               Figo Cell memiliki 3 jenis kategori produk Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi culpa saepe fuga, maiores atque amet doloremque officiis inventore sint, minus delectus, tempora neque asperiores soluta
               ipsam voluptas? Culpa, sit pariatur?
             </p>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Pulsa</h5>
+        <div class="container">
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col-md-4 mt-5" data-aos="fade-up">
+              <div class="card mt-5 h-100">
+                <!-- <img src="..." class="card-img-top" alt="..." /> -->
+                <center>
+                  <div class="div rounded-circle" style="margin-top: -40px; background-color: white; width: 4.5rem; height: 4.5rem"><i class="bi bi-1-circle" style="font-size: 50px"></i></div>
+                </center>
+                <div class="card-body">
+                  <h5 class="card-title text-center">Pulsa</h5>
+                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Rokok</h5>
+            <div class="col-md-4 mt-5" data-aos="fade-up">
+              <div class="card mt-5 h-100">
+                <!-- <img src="..." class="card-img-top" alt="..." /> -->
+                <center>
+                  <div class="div rounded-circle" style="margin-top: -40px; background-color: white; width: 4.5rem; height: 4.5rem"><i class="bi bi-2-circle" style="font-size: 50px"></i></div>
+                </center>
+                <div class="card-body">
+                  <h5 class="card-title">Rokok</h5>
+                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Sembako</h5>
+            <div class="col-md-4 mt-5" data-aos="fade-up">
+              <div class="card mt-5 h-100">
+                <!-- <img src="..." class="card-img-top" alt="..." /> -->
+                <center>
+                  <div class="div rounded-circle" style="margin-top: -40px; background-color: white; width: 4.5rem; height: 4.5rem"><i class="bi bi-3-circle" style="font-size: 50px"></i></div>
+                </center>
+                <div class="card-body">
+                  <h5 class="card-title">Sembako</h5>
+                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -113,21 +130,23 @@
     <!-- End Kategori section -->
 
     <!-- Testimonial Section -->
-    <section id="Testimonial" style="margin: 120px 0; padding-top: 100px;">
+    <section id="Testimonial" style="margin: 120px 0; padding-top: 100px">
       <div class="container mb-5">
         <div class="row">
-          <div class="col">
+          <div class="col" data-aos="fade-up">
             <h2 class="titleSection">Testimonial Pelanggan</h2>
-            <p>
+            <p class="col-md-6 mb-5 m-auto">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et a ut incidunt aliquam, corrupti laboriosam, quas quidem sit ad alias totam repudiandae repellat ex eligendi enim odio commodi harum? Qui adipisci earum minima esse
               dolorum. Molestias et quidem quia minus maxime optio, facere atque, dolor at nisi esse praesentium quo?
             </p>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 mt-5" data-aos="fade-up">
             <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
+              <div class="img-martop" style="margin: -40px 0 0 20px">
+                <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="100em" height="100em" />
+              </div>
               <div class="card-body">
                 <h5 class="card-title">Dimas</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -135,9 +154,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4 mt-5" data-aos="fade-up">
             <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
+              <div class="img-martop" style="margin: -40px 0 0 20px">
+                <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="100em" height="100em" />
+              </div>
               <div class="card-body">
                 <h5 class="card-title">Septian</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -145,9 +166,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4 mt-5" data-aos="fade-up">
             <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
+              <div class="img-martop" style="margin: -40px 0 0 20px">
+                <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="100em" height="100em" />
+              </div>
               <div class="card-body">
                 <h5 class="card-title">Tri</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -182,6 +205,10 @@
     </footer>
 
     <!-- My AOS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
