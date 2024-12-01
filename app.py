@@ -14,7 +14,7 @@ users_collection = db['users']
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', username=session.get('username'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -114,11 +114,11 @@ def produk_post():
 
 @app.route("/daftar-produk", methods=["GET"])
 def daftar_produk():
-    return render_template('lihat-product.html')
+    return render_template('lihat-product.html', username=session.get('username'))
 
 @app.route("/tambah-produk", methods=["GET"])
 def tambah_produk():
-    return render_template('tambah-product.html')
+    return render_template('tambah-product.html', username=session.get('username'))
 
 @app.route("/produk/delete", methods=['POST'])
 def produk_delete():
@@ -163,7 +163,7 @@ def view_cart():
             produk_keranjang = keranjang.get('produk', [])
             # Pastikan harga dikonversi menjadi integer/float sebelum dijumlahkan
             total_harga = sum(int(produk['harga']) for produk in produk_keranjang)
-            return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga)
+            return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga, username=session.get('username'))
         return render_template('keranjang.html', produk_keranjang=[], total_harga=0)
     flash('Anda harus login untuk melihat keranjang!')
     return redirect(url_for('login'))
@@ -192,23 +192,23 @@ def add_to_cart():
 
 @app.route('/product', methods=["GET"])
 def product():
-   return render_template ('product.html')
+   return render_template ('product.html', username=session.get('username'))
 
 @app.route('/detail', methods=["GET"])
 def detail():
-   return render_template ('detail-product.html')
+   return render_template ('detail-product.html', username=session.get('username'))
 
 @app.route('/contact', methods=["GET"])
 def contact():
-   return render_template ('contact.html')
+   return render_template ('contact.html',username=session.get('username'))
 
 @app.route('/pulsa/regular', methods=["GET"])
 def regular():
-   return render_template ('pulsa-regular.html')
+   return render_template ('pulsa-regular.html', username=session.get('username'))
 
 @app.route('/pulsa/listrik', methods=["GET"])
 def listrik():
-   return render_template ('pulsa-listrik.html')
+   return render_template ('pulsa-listrik.html', username=session.get('username'))
 
 
 if __name__ == '__main__':

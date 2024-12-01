@@ -105,13 +105,22 @@
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
               </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
-              </li>
 
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
-              </li>
+                {% if 'username' in session %}
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
+                </li>
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                </li>
+                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                  <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+                </li>
+                {% endif %}
             </ul>
           </div>
         </div>
