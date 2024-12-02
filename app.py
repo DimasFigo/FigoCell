@@ -21,14 +21,19 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
         role = request.form['role']
 
-        if users_collection.find_one({'username': username}):
+        if users_collection.find_one({'username': username,}):
             flash('Username already exists')
+            return redirect(url_for('register'))
+        
+        if users_collection.find_one({'email': email}):
+            flash('Email already registered')
             return redirect(url_for('register'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        users_collection.insert_one({'username': username, 'password': hashed_password, 'role': role})
+        users_collection.insert_one({'username': username, 'password': hashed_password, 'role': role, 'email':email})
         flash('Registration successful! Please login.')
         return redirect(url_for('login'))
 
@@ -209,6 +214,47 @@ def regular():
 @app.route('/pulsa/listrik', methods=["GET"])
 def listrik():
    return render_template ('pulsa-listrik.html', username=session.get('username'))
+
+# Users Collcetion
+@app.route('/user', methods=["GET"])
+def user():
+   return render_template('user.html', username=session.get('username'))
+
+@app.route('/users', methods=["GET"])
+def users():
+   user_list = list(db.users.find({}, {'_id': False}))
+   return jsonify({'users': user_list})
+
+@app.route("/users/delete", methods=['POST'])
+def users_delete():
+    nama_receive = request.form['nama_give']
+    db.users.delete_one( {
+        'username': nama_receive
+    } )
+    return jsonify({'msg': 'Delete user success!'})
+
+@app.route("/users/update", methods=["POST"])
+def users_update():
+    nama_receive = request.form.get('nama')
+    
+    # Cek jika nama kosong
+    if not nama_receive:
+        return jsonify({'msg': 'ID tidak valid atau tidak ditemukan!'}), 400
+
+
+    email_receive = request.form.get('email')
+    role_receive = request.form.get('role')
+
+
+    db.users.update_one(
+        {'username': nama_receive},
+        {'$set': {
+            'username': nama_receive,
+            'email': email_receive,
+            'role': role_receive,
+        }}
+    )
+    return jsonify({'msg': 'Data user updated successfully'})
 
 
 if __name__ == '__main__':
