@@ -45,27 +45,23 @@
     function listing() {
       $.ajax({
         type: 'GET',
-        url: '/produk',
+        url: '/users',
         data: {},
         success: function (response) {
-          let rows = response['produk'];
+          let rows = response['users'];
           for (let i = 0; i < rows.length; i++) {
             let nomor = i + 1;
-            let nama = rows[i]['nama'];
-            let jenis = rows[i]['jenis'];
-            let stok = rows[i]['stok'];
-            let harga = rows[i]['harga'];
-            let file = rows[i]['file'];
+            let nama = rows[i]['username'];
+            let role = rows[i]['role'];
+            let email = rows[i]['email'];
             let temp_html = `
     <tr>
             <td>${nomor}</td>
             <td>${nama}</td>
-            <td>${jenis}</td>
-            <td>Rp. ${harga}</td>
-            <td>${stok}</td>
-            <td><img src="../${file}" alt="${nama}" class="img-fluid rounded mt-2" style="width: 100px; height: 100px; object-fit: cover;"></td>
+            <td>${role}</td>
+            <td>${email}</td>
             <td>
-              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${jenis}', '${stok}', '${harga}')">Edit</button>
+              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${email}', '${role}')">Edit</button>
               <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
             </td>
           </tr>
@@ -80,7 +76,7 @@
     function hapusData(nama) {
       $.ajax({
         type: 'POST',
-        url: '/produk/delete',
+        url: '/users/delete',
         data: { nama_give: nama },
         success: function (response) {
           alert(response['msg']);
@@ -89,12 +85,11 @@
       });
     }
 
-    function editData(id, nama, jenis, stok, harga) {
-      $('#editId').val(id); // Isi ID ke input hidden
+    function editData(id, nama, email, role) {
+      $('#editId').val(id);
       $('#editNama').val(nama);
-      $('#editJenis').val(jenis);
-      $('#editStok').val(stok);
-      $('#editHarga').val(harga);
+      $('#editEmail').val(email);
+      $('#editRole').val(role);
 
       // Tampilkan modal
       $('#editModal').modal('show');
@@ -112,7 +107,7 @@
 
           $.ajax({
             type: 'POST',
-            url: '/produk/update',
+            url: '/users/update',
             data: formData,
             processData: false, // Untuk FormData
             contentType: false, // Untuk FormData
@@ -174,11 +169,11 @@
       </div>
     </nav>
 
-    <h1>Kelola Produk</h1>
+    <h1>Kelola Pengguna</h1>
 
     <!-- Button Tambah Produk -->
     <div class="mb-3">
-      <button class="btn btn-primary" onclick="location.href='/tambah-produk'">Tambah Produk</button>
+      <button class="btn btn-primary" onclick="location.href='/register'">Tambah Pengguna</button>
     </div>
 
     <!-- Tabel Produk -->
@@ -187,11 +182,9 @@
         <thead class="table-dark">
           <tr>
             <th>No</th>
-            <th>Nama Produk</th>
-            <th>Kategori</th>
-            <th>Harga</th>
-            <th>Stok</th>
-            <th>Gambar</th>
+            <th>Nama</th>
+            <th>Role</th>
+            <th>Email</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -207,7 +200,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Produk</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit User</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -217,21 +210,16 @@
               <label for="editNama" class="form-label">Nama</label>
               <input type="text" class="form-control" id="editNama" name="nama" />
             </div>
+            <div class="mb-3">
+              <label for="editEmail" class="form-label">Email</label>
+              <input type="text" class="form-control" id="editEmail" name="email" />
+            </div>
             <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupSelect01">Jenis Produk</label>
-              <select class="form-select" id="editJenis" name="jenis">
-                <option value="Rokok">Rokok</option>
-                <option value="Sembako">Sembako</option>
+              <label class="input-group-text" for="inputGroupSelect01">Role</label>
+              <select class="form-select" id="editRole" name="role">
+                <option value="admin">admin</option>
+                <option value="user">user</option>
               </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="editStok" class="form-label" name="stok">Stok</label>
-              <input type="number" class="form-control" id="editStok" name="stok" />
-            </div>
-            <div class="mb-3">
-              <label for="editHarga" class="form-label" name="harga">Harga</label>
-              <input type="number" class="form-control" id="editHarga" name="harga" />
             </div>
             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
           </form>
