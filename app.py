@@ -19,6 +19,7 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        nama = request.form['nama']
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -33,7 +34,7 @@ def register():
             return redirect(url_for('register'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        users_collection.insert_one({'username': username, 'password': hashed_password, 'role': role, 'email':email})
+        users_collection.insert_one({'nama':nama, 'username': username, 'password': hashed_password, 'role': role, 'email':email})
         flash('Registration successful! Please login.')
         return redirect(url_for('login'))
 
@@ -227,29 +228,27 @@ def users():
 
 @app.route("/users/delete", methods=['POST'])
 def users_delete():
-    nama_receive = request.form['nama_give']
+    username_receive = request.form['username_give']
     db.users.delete_one( {
-        'username': nama_receive
+        'username': username_receive
     } )
     return jsonify({'msg': 'Delete user success!'})
 
 @app.route("/users/update", methods=["POST"])
 def users_update():
+    id_receive = request.form.get('id')  # pastikan ID diambil dengan benar
     nama_receive = request.form.get('nama')
-    
-    # Cek jika nama kosong
-    if not nama_receive:
-        return jsonify({'msg': 'ID tidak valid atau tidak ditemukan!'}), 400
-
-
+    username_receive = request.form.get('username')
     email_receive = request.form.get('email')
     role_receive = request.form.get('role')
 
+    if not id_receive or not nama_receive or not username_receive or not email_receive or not role_receive:
+        return jsonify({'msg': 'Semua field harus diisi!'}), 400
 
     db.users.update_one(
-        {'username': nama_receive},
+        {'username': username_receive},
         {'$set': {
-            'username': nama_receive,
+            'nama': nama_receive,
             'email': email_receive,
             'role': role_receive,
         }}
