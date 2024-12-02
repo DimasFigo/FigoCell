@@ -51,18 +51,20 @@
           let rows = response['users'];
           for (let i = 0; i < rows.length; i++) {
             let nomor = i + 1;
-            let nama = rows[i]['username'];
+            let nama = rows[i]['nama'];
+            let username = rows[i]['username'];
             let role = rows[i]['role'];
             let email = rows[i]['email'];
             let temp_html = `
     <tr>
             <td>${nomor}</td>
             <td>${nama}</td>
+            <td>${username}</td>
             <td>${role}</td>
             <td>${email}</td>
             <td>
-              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${email}', '${role}')">Edit</button>
-              <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')">Hapus</button>
+              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${username}', '${email}', '${role}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onClick="hapusData('${username.replace(/'/g, "\\'")}')">Hapus</button>
             </td>
           </tr>
     `;
@@ -73,11 +75,11 @@
       });
     }
 
-    function hapusData(nama) {
+    function hapusData(username) {
       $.ajax({
         type: 'POST',
         url: '/users/delete',
-        data: { nama_give: nama },
+        data: { username_give: username },
         success: function (response) {
           alert(response['msg']);
           window.location.reload();
@@ -85,9 +87,10 @@
       });
     }
 
-    function editData(id, nama, email, role) {
+    function editData(id, nama,username, email, role) {
       $('#editId').val(id);
       $('#editNama').val(nama);
+      $('#editUsername').val(username);
       $('#editEmail').val(email);
       $('#editRole').val(role);
 
@@ -162,7 +165,7 @@
               <a class="nav-link" href="#">Notifikasi</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">{{username}}</a>
+              <a class="nav-link" href="#">{{nama}}</a>
             </li>
           </ul>
         </div>
@@ -183,6 +186,7 @@
           <tr>
             <th>No</th>
             <th>Nama</th>
+            <th>Username</th>
             <th>Role</th>
             <th>Email</th>
             <th>Aksi</th>
@@ -211,8 +215,12 @@
               <input type="text" class="form-control" id="editNama" name="nama" />
             </div>
             <div class="mb-3">
+              <label for="editUsername" class="form-label">Username</label>
+              <input type="text" class="form-control" id="editUsername" name="username" readonly />
+            </div>            
+            <div class="mb-3">
               <label for="editEmail" class="form-label">Email</label>
-              <input type="text" class="form-control" id="editEmail" name="email" />
+              <input type="email" class="form-control" id="editEmail" name="email" />
             </div>
             <div class="input-group mb-3">
               <label class="input-group-text" for="inputGroupSelect01">Role</label>
