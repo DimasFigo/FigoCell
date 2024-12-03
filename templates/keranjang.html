@@ -12,92 +12,15 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
     <!-- My Css -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-    <style>
-      /* Reset default margin and padding */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        height: 100%;
-        /* Ensures full height for layout adjustments */
-      }
-
-      body {
-        font-family: 'Space Grotesk', sans-serif;
-        display: flex;
-        flex-direction: column;
-        background-color: #f8f9fa;
-      }
-
-      /* Navbar */
-      .navbar {
-        z-index: 1000;
-      }
-
-      /* Main content (Cart Section) */
-      .cart {
-        background-color: #ffffff;
-        border-radius: 8px;
-        padding: 60px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        /* Center horizontally and vertically */
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-
-      .my-5 {
-        margin-top: 9rem !important;
-        margin-bottom: 4rem !important;
-      }
-
-      .cart h2 {
-        font-family: 'Comic Neue', sans-serif;
-        color: #343a40;
-        font-weight: bold;
-        text-align: center;
-      }
-
-      /* Card */
-      .card {
-        border: none;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-      }
-
-      .card:hover {
-        transform: scale(1.02);
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      .card img {
-        border-radius: 8px;
-        max-height: 120px;
-        object-fit: contain;
-      }
-
-      .card-title {
-        font-size: 18px;
-        font-weight: bold;
-        color: #343a40;
-      }
-
-      .card-text {
-        font-size: 14px;
-        color: #6c757d;
-      }
-
-      /* Subtotal */
-      .text-end h4 {
-        color: #343a40;
-        font-weight: bold;
-      }
-    </style>
   </head>
+  <style>
+    .card-title,
+    .card-text {
+      text-align: justify;
+    }
 
+    /* Responsive */
+  </style>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
@@ -126,21 +49,21 @@
                 <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
               </li>
 
-                {% if 'username' in session %}
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
-                </li>
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
-                </li>
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
-                </li>
-                {% endif %}
+              {% if 'username' in session %}
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+              </li>
+              {% endif %}
             </ul>
           </div>
         </div>
@@ -149,23 +72,31 @@
     <!-- End Navbar -->
 
     <!-- Keranjang -->
-    <section>
+    <section style="margin-top: 10em">
       <div class="container">
         <h2 class="text-center">Keranjang Belanja</h2>
+        <hr class="col-md-4 m-auto mb-3 mt-3" />
+        <p class="col-md-6 m-auto">
+          Keranjang Belanja Anda adalah tempat di mana semua produk pilihan Anda terkumpul sebelum melanjutkan ke proses checkout. Di sini, Anda dapat melihat rincian produk yang telah Anda tambahkan ke keranjang, termasuk nama produk,
+          jumlah, harga, dan total harga keseluruhan. Jika Anda ingin mengubah jumlah produk atau menghapus produk dari keranjang, Anda dapat melakukannya dengan mudah.
+        </p>
 
         <!-- Keranjang Produk -->
         <div class="row justify-content-center">
           {% if produk_keranjang %} {% for produk in produk_keranjang %}
-          <div class="col-md-4">
-            <div class="card mb-3">
-              <img src="/{{ produk.file }}" alt="{{ produk.nama }}" class="img-fluid rounded image-fluid" />
-              <div class="card-body">
-                <h5 class="card-title">{{ produk.nama }}</h5>
-                <p class="card-text">Harga: Rp {{ produk.harga }}</p>
-                <!-- <p class="card-text">Stok: {{ produk.stok }}</p> -->
-                <form method="POST" action="/order/{{ produk._id }}">
-                  <button type="submit" class="btn btn-success">Order</button>
-                </form>
+          <div class="card m-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="/{{ produk.file }}" class="img-fluid rounded mt-2" alt="/{{ produk.nama }}" />
+              </div>
+              <div class="col-md-4">
+                <div class="card-body">
+                  <h5 class="card-title">{{ produk.nama }}</h5>
+                  <p class="card-text">Harga: Rp {{ produk.harga }}</p>
+                  <form method="POST" action="/order/{{ produk._id }}">
+                    <button type="submit" class="btn btn-success">Order</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -173,7 +104,6 @@
           <p class="text-center">Keranjang Anda kosong.</p>
           {% endif %}
         </div>
-
         <!-- Total Harga -->
         {% if produk_keranjang %}
         <div class="row justify-content-center">
