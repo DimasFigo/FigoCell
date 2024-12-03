@@ -20,15 +20,11 @@
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
   <style>
     /* responsive ye */
-
-    @media (min-width: 991.98px) {
-      .card img {
-        margin: 10px;
-      }
-    }
 
     .card {
       border: none;
@@ -47,23 +43,20 @@
       height: 200px; /* Tetapkan tinggi seragam */
       object-fit: contain; /* Gambar akan tampil sepenuhnya */
       background-color: #f8f9fa; /* Tambahkan latar belakang untuk estetika */
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+      border-radius: 2em;
     }
 
-    .card-body {
-      text-align: center;
+    .card-body,
+    .card-text,
+    .card-title {
+      text-align: justify;
+      margin-left: 10px;
     }
 
     .card-title {
       font-weight: bold;
       font-family: 'Space Grotesk', sans-serif;
       color: #333;
-    }
-
-    .card-text {
-      font-family: 'Comic Neue', cursive;
-      color: #555;
     }
 
     .btn-primary {
@@ -75,10 +68,6 @@
     .btn-primary:hover {
       background-color: #633a21;
     }
-
-    
-    
-    
   </style>
 
   <script>
@@ -117,31 +106,45 @@
           });
 
           for (let jenis in produkByJenis) {
+            // Tentukan deskripsi berdasarkan jenis
+            let deskripsiKategori = '';
+            if (jenis === 'Rokok') {
+              deskripsiKategori = `
+            Tembakau berkualitas dengan rasa halus dan nikmat. 
+            <br>Aroma khas yang memberikan sensasi merokok memuaskan. 
+             <br>Hadir dalam kemasan elegan yang mencerminkan kualitas premium.
+          `;
+            } else if (jenis === 'Sembako') {
+              deskripsiKategori = `
+            Produk kebutuhan sehari-hari dengan kualitas terbaik. 
+             <br>Harga terjangkau dan stok selalu tersedia untuk kenyamanan belanja Anda.
+          `;
+            }
+
             let daftarProduk = `
-             
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="mt-5 text-center">${jenis}</h2>
-                        </div>
-                    </div>
-                    <div class="row g-4">
-                `;
+          <div class="row">
+              <div class="col-md-12" data-aos="fade-up" data-aos-duration="2000">
+                  <h1 class="mt-5 text-center">${jenis}</h1>
+                  <p class="col-md-6 m-auto mb-3 text-secondary fst-italic">${deskripsiKategori}</p>
+              </div>
+          </div>
+          <div class="row g-4">
+        `;
 
             produkByJenis[jenis].forEach(function (produk) {
               daftarProduk += `
-          <div class="col-md-4 col-sm-6">
-        <div class="card">
-          <img src="${produk.file}" class="card-img-top" alt="${produk.nama}" />
-          <div class="card-body">
-            <h5 class="card-title">${produk.nama}</h5>
-            <p class="card-text">Stok: ${produk.stok}</p>
-            <p class="card-text">Harga: Rp.${produk.harga}</p>
-            <button class="btn btn-primary" onclick="addToCart('${produk.nama}')">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-
-                    `;
+            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-duration="1000">
+              <div class="card">
+                <img src="${produk.file}" class="card-img-top mt-2 mb-2" alt="${produk.nama}" />
+                <div class="card-body">
+                  <h5 class="card-title">${produk.nama}</h5>
+                  <p class="card-text">Stok: ${produk.stok}</p>
+                  <p class="card-text">Harga: Rp.${produk.harga}</p>
+                  <button class="btn btn-danger" onclick="addToCart('${produk.nama}')"><i class="bi bi-plus-lg"></i> Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          `;
             });
 
             daftarProduk += `</div>`;
@@ -181,21 +184,21 @@
                 <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
               </li>
 
-                {% if 'username' in session %}
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
-                </li>
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
-                </li>
-                <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
-                </li>
-                {% endif %}
+              {% if 'username' in session %}
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+              </li>
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+              </li>
+              {% endif %}
             </ul>
           </div>
         </div>
@@ -204,16 +207,17 @@
     <!-- End Navbar -->
 
     <!-- Content Start -->
-    <section class="margin: 120px 0" style="margin-top: 200px; margin-bottom: 20px;">
-      <div class="container">
-        <h1 class="text-center mb-5" style="font-family: 'Jost', sans-serif; color: #333;">Produk Kami</h1>
-        <h2 class="mt-5 text-center">Pulsa</h2>
+    <section class="margin: 120px 0" style="margin-top: 200px; margin-bottom: 20px">
+      <div class="container" data-aos="fade-up" data-aos-duration="2000">
+        <h1 class="text-center mb-5" style="font-family: 'Jost', sans-serif; color: #333">Produk Kami</h1>
+        <h1 class="mt-5 text-center">Pulsa</h1>
+        <p class="col-md-4 m-auto mb-3 text-secondary fst-italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure doloremque ex dolor nostrum provident atque eius optio ullam perferendis. Odio.</p>
         <div class="row g-4">
           <div class="col-md-6 col-sm-6">
             <div class="card">
               <div class="card-body text-center">
-                <h5 class="card-title">Pulsa Regular</h5>
-                <p class="card-text">Isi ulang pulsa dengan mudah dan cepat.</p>
+                <h5 class="card-title text-center">Pulsa Regular</h5>
+                <p class="card-text text-center">Pulsa cepat masuk dengan harga terjangkau. Tersedia untuk semua operator dengan nominal lengkap. Transaksi mudah dan aman, bisa dibeli kapan saja.</p>
                 <button class="btn btn-primary" onclick="window.location.href='/pulsa/regular';">Beli Pulsa</button>
               </div>
             </div>
@@ -221,23 +225,21 @@
           <div class="col-md-6 col-sm-6">
             <div class="card">
               <div class="card-body text-center">
-                <h5 class="card-title">Token Listrik</h5>
-                <p class="card-text">Beli token listrik dengan harga terbaik.</p>
+                <h5 class="card-title text-center">Token Listrik</h5>
+                <p class="card-text text-center">Token listrik tersedia dengan berbagai nominal. Proses cepat dan mudah, langsung masuk ke meteran. Dapat diakses 24 jam untuk kenyamanan pembayaran kapan saja.</p>
                 <button class="btn btn-primary" onclick="window.location.href='/pulsa/listrik';">Beli Token</button>
               </div>
             </div>
           </div>
-    
         </div>
       </div>
     </section>
-    
+
     <!-- Content Start -->
 
     <!-- Kontainer untuk produk -->
     <section style="margin: 120px 0">
-      <div class="container" id="produk-container">
-      </div>
+      <div class="container" id="produk-container"></div>
     </section>
 
     <!-- Content End -->
@@ -265,6 +267,10 @@
     </footer>
 
     <!-- My AOS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
     <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
