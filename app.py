@@ -233,7 +233,7 @@ def add_to_cart():
             return jsonify({'msg': 'Produk berhasil ditambahkan ke keranjang!'})
         else:
             return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
-    return jsonify({'msg': 'Anda harus login untuk menambahkan ke keranjang!'}), 401
+    return jsonify({'msg': 'Anda harus login untuk menambahkan ke keranjang!'})
 
 
 @app.route('/keranjang/delete', methods=['POST'])
