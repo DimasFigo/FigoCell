@@ -93,9 +93,22 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ produk.nama }}</h5>
                   <p class="card-text">Harga: Rp {{ produk.harga }}</p>
+                  <p class="card-text">Jumlah: {{ produk.jumlah }}</p>
                   <form method="POST" action="/order/{{ produk._id }}">
-                    <button type="submit" class="btn btn-success">Order</button>
+                    <button type="submit" class="btn btn-success mb-3">Order</button>
                   </form>
+                  <form action="/keranjang/delete" method="POST">
+                    <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                    <button type="submit" class="btn btn-danger mb-3">Delete</button>
+                  </form>
+                
+                  <form action="/keranjang/update" method="POST">
+                    <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                    <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                    <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                  </form>
+
                 </div>
               </div>
             </div>
@@ -111,7 +124,9 @@
             <div class="card">
               <div class="card-body text-center">
                 <h5>Total Harga: Rp {{ total_harga }}</h5>
-                <a href="/checkout" class="btn btn-primary">Checkout Semua</a>
+                <form method="POST" action="/checkout">
+                  <button type="submit" class="btn btn-primary">Checkout Semua</button>
+                </form>
               </div>
             </div>
           </div>
@@ -120,6 +135,33 @@
       </div>
     </section>
     <!-- End Keranjang -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateModalLabel">Update Produk</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="updateForm">
+              <input type="hidden" id="updateNamaProduk" name="nama_produk" />
+              <div class="mb-3">
+                <label for="updateJumlah" class="form-label">Jumlah</label>
+                <input type="number" class="form-control" id="updateJumlah" name="jumlah" min="1" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+       
+    <!-- End Modal -->
+
+    <!-- Footer -->
     <footer class="p-4 bg-dark text-light">
       <div class="container">
         <div class="row ms-auto flex-sm-column flex-md-row">

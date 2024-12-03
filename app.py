@@ -160,6 +160,7 @@ def produk_update():
     )
     return jsonify({'msg': 'Data updated successfully'})
 
+# Keranjang Collection
 @app.route('/keranjang', methods=['GET'])
 def view_cart():
     if 'username' in session:
@@ -168,7 +169,7 @@ def view_cart():
         if keranjang:
             produk_keranjang = keranjang.get('produk', [])
             # Pastikan harga dikonversi menjadi integer/float sebelum dijumlahkan
-            total_harga = sum(int(produk['harga']) for produk in produk_keranjang)
+            total_harga = sum(int(produk['total']) for produk in produk_keranjang)
             return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga, username=session.get('username'))
         return render_template('keranjang.html', produk_keranjang=[], total_harga=0)
     flash('Anda harus login untuk melihat keranjang!')
@@ -180,21 +181,223 @@ def add_to_cart():
     if 'username' in session:  # Cek apakah user sudah login
         nama_produk = request.form.get('nama_produk')
         username = session['username']
-        
+
         # Cari produk berdasarkan nama
         produk = db.produk.find_one({'nama': nama_produk})
-        
+
         if produk:
-            # Tambahkan produk ke keranjang user
-            db.keranjang.update_one(
-                {'username': username},
-                {'$push': {'produk': produk}},
-                upsert=True
-            )
+            # Pastikan harga adalah integer
+            harga = int(produk['harga'])  # Konversi harga ke integer
+
+            # Cek apakah produk sudah ada di keranjang
+            keranjang = db.keranjang.find_one({'username': username})
+
+            if keranjang:
+                # Jika produk sudah ada, tambahkan jumlahnya
+                produk_dalam_keranjang = keranjang.get('produk', [])
+                for item in produk_dalam_keranjang:
+                    if item['nama'] == nama_produk:
+                        item['jumlah'] += 1
+                        item['total'] = item['jumlah'] * harga  # Pastikan total dihitung dengan harga yang benar
+                        break
+                else:
+                    # Jika produk belum ada, tambahkan produk baru
+                    produk_baru = {
+                        'nama': produk['nama'],
+                        'harga': harga,
+                        'jumlah': 1,
+                        'total': harga,  # Total dihitung dengan harga yang benar
+                        'file': produk['file']
+                    }
+                    produk_dalam_keranjang.append(produk_baru)
+                
+                # Update keranjang di database
+                db.keranjang.update_one(
+                    {'username': username},
+                    {'$set': {'produk': produk_dalam_keranjang}}
+                )
+            else:
+                # Jika keranjang belum ada, buat keranjang baru
+                produk_baru = {
+                    'nama': produk['nama'],
+                    'harga': harga,
+                    'jumlah': 1,
+                    'total': harga,  # Total dihitung dengan harga yang benar
+                    'file': produk['file']
+                }
+                db.keranjang.insert_one({
+                    'username': username,
+                    'produk': [produk_baru]
+                })
+
             return jsonify({'msg': 'Produk berhasil ditambahkan ke keranjang!'})
         else:
             return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
     return jsonify({'msg': 'Anda harus login untuk menambahkan ke keranjang!'}), 401
+
+
+@app.route('/keranjang/delete', methods=['POST'])
+def delete_from_cart():
+    if 'username' in session:  # Cek apakah user sudah login
+        nama_produk = request.form.get('nama_produk')
+
+        if not nama_produk:
+            return jsonify({'msg': 'Nama produk tidak ditemukan!'}), 400
+        
+        # Hapus produk dari keranjang berdasarkan nama
+        username = session['username']
+        result = db.keranjang.update_one(
+            {'username': username},
+            {'$pull': {'produk': {'nama': nama_produk}}}  # Menghapus produk berdasarkan nama
+        )
+
+        if result.modified_count > 0:
+            return jsonify({'msg': 'Produk berhasil dihapus dari keranjang!'})
+        else:
+            return jsonify({'msg': 'Produk tidak ditemukan dalam keranjang!'}), 404
+    return jsonify({'msg': 'Anda harus login untuk menghapus dari keranjang!'}), 401
+
+@app.route('/keranjang/update', methods=['POST'])
+def update_keranjang():
+    if 'username' in session:
+        username = session['username']
+        nama_produk = request.form.get('nama_produk')
+        jumlah = int(request.form.get('jumlah'))
+
+        if nama_produk and jumlah > 0:
+            # Update jumlah produk di keranjang
+            result = db.keranjang.update_one(
+                {'username': username, 'produk.nama': nama_produk},
+                {'$set': {'produk.$.jumlah': jumlah, 'produk.$.total': jumlah * db.produk.find_one({'nama': nama_produk})['harga']}}
+            )
+            if result.modified_count > 0:
+                return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
+            else:
+                return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
+    return jsonify({'msg': 'Anda harus login untuk memperbarui produk!'}), 401
+
+
+# Order Collection
+@app.route('/order', methods=['POST'])
+def create_order():
+    if 'username' in session:
+        username = session['username']
+        keranjang = db.keranjang.find_one({'username': username})
+
+        if keranjang:
+            produk_keranjang = keranjang.get('produk', [])
+            if not produk_keranjang:
+                return jsonify({'msg': 'Keranjang Anda kosong!'}), 400
+
+            # Simpan pesanan ke collection orders
+            order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
+            order = {
+                'username': username,
+                'produk': produk_keranjang,
+                'total_harga': sum(produk['total'] for produk in produk_keranjang),
+                'status': 'Pending',  # Status awal pesanan
+                'tanggal_pesan': datetime.utcnow(),
+                'order_id': order_id
+            }
+
+            db.orders.insert_one(order)
+
+            # Mengurangi stok produk setelah pemesanan
+            for produk in produk_keranjang:
+                db.produk.update_one(
+                    {'nama': produk['nama']},
+                    {'$inc': {'stok': -produk['jumlah']}}
+                )
+
+            # Menghapus produk dari keranjang setelah pemesanan
+            db.keranjang.delete_one({'username': username})
+
+            return jsonify({'msg': 'Pesanan berhasil dibuat!', 'order_id': order_id})
+        else:
+            return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
+    return jsonify({'msg': 'Anda harus login untuk melakukan pemesanan!'}), 401
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    if 'username' in session:
+        username = session['username']
+        keranjang = db.keranjang.find_one({'username': username})
+
+        if keranjang:
+            produk_keranjang = keranjang.get('produk', [])
+            if not produk_keranjang:
+                return jsonify({'msg': 'Keranjang Anda kosong!'}), 400
+
+            db.produk.update_many(
+                { "stok": { "$type": "string" } },
+                [
+                    { "$set": { "stok": { "$toInt": "$stok" } } }
+                ]
+            )
+
+            # Simpan pesanan ke collection orders
+            order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
+            total_harga = sum(produk['total'] for produk in produk_keranjang)
+            
+            order = {
+                'username': username,
+                'produk': produk_keranjang,
+                'total_harga': total_harga,
+                'status': 'Pending',  # Status awal pesanan
+                'tanggal_pesan': datetime.utcnow(),
+                'order_id': order_id
+            }
+
+            # Masukkan pesanan ke database
+            db.orders.insert_one(order)
+
+            # Mengurangi stok produk setelah pemesanan
+            for produk in produk_keranjang:
+                db.produk.update_one(
+                    {'nama': produk['nama']},
+                    {'$inc': {'stok': -produk['jumlah']}}
+                )
+
+            # Menghapus produk dari keranjang setelah pemesanan
+            db.keranjang.delete_one({'username': username})
+
+            return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id})
+        else:
+            return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
+    return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
+
+
+@app.route('/order', methods=["GET"])
+def order():
+   return render_template('order.html', username=session.get('username'))
+
+@app.route('/orders', methods=["GET"])
+def orders():
+   order_list = list(db.orders.find({}, {'_id': False}))
+   return jsonify({'orders': order_list})
+
+@app.route("/orders/delete", methods=['POST'])
+def orders_delete():
+    order_receive = request.form['orderId_give']
+    db.orders.delete_one( {
+        'order_id': order_receive
+    } )
+    return jsonify({'msg': 'Delete order success!'})
+
+@app.route("/orders/update", methods=["POST"])
+def orders_update():
+    order_id_receive = request.form.get('orderId')  
+    status_receive = request.form.get('status')
+
+    if not order_id_receive or not status_receive:
+        return jsonify({'msg': 'Order ID dan status harus diisi!'}), 400
+
+    db.orders.update_one(
+        {'order_id': order_id_receive},
+        {'$set': {'status': status_receive}}
+    )
+    return jsonify({'msg': 'Data order updated successfully'})
+
 
 @app.route('/product', methods=["GET"])
 def product():
