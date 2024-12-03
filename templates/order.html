@@ -146,9 +146,9 @@
         <li class="nav-item">
           <a href="/order" class="nav-link">Kelola Order</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">{{username}}</a>
-          </li>
+        <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+          <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
+        </li>
         <li class="nav-item">
           <a href="/logout" class="nav-link text-danger">Logout</a>
         </li>
