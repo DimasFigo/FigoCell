@@ -458,6 +458,24 @@ def users_update():
     )
     return jsonify({'msg': 'Data user updated successfully'})
 
+@app.route('/profile/<username>', methods=["GET"])
+def profile(username):
+    # Mengambil data profil pengguna
+    user_data = db.users.find_one({'username': username})
+    
+    if not user_data:
+        flash("User not found!")
+        return redirect(url_for('login'))
+    
+    # Mengambil data order berdasarkan username
+    orders = db.orders.find({'username': username})
+    
+    # Render template profile dengan data pengguna dan pesanan
+    return render_template('profile.html', user_data=user_data, orders=orders)
+
+
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

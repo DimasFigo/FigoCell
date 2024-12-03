@@ -108,7 +108,7 @@
 
                 {% if 'username' in session %}
                 <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                  <a class="nav-link active" aria-current="page" href="/login">{{username}}</a>
+                  <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
                 </li>
                 <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                   <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
