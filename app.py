@@ -171,7 +171,7 @@ def view_cart():
             # Pastikan harga dikonversi menjadi integer/float sebelum dijumlahkan
             total_harga = sum(int(produk['total']) for produk in produk_keranjang)
             return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga, username=session.get('username'))
-        return render_template('keranjang.html', produk_keranjang=[], total_harga=0)
+        return render_template('keranjang.html', produk_keranjang=[], total_harga=0, username=session.get('username'))
     flash('Anda harus login untuk melihat keranjang!')
     return redirect(url_for('login'))
 
