@@ -561,6 +561,18 @@ def profile(username):
     # Render template profile dengan data pengguna dan pesanan
     return render_template('profile.html', user_data=user_data, orders=orders)
 
+@app.route('/rincian/<orderId>', methods=["GET"])
+def rincian(orderId):
+    # Mengambil data profil pengguna
+    rincian_data = db.orders.find_one({'order_id': orderId})
+    
+    if not rincian_data:
+        flash("Order not found!")
+        return redirect(url_for('login'))
+    
+    # Render template profile dengan data pengguna dan pesanan
+    return render_template('rincian.html', rincian=rincian_data, username=session.get('username'))
+
 
 
 
