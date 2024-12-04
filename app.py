@@ -345,10 +345,13 @@ def update_keranjang():
                     # Tambahkan jumlah baru ke jumlah yang ada
                     jumlah_total = int(jumlah_sekarang + 1)
 
-                    # Update jumlah produk di keranjang
+                    harga_produk = int(db.produk.find_one({'nama': nama_produk})['harga'])
                     result = db.keranjang.update_one(
-                        {'username': username, 'produk.nama': nama_produk},
-                        {'$set': {'produk.$.jumlah': int(jumlah_total), 'produk.$.total': (jumlah_total) * db.produk.find_one({'nama': nama_produk})['harga']}}
+                    {'username': username, 'produk.nama': nama_produk},
+                    {'$set': {
+                        'produk.$.jumlah': jumlah_total,
+                        'produk.$.total': jumlah_total * harga_produk
+                        }}
                     )
 
                     if result.modified_count > 0:
