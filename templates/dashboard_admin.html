@@ -1,114 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Halaman Admin</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Favicon -->
-  <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-    }
-    .sidebar {
-      min-width: 250px;
-      max-width: 250px;
-      background-color: #343a40;
-      color: white;
-    }
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      background-color: #495057;
-      padding-left: 10px;
-      transition: all 0.2s;
-    }
-    .content {
-      flex-grow: 1;
-      padding: 20px;
-    }
-  </style>
-</head>
-<body>
-  <!-- Sidebar -->
-  <div class="sidebar d-flex flex-column p-3">
-    <h3 class="text-center">Admin Panel</h3>
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a href="/admin_dashboard" class="nav-link">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a href="/user" class="nav-link">Kelola Pengguna</a>
-      </li>
-      <li class="nav-item">
-        <a href="/daftar-produk" class="nav-link">Kelola Product</a>
-      </li>
-      <li class="nav-item">
-        <a href="/order" class="nav-link">Kelola Order</a>
-      </li>
-      <li class="nav-item" data-bs-dismiss="offcanvas" aria-label="Close">
-        <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}}</a>
-      </li>
-      <li class="nav-item">
-        <a href="/logout" class="nav-link text-danger">Logout</a>
-      </li>
-    </ul>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halaman Admin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+      }
+      .sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        background-color: #343a40;
+        color: white;
+      }
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+      }
+      .sidebar a:hover {
+        background-color: #495057;
+        padding-left: 10px;
+        transition: all 0.2s;
+      }
+      .content {
+        flex-grow: 1;
+        padding: 20px;
+      }
+    </style>
 
-  <!-- Content -->
-  <div class="content">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Admin Panel</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-              <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <script>
+      $(document).ready(function () {
+        $.get('/total_pengguna', function (data) {
+          // Menampilkan jumlah pengguna di halaman
+          $('#totalPengguna').text(data.total_pengguna);
+        }).fail(function () {
+          // Jika gagal mengambil data
+          $('#totalPengguna').text('Gagal mengambil data');
+        });
+      });
+      $(document).ready(function () {
+        $.get('/total_order', function (data) {
+          // Menampilkan jumlah order di halaman
+          $('#totalorder').text(data.total_order);
+        }).fail(function () {
+          // Jika gagal mengambil data
+          $('#totalorder').text('Gagal mengambil data');
+        });
+      });
+      $(document).ready(function () {
+        $.get('/total_produk', function (data) {
+          // Menampilkan jumlah produk di halaman
+          $('#totalproduk').text(data.total_produk);
+        }).fail(function () {
+          // Jika gagal mengambil data
+          $('#totalproduk').text('Gagal mengambil data');
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3">
+      <h3 class="text-center">Admin Panel</h3>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a href="/admin_dashboard" class="nav-link">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a href="/user" class="nav-link">Kelola Pengguna</a>
+        </li>
+        <li class="nav-item">
+          <a href="/daftar-produk" class="nav-link">Kelola Product</a>
+        </li>
+        <li class="nav-item">
+          <a href="/order" class="nav-link">Kelola Order</a>
+        </li>
+        <li class="nav-item" data-bs-dismiss="offcanvas" aria-label="Close">
+          <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}}</a>
+        </li>
+        <li class="nav-item">
+          <a href="/logout" class="nav-link text-danger">Logout</a>
+        </li>
+      </ul>
+    </div>
 
-    <h1>Selamat Datang, Admin!</h1>
-    <p>Ini adalah dashboard utama Anda.</p>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card text-bg-primary mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Pengguna</h5>
-            <p class="card-text">Jumlah Pengguna: </p>
+    <!-- Content -->
+    <div class="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Admin Panel</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <a class="nav-link active" aria-current="page" href="/profile/{{username}}"
+                  >{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
+                /></a>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-bg-success mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Order</h5>
-            <p class="card-text">Total Order:</p>
+      </nav>
+
+      <h1>Selamat Datang, Admin!</h1>
+      <p>Ini adalah dashboard utama Anda.</p>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card text-bg-primary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Pengguna</h5>
+              <p class="card-text" id="totalPengguna">Jumlah Pengguna:</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-bg-warning mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Product</h5>
-            <p class="card-text">Total Product:</p>
+        <div class="col-md-4">
+          <div class="card text-bg-success mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Order</h5>
+              <p class="card-text" id="totalorder">Total Order:</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-bg-warning mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Product</h5>
+              <p class="card-text" id="totalproduk">Total Product:</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
