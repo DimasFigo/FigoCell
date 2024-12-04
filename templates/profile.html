@@ -97,41 +97,44 @@
             </div>
         </div>
     </div>
-    <!-- End -->
+    <!-- End Profile-->
 
+    <!-- Start Order -->
     <div style="margin: 120px 0; margin-left: 50px; margin-right: 50px;">
-        {% if orders %} {% for order in orders %}
-        <h2 class="titleSection">Order List</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-              <thead class="table-dark">
-                <tr>
-                  <th>No</th>
-                  <th>Order ID</th>
-                  <th>Total Harga</th>
-                  <th>Status</th>
-                  <th>Tanggal Pesan</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for order in orders %}
+        {% if orders %}
+            <h2 class="titleSection">Order List</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                  <thead class="table-dark">
                     <tr>
-                      <td>{{ loop.index }}</td>
-                      <td>{{ order['order_id'] }}</td>
-                      <td>Rp {{ order['total_harga'] }}</td>
-                      <td>{{ order['status'] }}</td>
-                      <td>{{ order['tanggal_pesan']}}</td>
+                      <th>No</th>
+                      <th>Order ID</th>
+                      <th>Total Harga</th>
+                      <th>Status</th>
+                      <th>Tanggal Pesan</th>
                     </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-        </div>
-        {% endfor %} {% else %}
-          <p class="text-center">Order List Anda Kosong.</p>
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
+                        <tr>
+                          <td>{{ loop.index }}</td>
+                          <td>{{ order['order_id'] }}</td>
+                          <td>Rp {{ order['total_harga'] }}</td>
+                          <td>{{ order['status'] }}</td>
+                          <td>{{ order['tanggal_pesan'] }}</td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center">Order List Anda Kosong.</p>
         {% endif %}
     </div>
     
-
+    <!-- End Order -->
+    
+    <!-- Start Footer -->
     <footer class="p-4 bg-dark text-light">
       <div class="container">
         <div class="row ms-auto flex-sm-column flex-md-row">
@@ -152,6 +155,7 @@
         <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
       </div>
     </footer>
+    <!-- End Footer -->
 
     <!-- My AOS -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>

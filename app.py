@@ -468,7 +468,7 @@ def profile(username):
         return redirect(url_for('login'))
     
     # Mengambil data order berdasarkan username
-    orders = db.orders.find({'username': username})
+    orders = list(db.orders.find({'username': username}))
     
     # Render template profile dengan data pengguna dan pesanan
     return render_template('profile.html', user_data=user_data, orders=orders)
