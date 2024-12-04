@@ -70,7 +70,7 @@ def admin_dashboard():
 @app.route('/user_dashboard')
 def user_dashboard():
     if 'username' in session and session['role'] == 'user':
-        return render_template('dashboard_user.html', username=session['username'])
+        return render_template('index.html', username=session['username'])
     flash('Unauthorized access!')
     return redirect(url_for('login'))
 
