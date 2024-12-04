@@ -15,7 +15,26 @@ users_collection = db['users']
 @app.route('/')
 def home():
     return render_template('index.html', username=session.get('username'))
+@app.route('/total_pengguna', methods=['GET'])
+def total_pengguna():
+    # Mengambil jumlah pengguna dari koleksi 'pengguna'
+    jumlah_pengguna = db.users.count_documents({})
+    
+    return jsonify({'total_pengguna': jumlah_pengguna})
 
+@app.route('/total_order', methods=['GET'])
+def total_order():
+    # Mengambil jumlah pengguna dari koleksi 'pengguna'
+    jumlah_order = db.orders.count_documents({})
+    
+    return jsonify({'total_order': jumlah_order})
+
+@app.route('/total_produk', methods=['GET'])
+def total_produk():
+    # Mengambil jumlah pengguna dari koleksi 'pengguna'
+    jumlah_produk = db.produk.count_documents({})
+    
+    return jsonify({'total_produk': jumlah_produk})
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
