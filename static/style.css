@@ -30,15 +30,6 @@ footer h2 {
   transition: 0.3s all ease-in-out;
 }
 
-.card {
-  margin-bottom: 15px;
-  cursor: pointer;
-}
-/* .card:hover {
-  opacity: 50% !important;
-  transition: all ease-in-out 0.3s;
-  cursor: pointer;
-} */
 .card-title {
   text-align: center;
 }
@@ -71,6 +62,16 @@ section .paragraf {
 
 #kategori .bi {
   font-size: 50px;
+}
+
+.btn {
+  background-color: #825b32;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #633a21;
+  color: white;
 }
 
 /* Kontak */
