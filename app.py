@@ -225,6 +225,7 @@ def add_to_cart():
                     # Jika produk belum ada, tambahkan produk baru
                     produk_baru = {
                         'nama': produk['nama'],
+                        'jenis': produk['jenis'],
                         'harga': harga,
                         'jumlah': 1,
                         'total': harga,  # Total dihitung dengan harga yang benar
@@ -242,6 +243,7 @@ def add_to_cart():
                 produk_baru = {
                     'nama': produk['nama'],
                     'harga': harga,
+                    'jenis': produk['jenis'],
                     'jumlah': 1,
                     'total': harga,  # Total dihitung dengan harga yang benar
                     'file': produk['file']

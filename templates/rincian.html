@@ -92,6 +92,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Produk</th>
+                            <th>Kategori</th>
                             <th>Harga</th>
                             <th>Jumlah</th>
                             <th>Total</th>
@@ -103,6 +104,7 @@
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ produk['nama'] }}</td>
+                                <td>{{ produk['jenis'] }}</td>
                                 <td>Rp {{ produk['harga'] }}</td>
                                 <td>{{ produk['jumlah'] }}</td>
                                 <td>Rp {{ produk['total'] }}</td>
