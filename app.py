@@ -280,54 +280,6 @@ def delete_from_cart():
             return jsonify({'msg': 'Produk tidak ditemukan dalam keranjang!'}), 404
     return jsonify({'msg': 'Anda harus login untuk menghapus dari keranjang!'}), 401
 
-# @app.route('/keranjang/update', methods=['POST'])
-# def update_keranjang():
-#     if 'username' in session:
-#         username = session['username']
-#         nama_produk = request.form.get('nama_produk')
-#         jumlah = int(request.form.get('jumlah'))
-
-#         if nama_produk and jumlah > 0:
-#             # Update jumlah produk di keranjang
-#             result = db.keranjang.update_one(
-#                 {'username': username, 'produk.nama': nama_produk},
-#                 {'$set': {'produk.$.jumlah': jumlah, 'produk.$.total': jumlah * db.produk.find_one({'nama': nama_produk})['harga']}}
-#             )
-#             if result.modified_count > 0:
-#                 return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
-#             else:
-#                 return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
-#     return jsonify({'msg': 'Anda harus login untuk memperbarui produk!'}), 401
-# @app.route('/keranjang/update', methods=['POST'])
-# def update_keranjang():
-#     if 'username' in session:
-#         username = session['username']
-#         nama_produk = request.form.get('nama_produk')
-#         jumlah = int(request.form.get('jumlah'))
-
-#         # Cek apakah produk ada di keranjang user
-#         keranjang_item = db.keranjang.find_one({'username': username, 'produk.nama': nama_produk})
-        
-#         if keranjang_item:
-#             # Ambil jumlah produk saat ini dari keranjang
-#             jumlah_sekarang = keranjang_item['produk']['jumlah']
-            
-#             # Tambahkan jumlah baru ke jumlah yang ada
-#             jumlah_total = jumlah_sekarang + jumlah
-
-#             # Update jumlah produk di keranjang
-#             result = db.keranjang.update_one(
-#                 {'username': username, 'produk.nama': nama_produk},
-#                 {'$set': {'produk.$.jumlah': jumlah_total, 'produk.$.total': jumlah_total * db.produk.find_one({'nama': nama_produk})['harga']}}
-#             )
-
-#             if result.modified_count > 0:
-#                 return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
-#             else:
-#                 return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
-#         else:
-#             return jsonify({'msg': 'Produk tidak ditemukan dalam keranjang!'}), 404
-#     return jsonify({'msg': 'Anda harus login untuk memperbarui produk!'}), 401
 @app.route('/keranjang/update', methods=['POST'])
 def update_keranjang():
     if 'username' in session:
@@ -463,52 +415,62 @@ def checkout_add(produk):
         keranjang = db.keranjang.find_one({'username': username})
 
         if keranjang:
-            produk_keranjang = keranjang.get('produk', [])
+            produk = produk.strip().lower()  # Normalisasi nama produk
             produk_keranjang = [
-                p for p in produk_keranjang if p['nama'] == produk
+                p for p in keranjang.get('produk', []) if p['nama'].strip().lower() == produk
             ]
-            
-            if not produk_keranjang:
-                return jsonify({'msg': 'Keranjang Anda kosong!'}), 400
 
+            # Debug: Cek isi produk di keranjang
+            print("Produk dalam keranjang:", keranjang.get('produk', []))
+            print("Produk yang cocok:", produk_keranjang)
+
+            if not produk_keranjang:
+                return jsonify({'msg': 'Produk tidak ditemukan di keranjang!'}), 400
+
+            # Konversi stok ke integer jika diperlukan
             db.produk.update_many(
-                { "stok": { "$type": "string" } },
-                [
-                    { "$set": { "stok": { "$toInt": "$stok" } } }
-                ]
+                {"stok": {"$type": "string"}},
+                [{"$set": {"stok": {"$toInt": "$stok"}}}]
             )
 
             # Simpan pesanan ke collection orders
-            order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
-            # total_harga = sum(produk['total'] for produk in produk_keranjang)
-            total_harga = sum(int(produk['total']) for produk in produk_keranjang)
-            
+            order_id = str(datetime.utcnow().timestamp())
+            total_harga = sum(int(p['total']) for p in produk_keranjang)
+
             order = {
                 'username': username,
                 'produk': produk_keranjang,
                 'total_harga': total_harga,
-                'status': 'Pending',  # Status awal pesanan
+                'status': 'Pending',
                 'tanggal_pesan': datetime.utcnow(),
                 'order_id': order_id
             }
 
-            # Masukkan pesanan ke database
             db.orders.insert_one(order)
 
-            # Mengurangi stok produk setelah pemesanan
-            for produk in produk_keranjang:
+            # Kurangi stok produk
+            for p in produk_keranjang:
                 db.produk.update_one(
-                    {'nama': produk['nama']},
-                    {'$inc': {'stok': -produk['jumlah']}}
+                    {'nama': p['nama']},
+                    {'$inc': {'stok': -p['jumlah']}}
                 )
 
-            # Menghapus produk dari keranjang setelah pemesanan
-            db.keranjang.delete_one({'produk': produk_keranjang})
+            # Hapus produk dari keranjang
+            result = db.keranjang.update_one(
+                {'username': username},
+                {'$pull': {'produk': {'nama': {'$regex': f'^{produk}$', '$options': 'i'}}}}
+            )
 
-            return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id})
-        else:
-            return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
+            # Debugging hasil update
+            print("Modified count:", result.modified_count)
+            if result.modified_count == 0:
+                return jsonify({'msg': 'Gagal menghapus produk dari keranjang!'}), 500
+
+            return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id}), 201
+
+        return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
     return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
+
 
 
 @app.route('/order', methods=["GET"])
