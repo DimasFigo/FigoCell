@@ -67,10 +67,18 @@
       opacity: 60%;
       transition: all ease-in-out 0.3s;
     }
+    nav span .bi {
+      display: block;
+      font-style: normal;
+      letter-spacing: 1px;
+    }
     @media (min-width: 768px) {
       nav .bi {
         display: none;
       }
+      /* .nav-item .btn {
+        width: 10em !important;
+      } */
     }
 
     @media (max-width: 768px) {
@@ -115,10 +123,14 @@
               </li>
               {% else %}
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
+                  ><span><i class="bi bi-box-arrow-in-right"> Login</i> </span></a
+                >
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+                  ><span><i class="bi bi-person-plus"> Register</i></span>
+                </a>
               </li>
               {% endif %}
             </ul>
@@ -134,7 +146,7 @@
         <h1 class="display-4">Hello 👋</h1>
         <!-- <p class="lead">Selamat datang di website <span class="fw-bold">Figo Cell</span></p> -->
         <div id="text" class="text-container"></div>
-        <hr class="my-4 col-md-12 m-auto" />
+        <!-- <hr class="my-4 col-md-12 m-auto" /> -->
         <p class="col-md-12 m-auto">Kini kamu dapat memesan produk yang tersedia di <span class="fw-bold">Figo Cell</span> dengan mudah, cepat dan aman tentunya. <br />Tunggu apalagi? buruan pesan sekarang.</p>
         <a class="btn text-light mt-4" style="background-color: #825b32" href="/product" role="button">Pesan Sekarang <i class="bi bi-arrow-up-right-square"></i></a>
       </div>
