@@ -31,7 +31,9 @@
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
+                  ><span><i class="bi bi-box-arrow-in-right"> Login</i> </span></a
+                >
               </li>
             </ul>
           </div>
@@ -39,8 +41,45 @@
       </div>
     </nav>
     <!-- End Navbar -->
+    <div class="row border rounded" style="max-width: 800px; margin: 15em auto">
+      <h2 class="m-5">Create Your Account</h2>
+      <div class="col">
+        <div class="container">
+          <form method="POST" action="/register" autocomplete="off">
+            <div class="form-floating mb-3">
+              <input type="text" name="nama" class="form-control" id="floatingInput" placeholder="" required />
+              <label for="">Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="email" name="email" class="form-control" id="" placeholder="" required />
+              <label for="">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="" required />
+              <label for="">Username</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required />
+              <label for="floatingPassword">Password</label>
+            </div>
 
-    <section style="max-width: 500px; margin: 15em auto">
+            <label class="mt-2 mb-2 fst-italic text-danger" style="letter-spacing: 3px">*Role</label>
+
+            <div class="form-floating">
+              <select class="form-select" name="role" id="floatingSelect" aria-label="Floating label select example" required>
+                <option value="admin" disabled>Admin</option>
+                <option value="user">User</option>
+              </select>
+              <label for="floatingSelect">Works with selects</label>
+            </div>
+            <button class="btn btn-dark mt-3 mb-3 d-grid gap-2 col-12" type="submit">Register</button>
+          </form>
+          <a href="/login">Already have an account? Login</a>
+        </div>
+      </div>
+      <div class="col register" style="background: url(../static/Asset/4957136.jpg); background-position: center; background-size: cover"></div>
+    </div>
+    <!-- <section style="max-width: 500px; margin: 15em auto">
       <div class="container">
         <h2 class="text-center">Create Your Account</h2>
 
@@ -75,27 +114,45 @@
         </form>
         <a href="/login">Already have an account? Login</a>
       </div>
-    </section>
-    <footer class="p-3 bg-dark text-light">
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="p-1text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
       <div class="container">
-        <div class="row ms-auto flex-sm-column flex-md-row">
-          <div class="col mt-4">
+        <div class="row ms-auto">
+          <div class="col-lg-4 mt-3">
+            <h3 style="color: #825b32">FIgo Cell</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
+            </p>
             <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
             <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
             <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
             <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
             <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
           </div>
-          <div class="col">
-            <h2>Hubungi Kami</h2>
-            <a href="" class="text-light" style="text-decoration: none"><i class="bi bi-telephone-fill"></i>+62818281828</a>
-            <br /><a href=""><i class="bi bi-chat-left-fill"></i> </a>
+          <div class="col-lg-4 mt-3">
+            <h3 style="color: #825b32">Hubungi Kami</h3>
+            <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
+            <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
+          </div>
+          <div class="col-lg-4 mt-3">
+            <li class="" style="list-style-type: none">
+              <h3 style="color: #825b32">Menu Navigasi</h3>
+              <a class="text-light" href="/product">Produk</a>
+              <a class="text-light" href="/contact">Kontak</a>
+              <a class="text-light" href="/keranjang">Keranjang </a>
+              <br />
+              <a class="text-light" href="/login">Login</a>
+              <a class="text-light" href="/register">Register</a>
+            </li>
           </div>
         </div>
         <hr />
         <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
       </div>
     </footer>
+    <!-- End Footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>

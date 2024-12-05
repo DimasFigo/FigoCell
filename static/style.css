@@ -10,6 +10,7 @@
   opacity: 80%;
   transition: all ease-in-out 0.3s;
 }
+
 .col a .bi {
   color: white;
   margin: 5px;
@@ -79,11 +80,71 @@ section .paragraf {
   color: black;
 }
 /* Kontak */
+.jumbotron {
+  background-image: url('../static/Asset/bgfigo.png') !important;
+  padding: 10em 0;
+  color: white;
+  text-align: justify;
+  background-position: center;
+  background-size: cover;
+}
+.card-text .card-title {
+  color: white !important;
+}
+.card:hover {
+  cursor: pointer;
+  opacity: 60%;
+  transition: all ease-in-out 0.3s;
+}
+
+.hello {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 50px;
+}
+.text-figo {
+  background: url('../static/Asset/bgindex.png');
+  padding: 7em 0;
+  /* background-position: center; */
+}
+
+.text-figo h2 {
+  font-size: 50px !important;
+  letter-spacing: 5px !important;
+}
+footer .bi {
+  color: white;
+  margin: 3px;
+}
+footer a {
+  text-decoration: none;
+  font-size: 14px;
+  margin: 3px;
+  color: white;
+}
+footer a:hover {
+  opacity: 60%;
+  transition: all ease-in-out 0.3s;
+}
+nav span .bi {
+  display: block;
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+#kategori {
+  background-image: url('../static/Asset/Section\ Header\ Page\ 1.png');
+  /* background-position: center; */
+  background-size: cover;
+}
 
 @media (max-width: 768px) {
   .col img {
     width: 100%;
     height: 100%;
+  }
+  .register,
+  .login {
+    display: none;
   }
 }
 @media (min-width: 768px) {
@@ -91,4 +152,61 @@ section .paragraf {
     display: flex;
     align-items: center;
   }
+  nav .bi {
+    display: none;
+  }
+  /* .nav-item .btn {
+    width: 10em !important;
+  } */
+  .navbar a {
+    text-decoration: none;
+    position: relative;
+  }
+
+  .navbar a:hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: -2px;
+    background-color: #fff;
+  }
+
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  /* Link di dalam dropdown */
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .profile-dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
 }
