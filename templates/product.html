@@ -126,41 +126,43 @@
             let deskripsiKategori = '';
             if (jenis === 'Rokok') {
               deskripsiKategori = `
-            Tembakau berkualitas dengan rasa halus dan nikmat. 
-            <br>Aroma khas yang memberikan sensasi merokok memuaskan. 
-             <br>Hadir dalam kemasan elegan yang mencerminkan kualitas premium.
-          `;
+              Tembakau berkualitas dengan rasa halus dan nikmat.
+              <br>Aroma khas yang memberikan sensasi merokok memuaskan.
+               <br>Hadir dalam kemasan elegan yang mencerminkan kualitas premium.
+            `;
             } else if (jenis === 'Sembako') {
               deskripsiKategori = `
-            Produk kebutuhan sehari-hari dengan kualitas terbaik. 
-             <br>Harga terjangkau dan stok selalu tersedia untuk kenyamanan belanja Anda.
-          `;
+              Produk kebutuhan sehari-hari dengan kualitas terbaik.
+               <br>Harga terjangkau dan stok selalu tersedia untuk kenyamanan belanja Anda.
+            `;
             }
 
             let daftarProduk = `
-          <div class="row">
-              <div class="col-md-12" data-aos="fade-up" data-aos-duration="2000">
-                  <h1 class="mt-5 text-center">${jenis}</h1>
-                  <p class="col-md-6 m-auto mb-5 mt-2 text-secondary fst-italic">${deskripsiKategori}</p>
-              </div>
-          </div>
-          <div class="row g-4">
-        `;
+            <div class="row">
+                <div class="col-md-12" data-aos="fade-up" data-aos-duration="2000">
+                    <h1 class="text-center mt-5">${jenis}</h1>
+                    <p class="col-md-6 m-auto mb-5 mt-2 text-secondary fst-italic">${deskripsiKategori}</p>
+                </div>
+            </div>
+            <div class="row g-4">
+          `;
 
             produkByJenis[jenis].forEach(function (produk) {
               daftarProduk += `
-            <div class="col-md-3 col-sm-4" data-aos="fade-up" data-aos-duration="1000">
-              <div class="card">
-                <img src="${produk.file}" class="card-img-top" alt="${produk.nama}" />
-                <div class="card-body">
-                  <h5 class="card-title">${produk.nama}</h5>
-                  <p class="card-text">Stok : ${produk.stok}</p>
-                  <p class="card-text fw-bold">Rp. ${produk.harga}</p>
-                  <button class="btn" onclick="addToCart('${produk.nama}')"><i class="bi bi-plus-lg"></i> Tambah Keranjang</button>
+              <div class="col-md-3 col-sm-4 mb-5" data-aos="fade-up" data-aos-duration="1000">
+                <div class="card">
+                  <img src="${produk.file}" class="card-img-top" alt="${produk.nama}" />
+                  <div class="card-body">
+                    <h5 class="card-title">${produk.nama}</h5>
+                    <p class="card-text">Stok : ${produk.stok} </p>
+                    <p class="card-text fw-bold">Rp. ${produk.harga}</p>
+                    
+                    <button class="btn" id="addtocart" onclick="addToCart('${produk.nama}')"><i class="bi bi-plus-lg"></i> Tambah Keranjang  </button>
+                   
+                  </div>
                 </div>
               </div>
-            </div>
-          `;
+            `;
             });
 
             daftarProduk += `</div>`;
@@ -225,7 +227,7 @@
     <!-- End Navbar -->
 
     <!-- Content Start -->
-    <section class="margin: 120px 0" style="margin-top: 200px; margin-bottom: 20px">
+    <section style="margin: 200px 0 0 0">
       <div class="container" data-aos="fade-up" data-aos-duration="2000">
         <h1 class="text-center mb-4" style="font-family: 'Jost', sans-serif; color: #333">Produk Kami</h1>
         <hr class="col-md-3 m-auto" />
@@ -257,7 +259,7 @@
     <!-- Content Start -->
 
     <!-- Kontainer untuk produk -->
-    <section style="margin: 120px 0">
+    <section style="margin: 10px 0">
       <div class="container" id="produk-container"></div>
     </section>
 
