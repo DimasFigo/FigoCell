@@ -30,7 +30,9 @@
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+                  ><span><i class="bi bi-person-plus"> Register</i></span>
+                </a>
               </li>
             </ul>
           </div>
@@ -38,9 +40,9 @@
       </div>
     </nav>
     <!-- End Navbar -->
-    <section style="max-width: 500px; margin: 15em auto">
-      <div class="container">
-        <h2 class="text-center">Sign In</h2>
+    <div class="row border rounded pb-5" style="max-width: 800px; margin: 15em auto">
+      <h2 class="m-5">Sign In</h2>
+      <div class="col">
         <form method="POST" action="/login" autocomplete="off">
           <div class="form-floating mb-3">
             <input type="text" name="username" class="form-control" id="floatingInput" required placeholder="name@example.com" />
@@ -54,28 +56,46 @@
         </form>
         <a href="/register">Don't have an account? Register</a>
       </div>
-    </section>
 
-    <footer class="p-3 bg-dark text-light">
+      <div class="col login rounded-circle" style="background: url(../static/Asset/3d-render-secure-login-password-illustration.jpg); background-position: center; background-size: cover"></div>
+    </div>
+    <!-- Footer -->
+    <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
       <div class="container">
-        <div class="row ms-auto flex-sm-column flex-md-row">
-          <div class="col mt-4">
+        <div class="row ms-auto">
+          <div class="col-lg-4 mt-3">
+            <h3 style="color: #825b32">FIgo Cell</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
+            </p>
             <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
             <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
             <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
             <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
             <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
           </div>
-          <div class="col">
-            <h2>Hubungi Kami</h2>
-            <a href="" class="text-light" style="text-decoration: none"><i class="bi bi-telephone-fill"></i>+62818281828</a>
-            <br /><a href=""><i class="bi bi-chat-left-fill"></i> </a>
+          <div class="col-lg-4 mt-3">
+            <h3 style="color: #825b32">Hubungi Kami</h3>
+            <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
+            <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
+          </div>
+          <div class="col-lg-4 mt-3">
+            <li class="" style="list-style-type: none">
+              <h3 style="color: #825b32">Menu Navigasi</h3>
+              <a class="text-light" href="/product">Produk</a>
+              <a class="text-light" href="/contact">Kontak</a>
+              <a class="text-light" href="/keranjang">Keranjang </a>
+              <br />
+              <a class="text-light" href="/login">Login</a>
+              <a class="text-light" href="/register">Register</a>
+            </li>
           </div>
         </div>
         <hr />
         <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
       </div>
     </footer>
+    <!-- End Footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
