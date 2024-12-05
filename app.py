@@ -427,7 +427,7 @@ def checkout():
             # Simpan pesanan ke collection orders
             order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
             # total_harga = sum(produk['total'] for produk in produk_keranjang)
-            total_harga = sum(float(produk['total']) for produk in produk_keranjang)
+            total_harga = sum(int(produk['total']) for produk in produk_keranjang)
             
             order = {
                 'username': username,
@@ -450,6 +450,60 @@ def checkout():
 
             # Menghapus produk dari keranjang setelah pemesanan
             db.keranjang.delete_one({'username': username})
+
+            return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id})
+        else:
+            return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
+    return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
+
+@app.route('/checkout/<produk>', methods=['POST'])
+def checkout_add(produk):
+    if 'username' in session:
+        username = session['username']
+        keranjang = db.keranjang.find_one({'username': username})
+
+        if keranjang:
+            produk_keranjang = keranjang.get('produk', [])
+            produk_keranjang = [
+                p for p in produk_keranjang if p['nama'] == produk
+            ]
+            
+            if not produk_keranjang:
+                return jsonify({'msg': 'Keranjang Anda kosong!'}), 400
+
+            db.produk.update_many(
+                { "stok": { "$type": "string" } },
+                [
+                    { "$set": { "stok": { "$toInt": "$stok" } } }
+                ]
+            )
+
+            # Simpan pesanan ke collection orders
+            order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
+            # total_harga = sum(produk['total'] for produk in produk_keranjang)
+            total_harga = sum(int(produk['total']) for produk in produk_keranjang)
+            
+            order = {
+                'username': username,
+                'produk': produk_keranjang,
+                'total_harga': total_harga,
+                'status': 'Pending',  # Status awal pesanan
+                'tanggal_pesan': datetime.utcnow(),
+                'order_id': order_id
+            }
+
+            # Masukkan pesanan ke database
+            db.orders.insert_one(order)
+
+            # Mengurangi stok produk setelah pemesanan
+            for produk in produk_keranjang:
+                db.produk.update_one(
+                    {'nama': produk['nama']},
+                    {'$inc': {'stok': -produk['jumlah']}}
+                )
+
+            # Menghapus produk dari keranjang setelah pemesanan
+            db.keranjang.delete_one({'produk': produk_keranjang})
 
             return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id})
         else:
