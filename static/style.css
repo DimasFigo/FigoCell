@@ -33,9 +33,9 @@ footer h2 {
 .card-title {
   text-align: center;
 }
-section {
+/* section {
   margin: 20em 2em;
-}
+} */
 
 section p {
   text-align: center;
@@ -52,7 +52,7 @@ section .paragraf {
 .text-container {
   font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   white-space: nowrap; /* Agar teks tidak wrap ke baris baru */
 }
 
@@ -74,6 +74,10 @@ section .paragraf {
   color: white;
 }
 
+#Testimonial .card-title,
+.card-text {
+  color: black;
+}
 /* Kontak */
 
 @media (max-width: 768px) {
