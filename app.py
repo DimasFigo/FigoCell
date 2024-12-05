@@ -139,7 +139,10 @@ def produk_post():
 
 @app.route("/daftar-produk", methods=["GET"])
 def daftar_produk():
-    return render_template('lihat-product.html', username=session.get('username'))
+    if 'username' in session and session['role'] == 'admin':
+        return render_template('lihat-product.html', username=session.get('username'))
+    else :
+        return render_template('login.html')
 
 @app.route("/tambah-produk", methods=["GET"])
 def tambah_produk():
@@ -475,7 +478,10 @@ def checkout_add(produk):
 
 @app.route('/order', methods=["GET"])
 def order():
-   return render_template('order.html', username=session.get('username'))
+   if 'username' in session and session['role'] == 'admin':
+    return render_template('order.html', username=session.get('username'))
+   else :
+    return render_template('login.html')
 
 @app.route('/orders', methods=["GET"])
 def orders():
@@ -509,10 +515,6 @@ def orders_update():
 def product():
    return render_template ('product.html', username=session.get('username'))
 
-@app.route('/detail', methods=["GET"])
-def detail():
-   return render_template ('detail-product.html', username=session.get('username'))
-
 @app.route('/contact', methods=["GET"])
 def contact():
    return render_template ('contact.html',username=session.get('username'))
@@ -528,7 +530,11 @@ def listrik():
 # Users Collcetion
 @app.route('/user', methods=["GET"])
 def user():
-   return render_template('user.html', username=session.get('username'))
+   if 'username' in session and session['role'] == 'admin':
+    return render_template('user.html', username=session.get('username'))
+   else :
+    return render_template('login.html')
+
 
 @app.route('/users', methods=["GET"])
 def users():
@@ -567,33 +573,32 @@ def users_update():
 @app.route('/profile/<username>', methods=["GET"])
 def profile(username):
     # Mengambil data profil pengguna
-    user_data = db.users.find_one({'username': username})
+    if 'username' in session:
+        user_data = db.users.find_one({'username': username})
     
-    if not user_data:
-        flash("User not found!")
-        return redirect(url_for('login'))
+        if not user_data:
+            flash("User not found!")
+            return redirect(url_for('login'))
+
+        orders = list(db.orders.find({'username': username}))
     
-    # Mengambil data order berdasarkan username
-    orders = list(db.orders.find({'username': username}))
-    
-    # Render template profile dengan data pengguna dan pesanan
-    return render_template('profile.html', user_data=user_data, orders=orders)
+        # Render template profile dengan data pengguna dan pesanan
+        return render_template('profile.html', user_data=user_data, orders=orders)
+    return render_template('login.html')
 
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
     # Mengambil data profil pengguna
-    rincian_data = db.orders.find_one({'order_id': orderId})
+    if 'username' in session:
+        rincian_data = db.orders.find_one({'order_id': orderId})
     
-    if not rincian_data:
-        flash("Order not found!")
-        return redirect(url_for('login'))
+        if not rincian_data:
+            flash("Order not found!")
+            return redirect(url_for('login'))
     
-    # Render template profile dengan data pengguna dan pesanan
-    return render_template('rincian.html', rincian=rincian_data, username=session.get('username'))
-
-
-
-
+        # Render template profile dengan data pengguna dan pesanan
+        return render_template('rincian.html', rincian=rincian_data, username=session.get('username'))
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
