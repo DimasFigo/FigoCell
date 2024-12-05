@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash,redirect, url_for, session, jsonify
 from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
+from werkzeug.security import generate_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
 
@@ -585,6 +586,38 @@ def profile(username):
         # Render template profile dengan data pengguna dan pesanan
         return render_template('profile.html', user_data=user_data, orders=orders)
     return render_template('login.html')
+
+@app.route("/profile/update", methods=["POST"])
+def profile_update():
+    username_receive = request.form.get('username')
+    nama_receive = request.form.get('nama')
+    email_receive = request.form.get('email')
+    bio_receive = request.form.get('bio')
+
+    if not nama_receive or not email_receive or not bio_receive:
+        return jsonify({'msg': 'Semua field harus diisi!'}), 400
+
+    user = db.users.find_one({"username": username_receive})
+    if not user:
+        return jsonify({"msg": "Pengguna tidak ditemukan!"}), 404
+
+    update_data = {
+        'nama': nama_receive,
+        'email' : email_receive,
+        'bio': bio_receive
+    }
+
+
+    result = db.users.update_one(
+        {'username': username_receive},
+        {'$set': update_data}
+    )
+
+    if result.matched_count == 0:
+        return jsonify({"msg": "Gagal memperbarui data pengguna!"}), 500
+
+    return jsonify({'msg': 'Data pengguna berhasil diperbarui!'}), 200
+
 
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
