@@ -45,3 +45,14 @@ function animateText() {
 
 // Mulai animasi teks
 animateText();
+
+window.onscroll = function () {
+  var navbar = document.querySelector('.navbarr');
+
+  // Jika scroll lebih dari 50px dari atas, tambahkan kelas .navbar-transparent
+  if (window.pageYOffset > 50) {
+    navbar.classList.add('navbar-transparent');
+  } else {
+    navbar.classList.remove('navbar-transparent');
+  }
+};
