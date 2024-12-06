@@ -13,7 +13,31 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
   </head>
+  <style>
+    body {
+      background: url(../static/Asset/3d-render-secure-login-password-illustration.jpg);
+      background-position: center;
+      background-size: cover;
+    }
+    label {
+      opacity: 50% !important;
+      font-size: 12px;
+      color: white;
+    }
 
+    .btn {
+      background-color: black;
+    }
+    .btn:hover {
+      background-color: black;
+      opacity: 70%;
+      transition: all ease-in-out 0.3s;
+    }
+
+    input {
+      background: transparent !important;
+    }
+  </style>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
@@ -40,9 +64,9 @@
       </div>
     </nav>
     <!-- End Navbar -->
-    <div class="row border rounded pb-5" style="max-width: 800px; margin: 15em auto">
-      <h2 class="m-5">Sign In</h2>
+    <div class="row rounded pb-5" style="max-width: 30em; margin: 15em auto">
       <div class="col">
+        <h2 class="m-5 text-light text-center">Sign In</h2>
         <form method="POST" action="/login" autocomplete="off">
           <div class="form-floating mb-3">
             <input type="text" name="username" class="form-control" id="floatingInput" required placeholder="name@example.com" />
@@ -54,13 +78,11 @@
           </div>
           <button class="btn btn-dark mt-3 mb-3 d-grid gap-2 col-12 fw-bold" type="submit">Login</button>
         </form>
-        <a href="/register">Don't have an account? Register</a>
+        <a href="/register" class="text-light">Don't have an account? Register</a>
       </div>
-
-      <div class="col login rounded-circle" style="background: url(../static/Asset/3d-render-secure-login-password-illustration.jpg); background-position: center; background-size: cover"></div>
     </div>
     <!-- Footer -->
-    <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
+    <!-- <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
       <div class="container">
         <div class="row ms-auto">
           <div class="col-lg-4 mt-3">
@@ -94,7 +116,7 @@
         <hr />
         <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
       </div>
-    </footer>
+    </footer> -->
     <!-- End Footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

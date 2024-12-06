@@ -488,6 +488,7 @@ def orders():
    order_list = list(db.orders.find({}, {'_id': False}))
    return jsonify({'orders': order_list})
 
+
 @app.route("/orders/delete", methods=['POST'])
 def orders_delete():
     order_receive = request.form['orderId_give']
@@ -509,7 +510,6 @@ def orders_update():
         {'$set': {'status': status_receive}}
     )
     return jsonify({'msg': 'Data order updated successfully'})
-
 
 @app.route('/product', methods=["GET"])
 def product():
