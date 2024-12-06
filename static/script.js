@@ -56,3 +56,93 @@ window.onscroll = function () {
     navbar.classList.remove('navbar-transparent');
   }
 };
+
+// Keranjang
+function reloadPage() {
+  location.reload(); // Reload halaman
+}
+$(document).ready(function () {
+  // Handle Update Button Click
+  $('form[action="/keranjang/update"]').on('submit', function (e) {
+    e.preventDefault(); // Mencegah form submit secara default
+
+    // Ambil data dari form
+    var formData = $(this).serialize();
+
+    $.ajax({
+      url: '/keranjang/update',
+      type: 'POST',
+      data: formData,
+      success: function (response) {
+        // Menampilkan pesan sukses
+        // Swal.fire({
+        //   icon: 'success',
+        //   title: 'Sukses',
+        //   text: response.msg,
+        //   timer: 2000,
+        //   showConfirmButton: false,
+        // });
+
+        // Refresh atau update halaman (opsional)
+        setTimeout(function () {
+          location.reload(); // Reload halaman setelah pesan sukses
+        }, 500); // Tunggu 2 detik sebelum refresh
+      },
+      error: function (xhr, status, error) {
+        // Menampilkan pesan error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: xhr.responseJSON.msg,
+        });
+      },
+    });
+  });
+});
+
+// $(document).ready(function () {
+//   $('#checkout-form').on('submit', function (e) {
+//     e.preventDefault(); // Mencegah form melakukan submit biasa
+
+//     $.ajax({
+//       type: 'POST',
+//       url: $(this).attr('action'), // URL dari action form
+//       data: $(this).serialize(), // Kirim data form
+//       success: function (response) {
+//         // Cek apakah ada pesan sukses (sesuaikan respons dari server)
+//         if (response.msg === 'Checkout berhasil!') {
+//           alert(response.msg); // Tampilkan pesan sukses
+//           setTimeout(function () {
+//             location.reload(); // Reload halaman setelah 1 detik
+//           }, 1000);
+//         }
+//       },
+//       error: function () {
+//         alert('Terjadi kesalahan saat checkout. Silakan coba lagi.');
+//       },
+//     });
+//   });
+// });
+// $(document).ready(function () {
+//   $('#checkout-form').on('submit', function (e) {
+//     e.preventDefault(); // Mencegah form submit biasa
+
+//     $.ajax({
+//       type: 'POST',
+//       url: $(this).attr('action'), // URL dari action form
+//       data: $(this).serialize(), // Kirimkan data form
+//       success: function (response) {
+//         // Cek apakah pesan sukses ada di dalam respons
+//         if (response.msg === 'Checkout berhasil, pesanan telah dibuat!') {
+//           alert(response.msg); // Tampilkan pesan sukses
+//           setTimeout(function () {
+//             location.reload(); // Reload halaman setelah 1 detik
+//           }, 1000);
+//         }
+//       },
+//       error: function () {
+//         alert('Terjadi kesalahan saat checkout. Silakan coba lagi.');
+//       },
+//     });
+//   });
+// });

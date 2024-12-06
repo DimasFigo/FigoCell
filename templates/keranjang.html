@@ -10,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jost:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap"
       rel="stylesheet"
     />
-
     <!-- Open sauce -->
     <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet" />
     <!-- BS Icon -->
@@ -20,71 +19,113 @@
     <!-- My Css -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <style>
+      .card-title,
+      .card-text,
+      p {
+        text-align: justify;
+        font-family: 'Poppins';
+      }
+      p {
+        font-size: 12px !important;
+      }
+      span {
+        color: #ff7f17;
+        font-size: 16px !important;
+        font-family: 'Poppins';
+      }
+      h5,
+      .btn {
+        font-family: 'Poppins';
+        letter-spacing: 1px;
+      }
+      /* Responsive */
+    </style>
     <script>
-      $(document).ready(function () {
-        // Handle Update Button Click
-        $('form[action="/keranjang/update"]').on('submit', function (e) {
-          e.preventDefault(); // Mencegah form submit secara default
+ $(document).ready(function() {
+    // Tangkap event submit form checkout
+    $("#checkout-form").submit(function(event) {
+      event.preventDefault(); // Mencegah submit form secara default
 
-          // Ambil data dari form
-          var formData = $(this).serialize();
-
-          $.ajax({
-            url: '/keranjang/update',
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-              // Menampilkan pesan sukses
-              // Swal.fire({
-              //   icon: 'success',
-              //   title: 'Sukses',
-              //   text: response.msg,
-              //   timer: 2000,
-              //   showConfirmButton: false,
-              // });
-
-              // Refresh atau update halaman (opsional)
-              setTimeout(function () {
-                location.reload(); // Reload halaman setelah pesan sukses
-              }, 500); // Tunggu 2 detik sebelum refresh
-            },
-            error: function (xhr, status, error) {
-              // Menampilkan pesan error
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: xhr.responseJSON.msg,
-              });
+      $.ajax({
+        url: $(this).attr("action"),
+        type: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: function(response) {
+          // Cek apakah checkout berhasil
+          if (response.msg === "Checkout berhasil, pesanan telah dibuat!") {
+            // Tampilkan pesan sukses
+            Swal.fire({
+            title: 'Sukses',
+            text: 'Barang berhasil dicheckout.',
+            icon: 'success',
+            customClass: {
+              title: 'custom-swal-title',
+              popup: 'custom-swal-popup',
+              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
             },
           });
-        });
+            // Redirect ke halaman konfirmasi pesanan
+            // window.location.href = "/";
+            setTimeout(function () {
+            location.reload()// Reload halaman setelah 1 detik
+             }, 1000);
+           
+          } else {
+            // Tampilkan pesan error jika ada
+            alert(response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("Terjadi kesalahan: " + error);
+        }
       });
-    </script>
+    });
+  });
+
+  $(document).ready(function() {
+    // Tangkap event submit form checkout
+    $("#delete-form").submit(function(event) {
+      event.preventDefault(); // Mencegah submit form secara default
+
+      $.ajax({
+        url: $(this).attr("action"),
+        type: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: function(response) {
+          // Cek apakah checkout berhasil
+          if (response.msg === "Produk berhasil dihapus dari keranjang!") {
+            // Tampilkan pesan sukses
+            Swal.fire({
+            title: 'Sukses',
+            text: 'Barang berhasil dihapus dari keranjang.',
+            icon: 'success',
+            customClass: {
+              title: 'custom-swal-title',
+              popup: 'custom-swal-popup',
+              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
+            },
+          });
+            // Redirect ke halaman konfirmasi pesanan
+            // window.location.href = "/";
+            setTimeout(function () {
+            location.reload()// Reload halaman setelah 1 detik
+             }, 1000);
+           
+          } else {
+            // Tampilkan pesan error jika ada
+            alert(response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("Terjadi kesalahan: " + error);
+        }
+      });
+    });
+  });
+ </script>
   </head>
-  <style>
-    .card-title,
-    .card-text,
-    p {
-      text-align: justify;
-      font-family: 'Poppins';
-    }
-    p {
-      font-size: 12px !important;
-    }
-    span {
-      color: #ff7f17;
-      font-size: 16px !important;
-      font-family: 'Poppins';
-    }
-    h5,
-    .btn {
-      font-family: 'Poppins';
-      letter-spacing: 1px;
-    }
-    /* Responsive */
-  </style>
-  <div>
+  <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
       <div class="container">
@@ -168,20 +209,20 @@
               <div class="col">
                 <div class="card-body">
                   <h5 class="card-title">{{ produk.nama }}</h5>
-                  <p class="card-text fw-bold"><span>Harga: Rp {{ produk.harga }}</span></p>
+                  <p class="card-text fw-bold"><span>Harga : Rp {{ produk.harga }}</span></p>
                   <div class="row d-flex">
                     <div class="col-md-4">
                       <form action="/keranjang/update" method="POST">
                         <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
+                        <input type="hidden" name="jumlah" value="1" />  <!-- Kurangi jumlah -->
                         <button type="submit" class="btn d-flex align-items-center mb-3 text-dark" style="background-color: transparent; border: 1px solid black">
                           <p class="card-text">Qty : {{ produk.jumlah }} <i class="bi bi-plus-lg"></i></p>
                         </button>
                       </form>
-                    </div>
-    
+                    </div>         
                     <div class="col-md-2">
-                      <form action="/keranjang/delete" method="POST">
-                        <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
+                      <form action="/keranjang/delete" id="delete-form" method="POST">
+                        <input type="hidden"  name="nama_produk" value="{{ produk.nama }}" />
                         <button type="submit" class="btn btn-danger mb-3" style="background-color: red"><i class="bi bi-trash3"></i></button>
                       </form>
                     </div>
@@ -208,8 +249,8 @@
             <div class="card mt-5">
               <div class="card-body text-center">
                 <h5 class="fw-bold">Total Harga : Rp {{ total_harga }}</h5>
-                <form method="POST" action="/checkout">
-                  <button type="submit" class="btn m-2" style="background-color: green">Checkout Semua</button>
+                <form method="POST" id="checkout-form" action="/checkout">
+                  <button type="submit" class="btn m-2" style="background-color: green" onclick="reloadPage()">Checkout Semua</button>
                 </form>
               </div>
             </div>
@@ -244,8 +285,6 @@
     </div>
  
     <!-- End Modal -->
-
-    <!-- Footer -->
 
 <!-- Footer -->
 {% if produk_keranjang %}
