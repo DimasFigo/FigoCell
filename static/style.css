@@ -106,6 +106,13 @@ section .paragraf {
   padding: 7em 0;
   /* background-position: center; */
 }
+.navbarr {
+  background-color: transparent !important;
+}
+.navbar-transparent {
+  background-color: #212529 !important; /* Warna background saat tidak di-scroll */
+  transition: background-color 0.5s ease; /* Efek transisi untuk perubahan warna */
+}
 
 .text-figo h2 {
   font-size: 50px !important;
