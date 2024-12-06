@@ -84,7 +84,7 @@
     }
     /* Responsive */
   </style>
-  <body>
+  <div>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
       <div class="container">
@@ -147,35 +147,38 @@
     <section style="margin-top: 10em">
       <div class="container">
         <h2 class="text-center">Keranjang Belanja</h2>
-
+    
+        <!-- Deskripsi Keranjang hanya muncul sekali -->
+        {% if produk_keranjang %}
+        <p class="col-md-6 m-auto">
+          Keranjang Belanja Anda adalah tempat di mana semua produk pilihan Anda terkumpul sebelum melanjutkan ke proses checkout. Di sini, Anda dapat melihat rincian produk yang telah Anda tambahkan ke keranjang, termasuk nama produk,
+          jumlah, harga, dan total harga keseluruhan. Jika Anda ingin mengubah jumlah produk atau menghapus produk dari keranjang, Anda dapat melakukannya dengan mudah.
+        </p>
+        {% endif %}
+    
         <!-- Keranjang Produk -->
         <div class="row justify-content-center">
-          {% if produk_keranjang %} {% for produk in produk_keranjang %}
-          <p class="col-md-6 m-auto">
-            Keranjang Belanja Anda adalah tempat di mana semua produk pilihan Anda terkumpul sebelum melanjutkan ke proses checkout. Di sini, Anda dapat melihat rincian produk yang telah Anda tambahkan ke keranjang, termasuk nama produk,
-            jumlah, harga, dan total harga keseluruhan. Jika Anda ingin mengubah jumlah produk atau menghapus produk dari keranjang, Anda dapat melakukannya dengan mudah.
-          </p>
-          <div class="card m-3">
+          {% if produk_keranjang %}
+          {% for produk in produk_keranjang %}
+          <div class="card m-3 col-md-6">
             <div class="row d-flex align-items-center">
               <div class="col-md-4">
-                <img src="/{{ produk.file }}" class="img-fluid rounded mt-2 mb-2" alt="/{{ produk.nama }}" />
+                <img src="/{{ produk.file }}" class="img-fluid rounded mt-2 mb-2" alt="{{ produk.nama }}" />
               </div>
               <div class="col">
                 <div class="card-body">
                   <h5 class="card-title">{{ produk.nama }}</h5>
                   <p class="card-text fw-bold"><span>Harga: Rp {{ produk.harga }}</span></p>
                   <div class="row d-flex">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <form action="/keranjang/update" method="POST">
                         <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
-                        <input type="hidden" name="jumlah" value="{{ produk.jumlah }}" />
-                        <input type="hidden" name="nama_produk" value="1" />
                         <button type="submit" class="btn d-flex align-items-center mb-3 text-dark" style="background-color: transparent; border: 1px solid black">
                           <p class="card-text">Qty : {{ produk.jumlah }} <i class="bi bi-plus-lg"></i></p>
                         </button>
                       </form>
                     </div>
-
+    
                     <div class="col-md-2">
                       <form action="/keranjang/delete" method="POST">
                         <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
@@ -192,10 +195,12 @@
               </div>
             </div>
           </div>
-          {% endfor %} {% else %}
+          {% endfor %}
+          {% else %}
           <p class="text-center">Keranjang Anda kosong.</p>
           {% endif %}
         </div>
+    
         <!-- Total Harga -->
         {% if produk_keranjang %}
         <div class="row justify-content-center">
@@ -213,6 +218,7 @@
         {% endif %}
       </div>
     </section>
+    
     <!-- End Keranjang -->
 
     <!-- Modal -->
@@ -236,84 +242,55 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- End Modal -->
 
     <!-- Footer -->
-    {% if produk_keranjang %} {% for produk in produk_keranjang %}
-    <footer class="p-1 text-light bg-dark mt-3" style="border-top: 1px solid rgb(133, 127, 127)">
-      <div class="container">
-        <div class="row ms-auto">
-          <div class="col-lg-4 mt-3">
-            <h3 style="color: #825b32">FIgo Cell</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
-            </p>
-            <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
-            <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
-            <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
-          </div>
-          <div class="col-lg-4 mt-3">
-            <h3 style="color: #825b32">Hubungi Kami</h3>
-            <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
-            <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
-          </div>
-          <div class="col-lg-4 mt-3">
-            <li class="" style="list-style-type: none">
-              <h3 style="color: #825b32">Menu Navigasi</h3>
-              <a class="text-light" href="/product">Produk</a>
-              <a class="text-light" href="/contact">Kontak</a>
-              <a class="text-light" href="/keranjang">Keranjang </a>
-              <br />
-              <a class="text-light" href="/login">Login</a>
-              <a class="text-light" href="/register">Register</a>
-            </li>
-          </div>
-        </div>
-        <hr />
-        <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
+
+<!-- Footer -->
+{% if produk_keranjang %}
+<footer class="p-1 text-light bg-dark mt-3">
+{% else %}
+<footer class="p-1 text-light bg-dark fixed-bottom">
+{% endif %}
+  <div class="container">
+    <div class="row ms-auto">
+      <div class="col-lg-4 mt-3">
+        <h3 style="color: #825b32">FIgo Cell</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
+        </p>
+        <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
+        <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
+        <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
       </div>
-    </footer>
-    {% endfor %} {% else %}
+      <div class="col-lg-4 mt-3">
+        <h3 style="color: #825b32">Hubungi Kami</h3>
+        <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
+        <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
+      </div>
+      <div class="col-lg-4 mt-3">
+        <li class="" style="list-style-type: none">
+          <h3 style="color: #825b32">Menu Navigasi</h3>
+          <a class="text-light" href="/product">Produk</a>
+          <a class="text-light" href="/contact">Kontak</a>
+          <a class="text-light" href="/keranjang">Keranjang</a>
+          <br />
+          <a class="text-light" href="/login">Login</a>
+          <a class="text-light" href="/register">Register</a>
+        </li>
+      </div>
+    </div>
+    <hr />
+    <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
+  </div>
+</footer>
+
+
     <!-- End Footer -->
-    <footer class="p-1 text-light bg-dark fixed-bottom" style="border-top: 1px solid rgb(133, 127, 127)">
-      <div class="container">
-        <div class="row ms-auto">
-          <div class="col-lg-4 mt-3">
-            <h3 style="color: #825b32">FIgo Cell</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
-            </p>
-            <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
-            <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
-            <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
-          </div>
-          <div class="col-lg-4 mt-3">
-            <h3 style="color: #825b32">Hubungi Kami</h3>
-            <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
-            <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
-          </div>
-          <div class="col-lg-4 mt-3">
-            <li class="" style="list-style-type: none">
-              <h3 style="color: #825b32">Menu Navigasi</h3>
-              <a class="text-light" href="/product">Produk</a>
-              <a class="text-light" href="/contact">Kontak</a>
-              <a class="text-light" href="/keranjang">Keranjang </a>
-              <br />
-              <a class="text-light" href="/login">Login</a>
-              <a class="text-light" href="/register">Register</a>
-            </li>
-          </div>
-        </div>
-        <hr />
-        <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
-      </div>
-    </footer>
-    {% endif %}
+
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- My AOS -->

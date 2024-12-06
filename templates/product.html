@@ -151,9 +151,13 @@
                     <h5 class="card-title">${produk.nama}</h5>
                     <p class="card-text">Stok : ${produk.stok} </p>
                     <p class="card-text fw-bold">Rp. ${produk.harga}</p>
-                    
-                    <button class="btn" id="addtocart" onclick="addToCart('${produk.nama}')"><i class="bi bi-plus-lg"></i> Tambah Keranjang  </button>
-                   
+                  ${
+                    produk.stok < 1
+                      ? '<p class="text-danger fw-bold">Stok Habis</p>'
+                      : `<button class="btn" id="addtocart" onclick="addToCart('${produk.nama}')">
+              <i class="bi bi-plus-lg"></i> Tambah Keranjang
+            </button>`
+                  }
                   </div>
                 </div>
               </div>
