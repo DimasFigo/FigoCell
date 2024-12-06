@@ -96,9 +96,77 @@
               </div>
             </div>
           </div>
+    <!-- Start Profile -->
+  <div style="margin: 120px 0; padding-top: 50px">
+    <div class="container mt-4">
+    <h2 class="titleSection text-center mb-4">Profil Pengguna</h2>
+    <div class="row g-4">
+      <!-- Sidebar Profil -->
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <img src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="Foto Profil" class="rounded-circle mb-3" width="150em" height="150em" />
+            <h3>{{ user_data['username'] }}</h3>
+            <p class="text-muted">{{ user_data['bio'] if 'bio' in user_data else 'Belum ada bio.' }}</p>
+            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+              <i class="bi bi-pencil-square"></i> Edit Profil
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar Profil -->
+
+      <!-- Detail Profil -->
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="mb-3"><i class="bi bi-info-circle"></i> Detail Informasi</h4>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Nama Lengkap:</strong> {{ user_data['nama'] }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ user_data['email'] }}</li>
+              <li class="list-group-item"><strong>Username:</strong> {{ user_data['username'] }}</li>
+              <li class="list-group-item"><strong>Role:</strong> {{ user_data['role'] }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Detail Profil -->
+    </div>
+  </div>
+  </div>
+  <!-- End Profile -->
+
+  <!-- Edit Profile Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Profil</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="/profile/update">
+            <input type="hidden" name="username" value="{{ user_data['username'] }}" />
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="nama" name="nama" value="{{ user_data['nama'] }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" value="{{ user_data['email'] }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="bio" class="form-label">Bio</label>
+              <textarea class="form-control" id="bio" name="bio" rows="3">{{ user_data['bio'] if 'bio' in user_data else '' }}</textarea>
+            </div>
+            <button type="submit" class="btn w-100">Simpan Perubahan</button>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+  <!-- End Edit Profile Modal -->
+
     <!-- End Profile-->
 
     <!-- Start Order -->
