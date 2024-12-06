@@ -19,6 +19,15 @@
     section {
       margin: 10em 0;
     }
+
+    .test-justify {
+      text-align: justify !important;
+    }
+    @media (max-width: 768px) {
+      .ulasan {
+        margin-top: 10em;
+      }
+    }
   </style>
   <body>
     <!-- Navbar -->
@@ -99,28 +108,66 @@
     <!-- End Hero Section -->
     <!-- Location -->
     <section>
-      <div class="map-container text-center" data-aos="fade-up" data-aos-duration="2000">
-        <h2>Location</h2>
-        <p class="col-md-4" style="margin: 20px auto">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, ducimus magni praesentium fuga ut aliquam, maiores autem corrupti nam officia nihil voluptatem sequi minima quod perferendis laboriosam quaerat recusandae
-          doloremque?
-        </p>
-        <div class="ratio ratio-16x9" style="max-width: 600px; margin: 0 auto">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.763132968531!2d110.3943801106768!3d-7.814879292173211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a57149d66daf7%3A0xd413abafb240097b!2sFigo%20Cell!5e0!3m2!1sid!2sid!4v1732388931425!5m2!1sid!2sid"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            class="rounded"
-          >
-          </iframe>
+      <div class="map-container m-auto" data-aos="fade-up" data-aos-duration="2000">
+        <div class="row" style="max-width: 100em; margin: 0 auto">
+          <div class="col-md-6">
+            <h2 class="text-center">Location</h2>
+            <p class="text-justify">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, ducimus magni praesentium fuga ut aliquam, maiores autem corrupti nam officia nihil voluptatem sequi minima quod perferendis laboriosam quaerat recusandae
+              doloremque?
+            </p>
+            <div class="ratio ratio-16x9" style="max-width: 600px; margin: 0 auto">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.763132968531!2d110.3943801106768!3d-7.814879292173211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a57149d66daf7%3A0xd413abafb240097b!2sFigo%20Cell!5e0!3m2!1sid!2sid!4v1732388931425!5m2!1sid!2sid"
+                style="border: 0"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                class="rounded"
+              >
+              </iframe>
+            </div>
+          </div>
+          <div class="col-md-6 ulasan">
+            <h2 class="text-center">Ulasan Anda</h2>
+            <form method="POST" action="/register" autocomplete="off">
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <button class="btn btn-dark mt-3 mb-3 d-grid gap-2 col-12" type="submit" style="background-color: black">Kirim</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
     <br />
     <br />
     <!-- End Location -->
+    <!-- form -->
+    <!-- <div class="row rounded m-auto" style="max-width: 30em">
+      <div class="col">
+        <div class="container">
+          <h2 class="m-5 text-center">Ulasan Anda</h2>
+          <form method="POST" action="/register" autocomplete="off">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button class="btn btn-dark mt-3 mb-3 d-grid gap-2 col-12" type="submit" style="background-color: black">Kirim</button>
+          </form>
+        </div>
+      </div>
+    </div> -->
+    <!-- end form -->
     <!-- Footer -->
     <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
       <div class="container">
