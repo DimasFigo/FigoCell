@@ -123,6 +123,86 @@
       });
     });
   });
+  $(document).ready(function() {
+    // Tangkap event submit form checkout
+    $("#plus").submit(function(event) {
+      event.preventDefault(); // Mencegah submit form secara default
+
+      $.ajax({
+        url: $(this).attr("action"),
+        type: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: function(response) {
+          // Cek apakah checkout berhasil
+          if (response.msg === "Jumlah produk berhasil diperbarui!") {
+            // Tampilkan pesan sukses
+            Swal.fire({
+            title: 'Sukses',
+            text: 'Jumlah produk berhasil diperbarui!',
+            icon: 'success',
+            customClass: {
+              title: 'custom-swal-title',
+              popup: 'custom-swal-popup',
+              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
+            },
+          });
+            // Redirect ke halaman konfirmasi pesanan
+            // window.location.href = "/";
+            setTimeout(function () {
+            location.reload()// Reload halaman setelah 1 detik
+             }, 1000);
+           
+          } else {
+            // Tampilkan pesan error jika ada
+            alert(response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("Terjadi kesalahan: " + error);
+        }
+      });
+    });
+  });
+  $(document).ready(function() {
+    // Tangkap event submit form checkout
+    $("#order").submit(function(event) {
+      event.preventDefault(); // Mencegah submit form secara default
+
+      $.ajax({
+        url: $(this).attr("action"),
+        type: $(this).attr("method"),
+        data: $(this).serialize(),
+        success: function(response) {
+          // Cek apakah checkout berhasil
+          if (response.msg === "Checkout berhasil, pesanan telah dibuat!") {
+            // Tampilkan pesan sukses
+            Swal.fire({
+            title: 'Sukses',
+            text: 'Checkout berhasil, Terimakasih! .',
+            icon: 'success',
+            customClass: {
+              title: 'custom-swal-title',
+              popup: 'custom-swal-popup',
+              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
+            },
+          });
+            // Redirect ke halaman konfirmasi pesanan
+            // window.location.href = "/";
+            setTimeout(function () {
+            location.reload()// Reload halaman setelah 1 detik
+             }, 1000);
+           
+          } else {
+            // Tampilkan pesan error jika ada
+            alert(response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("Terjadi kesalahan: " + error);
+        }
+      });
+    });
+  });
  </script>
   </head>
   <body>
@@ -212,7 +292,7 @@
                   <p class="card-text fw-bold"><span>Harga : Rp {{ produk.harga }}</span></p>
                   <div class="row d-flex">
                     <div class="col-md-4">
-                      <form action="/keranjang/update" method="POST">
+                      <form action="/keranjang/update" id="plus" method="POST">
                         <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
                         <input type="hidden" name="jumlah" value="1" />  <!-- Kurangi jumlah -->
                         <button type="submit" class="btn d-flex align-items-center mb-3 text-dark" style="background-color: transparent; border: 1px solid black">
@@ -228,7 +308,7 @@
                     </div>
                   </div>
                   <div class="col-md-2">
-                    <form method="POST" action="/checkout/{{ produk.nama }}">
+                    <form method="POST" id="order" action="/checkout/{{ produk.nama }}">
                       <button type="submit" class="btn mb-3" style="background-color: green">Order</button>
                     </form>
                   </div>
