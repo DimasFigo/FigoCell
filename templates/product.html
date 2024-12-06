@@ -204,7 +204,8 @@
                   >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
                 /></a>
                 <div class="dropdown-content">
-                  <a class="text-danger" href="/logout">Logout</a>
+                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Edit Profile</i></a>
+                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
                 </div>
               </div>
 

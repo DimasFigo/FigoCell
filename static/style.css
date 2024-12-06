@@ -146,6 +146,27 @@ nav span .bi {
   .login {
     display: none;
   }
+  .dropdown-content a {
+    text-decoration: none !important;
+  }
+  .dropdown-content .bi {
+    color: white !important;
+    display: block;
+    margin: 10px 5px;
+  }
+
+  .dropdown-content .bi-pencil-square {
+    opacity: 50%;
+  }
+
+  .dropdown-content .logout .bi {
+    color: red !important;
+    position: fixed;
+  }
+
+  .profile-dropdown .nav-link {
+    display: none;
+  }
 }
 @media (min-width: 768px) {
   .navbar-nav {
@@ -205,5 +226,7 @@ nav span .bi {
 
   .profile-dropdown:hover .dropdown-content {
     display: block;
+    text-decoration: none !important;
+    font-style: normal !important;
   }
 }
