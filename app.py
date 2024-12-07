@@ -203,64 +203,75 @@ def view_cart():
 def add_to_cart():
     if 'username' not in session:  # Pastikan user sudah login
         return jsonify({'msg': 'Anda harus login untuk menambahkan barang ke keranjang.', 'status': 'error'}), 401
-    if 'username' in session:  # Cek apakah user sudah login
-        nama_produk = request.form.get('nama_produk')
-        username = session['username']
 
-        # Cari produk berdasarkan nama
-        produk = db.produk.find_one({'nama': nama_produk})
-    
-        if produk:
-            # Pastikan harga adalah integer
-            harga = int(produk['harga'])  # Konversi harga ke integer
+    nama_produk = request.form.get('nama_produk')
+    username = session['username']
 
-            # Cek apakah produk sudah ada di keranjang
-            keranjang = db.keranjang.find_one({'username': username})
+    # Cari produk berdasarkan nama
+    produk = db.produk.find_one({'nama': nama_produk})
 
-            if keranjang:
-                # Jika produk sudah ada, tambahkan jumlahnya
-                produk_dalam_keranjang = keranjang.get('produk', [])
-                for item in produk_dalam_keranjang:
-                    if item['nama'] == nama_produk:
-                        item['jumlah'] += 1
-                        item['total'] = item['jumlah'] * harga  # Pastikan total dihitung dengan harga yang benar
-                        break
-                else:
-                    # Jika produk belum ada, tambahkan produk baru
-                    produk_baru = {
-                        'nama': produk['nama'],
-                        'jenis': produk['jenis'],
-                        'harga': harga,
-                        'jumlah': 1,
-                        'total': harga,  # Total dihitung dengan harga yang benar
-                        'file': produk['file']
-                    }
-                    produk_dalam_keranjang.append(produk_baru)
-                
-                # Update keranjang di database
-                db.keranjang.update_one(
-                    {'username': username},
-                    {'$set': {'produk': produk_dalam_keranjang}}
-                )
+    if produk:
+        harga = int(produk['harga'])  # Konversi harga ke integer
+        stok = int(produk.get('stok', 0))  # Pastikan stok diambil sebagai integer
+
+        # Cek apakah produk sudah ada di keranjang
+        keranjang = db.keranjang.find_one({'username': username})
+
+        if keranjang:
+            # Jika keranjang sudah ada
+            produk_dalam_keranjang = keranjang.get('produk', [])
+            for item in produk_dalam_keranjang:
+                if item['nama'] == nama_produk:
+                    # Validasi stok
+                    if item['jumlah'] + 1 > stok:
+                        return jsonify({'msg': f'Stok tidak mencukupi. Stok tersedia: {stok}', 'status': 'error'}), 400
+                    
+                    # Tambahkan jumlah produk
+                    item['jumlah'] += 1
+                    item['total'] = item['jumlah'] * harga
+                    break
             else:
-                # Jika keranjang belum ada, buat keranjang baru
+                # Jika produk belum ada di keranjang, tambahkan produk baru
+                if 1 > stok:
+                    return jsonify({'msg': f'Stok tidak mencukupi. Stok tersedia: {stok}', 'status': 'error'}), 400
+                
                 produk_baru = {
                     'nama': produk['nama'],
-                    'harga': harga,
                     'jenis': produk['jenis'],
+                    'harga': harga,
                     'jumlah': 1,
-                    'total': harga,  # Total dihitung dengan harga yang benar
+                    'total': harga,
                     'file': produk['file']
                 }
-                db.keranjang.insert_one({
-                    'username': username,
-                    'produk': [produk_baru]
-                })
-
-            return jsonify({'msg': 'Produk berhasil ditambahkan ke keranjang!'})
+                produk_dalam_keranjang.append(produk_baru)
+            
+            # Update keranjang di database
+            db.keranjang.update_one(
+                {'username': username},
+                {'$set': {'produk': produk_dalam_keranjang}}
+            )
         else:
-            return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
-    return jsonify({'msg': 'Anda harus login untuk menambahkan ke keranjang!'})
+            # Jika keranjang belum ada, buat keranjang baru
+            if 1 > stok:
+                return jsonify({'msg': f'Stok tidak mencukupi. Stok tersedia: {stok}', 'status': 'error'}), 400
+
+            produk_baru = {
+                'nama': produk['nama'],
+                'harga': harga,
+                'jenis': produk['jenis'],
+                'jumlah': 1,
+                'total': harga,
+                'file': produk['file']
+            }
+            db.keranjang.insert_one({
+                'username': username,
+                'produk': [produk_baru]
+            })
+
+        return jsonify({'msg': 'Produk berhasil ditambahkan ke keranjang!'})
+    else:
+        return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
+
 
 
 @app.route('/keranjang/delete', methods=['POST'])
@@ -295,32 +306,35 @@ def update_keranjang():
         keranjang_item = db.keranjang.find_one({'username': username, 'produk.nama': nama_produk})
 
         if keranjang_item:
-            # Cari produk yang cocok dalam list produk
             for produk in keranjang_item['produk']:
                 if produk['nama'] == nama_produk:
                     jumlah_sekarang = int(produk['jumlah'])
+                    jumlah_total = jumlah_sekarang + jumlah
 
-                    # Tambahkan jumlah baru ke jumlah yang ada
-                    jumlah_total = int(jumlah_sekarang + 1)
+                    # Validasi stok produk (opsional)
+                    produk_db = db.produk.find_one({'nama': nama_produk})
+                    if not produk_db:
+                        return jsonify({'msg': 'Produk tidak ditemukan di database!'}), 404
+                    
+                    stok_tersedia = produk_db.get('stok', 0)
+                    if jumlah_total > stok_tersedia:
+                        return jsonify({'msg': f'Stok tidak mencukupi! Stok tersedia: {stok_tersedia}.'}), 400
 
-                    harga_produk = int(db.produk.find_one({'nama': nama_produk})['harga'])
+                    harga_produk = produk_db['harga']
                     result = db.keranjang.update_one(
-                    {'username': username, 'produk.nama': nama_produk},
-                    {'$set': {
-                        'produk.$.jumlah': jumlah_total,
-                        'produk.$.total': jumlah_total * harga_produk
+                        {'username': username, 'produk.nama': nama_produk},
+                        {'$set': {
+                            'produk.$.jumlah': jumlah_total,
+                            'produk.$.total': jumlah_total * harga_produk
                         }}
                     )
 
                     if result.modified_count > 0:
                         return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
-                    else:
-                        return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
+                    return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
 
-            # Jika produk tidak ditemukan
             return jsonify({'msg': 'Produk tidak ditemukan dalam keranjang!'}), 404
     return jsonify({'msg': 'Anda harus login untuk memperbarui produk!'}), 401
-
 
 # Order Collection
 @app.route('/order', methods=['POST'])
@@ -574,7 +588,7 @@ def users_update():
 @app.route('/profile/<username>', methods=["GET"])
 def profile(username):
     # Mengambil data profil pengguna
-    if 'username' in session:
+    if 'username' in session and session['username'] == username:
         user_data = db.users.find_one({'username': username})
     
         if not user_data:
