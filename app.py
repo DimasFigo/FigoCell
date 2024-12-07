@@ -320,7 +320,9 @@ def update_keranjang():
                     if jumlah_total > stok_tersedia:
                         return jsonify({'msg': f'Stok tidak mencukupi! Stok tersedia: {stok_tersedia}.'}), 400
 
-                    harga_produk = produk_db['harga']
+                    harga_produk = float(produk_db['harga'])  # pastikan harga adalah angka
+                    jumlah_total = int(jumlah_total)  # pastikan jumlah adalah integer
+
                     result = db.keranjang.update_one(
                         {'username': username, 'produk.nama': nama_produk},
                         {'$set': {
