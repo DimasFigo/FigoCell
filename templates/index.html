@@ -2,20 +2,42 @@
 <html lang="en">
   <head>
     <title>Figo Cell</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jost:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jost:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Open sauce -->
-    <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet" />
+    <link
+      href="https://fonts.cdnfonts.com/css/open-sauce-one"
+      rel="stylesheet"
+    />
     <!-- BS Icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
 
     <!-- My Css -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='favicon/favicon.png') }}"
+      type="image/x-icon"
+    />
 
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
@@ -25,54 +47,136 @@
       height: 20em !important;
     }
   </style>
+
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbarr fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
+    <nav
+      class="navbar navbarr fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark"
+    >
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px">
+          <img
+            width="100px"
+            height="50px"
+            src="{{ url_for('static', filename='logo/logoFigo.png') }}"
+            alt="My Image"
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="offcanvas bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div
+          class="offcanvas bg-dark offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/"><i class="bi bi-house-door-fill me-3"></i>Home</a>
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a class="nav-link active" aria-current="page" href="/"
+                  ><i class="bi bi-house-door-fill me-3"></i>Home</a
+                >
               </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/product"><i class="bi bi-tags-fill me-3"></i> Produk</a>
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a class="nav-link" aria-current="page" href="/product"
+                  ><i class="bi bi-tags-fill me-3"></i> Produk</a
+                >
               </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/contact"> <i class="bi bi-person-lines-fill me-3"></i> Kontak</a>
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a class="nav-link" aria-current="page" href="/contact">
+                  <i class="bi bi-person-lines-fill me-3"></i> Kontak</a
+                >
               </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/keranjang"><i class="bi bi-cart-check-fill me-3"> </i>Keranjang </a>
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a class="nav-link" aria-current="page" href="/keranjang"
+                  ><i class="bi bi-cart-check-fill me-3"> </i>Keranjang
+                </a>
               </li>
 
               {% if 'username' in session %}
 
               <div class="profile-dropdown">
-                <a class="nav-link" aria-current="page" href="/profile/{{username}}"
-                  >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
+                <a
+                  class="nav-link"
+                  aria-current="page"
+                  href="/profile/{{username}}"
+                  >{{username}}
+                  <img
+                    class="rounded-circle profile-icon"
+                    src="{{ url_for('static', filename='testi/person1.jpg') }}"
+                    alt="My Image"
+                    width="40em"
+                    height="40em"
                 /></a>
                 <div class="dropdown-content">
-                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Edit Profile</i></a>
-                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
+                  <a class="" href="/profile/{{username}}"
+                    ><i class="bi bi-pencil-square d-block fst-normal">
+                      Edit Profile</i
+                    ></a
+                  >
+                  <a class="text-danger logout" href="/logout"
+                    ><i class="bi bi-box-arrow-left d-block fst-normal">
+                      Logout</i
+                    ></a
+                  >
                 </div>
               </div>
 
               {% else %}
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
-                  ><span><i class="bi bi-box-arrow-in-right"> Login</i> </span></a
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a
+                  class="nav-link active text-light btn btn-lg btn-transparent"
+                  aria-current="page"
+                  href="/login"
+                  ><span
+                    ><i class="bi bi-box-arrow-in-right"> Login</i>
+                  </span></a
                 >
               </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+              <li
+                class="nav-item m-2"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                <a
+                  class="nav-link text-light btn"
+                  style="background-color: #825b32"
+                  href="/register"
                   ><span><i class="bi bi-person-plus"> Register</i></span>
                 </a>
               </li>
@@ -91,8 +195,18 @@
         <!-- <p class="lead">Selamat datang di website <span class="fw-bold">Figo Cell</span></p> -->
         <div id="text" class="text-container"></div>
         <!-- <hr class="my-4 col-md-12 m-auto" /> -->
-        <p class="col-md-12 m-auto">Kini kamu dapat memesan produk yang tersedia di <span class="fw-bold">Figo Cell</span> dengan mudah, cepat dan aman tentunya. <br />Tunggu apalagi? buruan pesan sekarang.</p>
-        <a class="btn text-light mt-4" style="background-color: #825b32" href="/product" role="button">Pesan Sekarang <i class="bi bi-arrow-up-right-square"></i></a>
+        <p class="col-md-12 m-auto">
+          Kini kamu dapat memesan produk yang tersedia di
+          <span class="fw-bold">Figo Cell</span> dengan mudah, cepat dan aman
+          tentunya. <br />Tunggu apalagi? buruan pesan sekarang.
+        </p>
+        <a
+          class="btn text-light mt-4"
+          style="background-color: #825b32"
+          href="/product"
+          role="button"
+          >Pesan Sekarang <i class="bi bi-arrow-up-right-square"></i
+        ></a>
       </div>
     </section>
     <!-- End About Us -->
@@ -104,54 +218,109 @@
           <div class="col" data-aos="fade-up">
             <h2 class="titleSection">Kategori Produk</h2>
             <p class="col-md-6 m-auto">
-              "Figo Cell adalah toko yang menyediakan berbagai kebutuhan harian Anda, dengan menawarkan tiga jenis produk utama: pulsa untuk memenuhi kebutuhan komunikasi Anda, rokok dengan berbagai pilihan merek untuk para perokok, serta
-              sembako yang lengkap untuk kebutuhan rumah tangga sehari-hari. Belanja mudah dan praktis di Figo Cell, solusi tepat untuk segala kebutuhan Anda."
+              "Figo Cell adalah toko yang menyediakan berbagai kebutuhan harian
+              Anda, dengan menawarkan tiga jenis produk utama: pulsa untuk
+              memenuhi kebutuhan komunikasi Anda, rokok dengan berbagai pilihan
+              merek untuk para perokok, serta sembako yang lengkap untuk
+              kebutuhan rumah tangga sehari-hari. Belanja mudah dan praktis di
+              Figo Cell, solusi tepat untuk segala kebutuhan Anda."
             </p>
           </div>
         </div>
 
         <div class="container">
           <div class="row row-cols-1 row-cols-md-3 g-4 pb-5">
-            <div class="col-md-4 mb-5 mt-5" data-aos="fade-up" data-aos-duration="1000">
+            <div
+              class="col-md-4 mb-5 mt-5"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
               <div class="card mt-5">
                 <!-- <img src="..." class="card-img-top" alt="..." /> -->
                 <center>
-                  <div class="div rounded-circle" style="margin-top: -40px; background-color: #f9f9f9; width: 4.5rem; height: 4.5rem"><i class="bi bi-1-circle" style="font-size: 50px"></i></div>
+                  <div
+                    class="div rounded-circle"
+                    style="
+                      margin-top: -40px;
+                      background-color: #f9f9f9;
+                      width: 4.5rem;
+                      height: 4.5rem;
+                    "
+                  >
+                    <i class="bi bi-1-circle" style="font-size: 50px"></i>
+                  </div>
                 </center>
                 <div class="card-body">
                   <h5 class="card-title text-center">Pulsa</h5>
                   <p class="card-text">
-                    "Figo Cell menyediakan pulsa dengan berbagai pilihan nominal untuk semua operator. Praktis dan cepat, pulsa kami siap untuk memenuhi kebutuhan komunikasi Anda, baik untuk telepon, SMS, maupun internet."
+                    "Figo Cell menyediakan pulsa dengan berbagai pilihan nominal
+                    untuk semua operator. Praktis dan cepat, pulsa kami siap
+                    untuk memenuhi kebutuhan komunikasi Anda, baik untuk
+                    telepon, SMS, maupun internet."
                   </p>
                   <a href="">Shop Now</a>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-5 mt-5" data-aos="fade-up" data-aos-duration="2000">
+            <div
+              class="col-md-4 mb-5 mt-5"
+              data-aos="fade-up"
+              data-aos-duration="2000"
+            >
               <div class="card mt-5 h-100">
                 <!-- <img src="..." class="card-img-top" alt="..." /> -->
                 <center>
-                  <div class="div rounded-circle" style="margin-top: -40px; background-color: #f9f9f9; width: 4.5rem; height: 4.5rem"><i class="bi bi-2-circle" style="font-size: 50px"></i></div>
+                  <div
+                    class="div rounded-circle"
+                    style="
+                      margin-top: -40px;
+                      background-color: #f9f9f9;
+                      width: 4.5rem;
+                      height: 4.5rem;
+                    "
+                  >
+                    <i class="bi bi-2-circle" style="font-size: 50px"></i>
+                  </div>
                 </center>
                 <div class="card-body">
                   <h5 class="card-title">Rokok</h5>
                   <p class="card-text">
-                    "Temukan berbagai pilihan rokok berkualitas di Figo Cell. Kami menyediakan rokok dengan berbagai merek dan rasa, cocok untuk Anda yang menikmati sensasi merokok dengan kualitas premium dan harga terjangkau."
+                    "Temukan berbagai pilihan rokok berkualitas di Figo Cell.
+                    Kami menyediakan rokok dengan berbagai merek dan rasa, cocok
+                    untuk Anda yang menikmati sensasi merokok dengan kualitas
+                    premium dan harga terjangkau."
                   </p>
                   <a href="">Shop Now</a>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-5 mt-5" data-aos="fade-up" data-aos-duration="3000">
+            <div
+              class="col-md-4 mb-5 mt-5"
+              data-aos="fade-up"
+              data-aos-duration="3000"
+            >
               <div class="card mt-5 h-100">
                 <!-- <img src="..." class="card-img-top" alt="..." /> -->
                 <center>
-                  <div class="div rounded-circle" style="margin-top: -40px; background-color: #f9f9f9; width: 4.5rem; height: 4.5rem"><i class="bi bi-3-circle" style="font-size: 50px"></i></div>
+                  <div
+                    class="div rounded-circle"
+                    style="
+                      margin-top: -40px;
+                      background-color: #f9f9f9;
+                      width: 4.5rem;
+                      height: 4.5rem;
+                    "
+                  >
+                    <i class="bi bi-3-circle" style="font-size: 50px"></i>
+                  </div>
                 </center>
                 <div class="card-body">
                   <h5 class="card-title">Sembako</h5>
                   <p class="card-text">
-                    "Figo Cell juga menawarkan berbagai sembako berkualitas untuk kebutuhan sehari-hari Anda. Dari beras, minyak, gula, hingga bahan pokok lainnya, semua tersedia dengan harga yang bersaing dan kemasan yang praktis."
+                    "Figo Cell juga menawarkan berbagai sembako berkualitas
+                    untuk kebutuhan sehari-hari Anda. Dari beras, minyak, gula,
+                    hingga bahan pokok lainnya, semua tersedia dengan harga yang
+                    bersaing dan kemasan yang praktis."
                   </p>
                   <a href="">Shop Now</a>
                 </div>
@@ -164,18 +333,56 @@
     <!-- End Kategori section -->
 
     <!-- Testimonial Section -->
-    <section id="Testimonial" style="background-color: #212529; color: white; padding: 50px 0 20px 0">
+    <section
+      id="Testimonial"
+      style="background-color: #212529; color: white; padding: 50px 0 20px 0"
+    >
       <div class="container mb-5">
         <div class="row">
           <div class="col" data-aos="fade-up">
             <h2 class="titleSection">Testimonial Pelanggan</h2>
             <p class="col-md-6 mb-5 m-auto">
-              "Berikut adalah beberapa testimonial dari pelanggan kami yang puas dengan produk dan layanan yang kami tawarkan di Figo Cell. Kami berkomitmen untuk memberikan pengalaman belanja yang terbaik dengan berbagai pilihan produk
-              yang berkualitas."
+              "Berikut adalah beberapa testimonial dari pelanggan kami yang puas
+              dengan produk dan layanan yang kami tawarkan di Figo Cell. Kami
+              berkomitmen untuk memberikan pengalaman belanja yang terbaik
+              dengan berbagai pilihan produk yang berkualitas."
             </p>
           </div>
         </div>
         <div class="row text-light">
+          {% for review in reviews %}
+          <div
+            class="col-md-4 mb-5 mt-5"
+            data-aos="fade-up"
+            data-aos-duration="{{ loop.index * 1000 }}"
+          >
+            <div class="card bg-dark border">
+              <div class="img-martop" style="margin: -40px 0 0 20px">
+                <img
+                  class="rounded-circle border"
+                  src="{{ url_for('static', filename=review.image) if review.image else url_for('static', filename='testi/person1.jpg') }}"
+                  alt="Gambar Profil"
+                  width="100em"
+                  height="100em"
+                />
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-light">{{ review.email }}</h5>
+                <p class="card-text text-light">"{{ review.review }}"</p>
+                <p class="card-text text-light">
+                    Rating: 
+                    {% for star in range(review.rating) %}
+                        ⭐
+                    {% endfor %}
+                </p>
+                <p class="card-text"><small class="text-light">Submitted on {{ review.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- <div class="row text-light">
           <div class="col-md-4 mb-5 mt-5" data-aos="fade-up" data-aos-duration="1000">
             <div class="card bg-dark border">
               <div class="img-martop" style="margin: -40px 0 0 20px"><img class="rounded-circle border" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="100em" height="100em" /></div>
@@ -208,7 +415,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
     <!-- End Testimonial Section -->
@@ -216,24 +423,45 @@
     <div class="container-fluid text-figo">
       <h2 class="text-center text-light">FIGO CELL</h2>
     </div>
-    <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
+    <footer
+      class="p-1 text-light bg-dark"
+      style="border-top: 1px solid rgb(133, 127, 127)"
+    >
       <div class="container">
         <div class="row ms-auto">
           <div class="col-lg-4 mt-3">
             <h3 style="color: #825b32">FIgo Cell</h3>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi voluptate omnis exercitationem quod minima cumque, possimus est incidunt, aliquid veniam odio dignissimos sed, consequatur quasi cupiditate odit sit neque?
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
+              sequi voluptate omnis exercitationem quod minima cumque, possimus
+              est incidunt, aliquid veniam odio dignissimos sed, consequatur
+              quasi cupiditate odit sit neque?
             </p>
-            <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.tiktok.com/@figox007"><i class="bi bi-tiktok"></i></a>
-            <a href="https://wa.me/6288216733959"><i class="bi bi-whatsapp"></i></a>
-            <a href="mailto:cahyodimas188@gmail.com"><i class="bi bi-envelope"></i></a>
+            <a href="https://www.instagram.com/figocahyo_/"
+              ><i class="bi bi-instagram"></i
+            ></a>
+            <a href="https://www.facebook.com/dimasdwi.figocahyo/"
+              ><i class="bi bi-facebook"></i
+            ></a>
+            <a href="https://www.tiktok.com/@figox007"
+              ><i class="bi bi-tiktok"></i
+            ></a>
+            <a href="https://wa.me/6288216733959"
+              ><i class="bi bi-whatsapp"></i
+            ></a>
+            <a href="mailto:cahyodimas188@gmail.com"
+              ><i class="bi bi-envelope"></i
+            ></a>
           </div>
           <div class="col-lg-4 mt-3">
             <h3 style="color: #825b32">Hubungi Kami</h3>
-            <a href="" class="text-light"><i class="bi bi-telephone-fill"></i>+62818281828</a>
-            <br /><a href=""><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit amet.</a>
+            <a href="" class="text-light"
+              ><i class="bi bi-telephone-fill"></i>+62818281828</a
+            >
+            <br /><a href=""
+              ><i class="bi bi-chat-left-fill"></i> Lorem ipsum dolor sit
+              amet.</a
+            >
           </div>
           <div class="col-lg-4 mt-3">
             <li class="" style="list-style-type: none">
@@ -248,7 +476,9 @@
           </div>
         </div>
         <hr />
-        <p class="text-center">copyright@2024, Intel Celeron Team. All right reserved.</p>
+        <p class="text-center">
+          copyright@2024, Intel Celeron Team. All right reserved.
+        </p>
       </div>
     </footer>
 
@@ -258,6 +488,10 @@
       AOS.init();
     </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
