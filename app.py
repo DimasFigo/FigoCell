@@ -12,9 +12,12 @@ bcrypt = Bcrypt(app)
 client = MongoClient('mongodb+srv://figoood99:figocell17@figocell.wxlz7.mongodb.net/')
 db = client['user_management']
 users_collection = db['users']
+reviews_collection = db['reviews']
 
 @app.route('/')
 def home():
+    reviews = reviews_collection.find()
+    return render_template('index.html', reviews=reviews)
     return render_template('index.html', username=session.get('username'))
 @app.route('/total_pengguna', methods=['GET'])
 def total_pengguna():
@@ -532,9 +535,34 @@ def orders_update():
 def product():
    return render_template ('product.html', username=session.get('username'))
 
-@app.route('/contact', methods=["GET"])
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-   return render_template ('contact.html',username=session.get('username'))
+    if request.method == 'POST':
+        # Ambil data dari form
+        name = request.form.get('name')
+        review = request.form.get('review')
+        rating = request.form.get('rating')
+        
+        # Validasi input form
+        if not name or not review:
+            flash('Nama dan ulasan harus diisi!', 'error')
+            return redirect(url_for('contact'))
+
+        # Simpan data ke MongoDB
+        new_review = {
+            'name': name,
+            'review': review,
+            'rating': int(rating),
+            'created_at': datetime.now()
+        }
+        reviews_collection.insert_one(new_review)
+
+        # Tampilkan pesan sukses
+        flash('Ulasan berhasil dikirim!', 'success')
+        return redirect(url_for('home'))
+    
+    # Jika GET, tampilkan halaman kontak
+    return render_template('contact.html', username=session.get('username'))
 
 @app.route('/pulsa/regular', methods=["GET"])
 def regular():
@@ -651,4 +679,3 @@ def rincian(orderId):
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-
