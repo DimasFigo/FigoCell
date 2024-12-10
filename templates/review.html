@@ -53,17 +53,18 @@
             let rows = response['reviews'];
             for (let i = 0; i < rows.length; i++) {
                 let nomor = i + 1;
-                let email = rows[i]['email'];
+                let nama = rows[i]['name'];
                 let review = rows[i]['review'];  
                 let created_at = rows[i]['created_at'];  
+                let review_id = rows[i]['review_id'];
                 let temp_html = `
                     <tr>
                         <td>${nomor}</td>
-                        <td>${email}</td>
+                        <td>${nama}</td>
                         <td>${review}</td>
                         <td>${created_at}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm" onClick="hapusData('${email}')">
+                            <button class="btn btn-danger btn-sm" onClick="hapusData('${review_id}')">
                                 <i class="bi bi-trash3"></i> Hapus
                             </button>
                         </td>
@@ -75,11 +76,11 @@
         });
     }
 
-    function hapusData(email) {
+    function hapusData(review_id) {
         $.ajax({
           type: 'POST',
           url: '/reviews/delete',
-          data: { email_give: email },
+          data: { review_id_give: review_id },
           success: function (response) {
             alert(response['msg']);
             window.location.reload();
@@ -143,7 +144,7 @@
           <thead class="table-dark">
             <tr>
               <th>No</th>
-              <th>Email</th>
+              <th>Nama</th>
               <th>Review</th>
               <th>Tanggal Buat</th>
               <th>Aksi</th>
