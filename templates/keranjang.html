@@ -19,6 +19,9 @@
     <!-- My Css -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
       .card-title,
       .card-text,
@@ -39,223 +42,21 @@
         font-family: 'Poppins';
         letter-spacing: 1px;
       }
-      /* Responsive */
+      
+.fw-bold{
+  font-size: 14px !important;
+  color: #ff7f17;
+}
+
+.checkoutAll{
+  color: #ff7f17;
+  font-family: "Poppins";
+  font-weight: bold;
+}
+.rowws .col{
+    max-width: 50px;
+  }
     </style>
-    <script>
- $(document).ready(function() {
-    // Tangkap event submit form checkout
-    $("#checkout-form").submit(function(event) {
-      event.preventDefault(); // Mencegah submit form secara default
-
-      $.ajax({
-        url: $(this).attr("action"),
-        type: $(this).attr("method"),
-        data: $(this).serialize(),
-        success: function(response) {
-          // Cek apakah checkout berhasil
-          if (response.msg === "Checkout berhasil, pesanan telah dibuat!") {
-            // Tampilkan pesan sukses
-            Swal.fire({
-            title: 'Sukses',
-            text: 'Barang berhasil dicheckout.',
-            icon: 'success',
-            customClass: {
-              title: 'custom-swal-title',
-              popup: 'custom-swal-popup',
-              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
-            },
-          });
-            // Redirect ke halaman konfirmasi pesanan
-            // window.location.href = "/";
-            setTimeout(function () {
-            location.reload()// Reload halaman setelah 1 detik
-             }, 1000);
-           
-          } else {
-            // Tampilkan pesan error jika ada
-            alert(response.msg);
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Terjadi kesalahan: " + error);
-        }
-      });
-    });
-  });
-
-  $(document).ready(function() {
-    // Tangkap event submit form checkout
-    $("#delete-form").submit(function(event) {
-      event.preventDefault(); // Mencegah submit form secara default
-
-      $.ajax({
-        url: $(this).attr("action"),
-        type: $(this).attr("method"),
-        data: $(this).serialize(),
-        success: function(response) {
-          // Cek apakah checkout berhasil
-          if (response.msg === "Produk berhasil dihapus dari keranjang!") {
-            // Tampilkan pesan sukses
-            Swal.fire({
-            title: 'Sukses',
-            text: 'Barang berhasil dihapus dari keranjang.',
-            icon: 'success',
-            customClass: {
-              title: 'custom-swal-title',
-              popup: 'custom-swal-popup',
-              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
-            },
-          });
-            // Redirect ke halaman konfirmasi pesanan
-            // window.location.href = "/";
-            setTimeout(function () {
-            location.reload()// Reload halaman setelah 1 detik
-             }, 1000);
-           
-          } else {
-            // Tampilkan pesan error jika ada
-            alert(response.msg);
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Terjadi kesalahan: " + error);
-        }
-      });
-    });
-  });
-  $(document).ready(function() {
-    // Tangkap event submit form checkout
-    $("#plus").submit(function(event) {
-      event.preventDefault(); // Mencegah submit form secara default
-
-      $.ajax({
-        url: $(this).attr("action"),
-        type: $(this).attr("method"),
-        data: $(this).serialize(),
-        success: function(response) {
-          // Cek apakah checkout berhasil
-          if (response.msg === "Jumlah produk berhasil diperbarui!") {
-            // Tampilkan pesan sukses
-            Swal.fire({
-            title: 'Sukses',
-            text: 'Jumlah produk berhasil diperbarui!',
-            icon: 'success',
-            customClass: {
-              title: 'custom-swal-title',
-              popup: 'custom-swal-popup',
-              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
-            },
-          });
-            // Redirect ke halaman konfirmasi pesanan
-            // window.location.href = "/";
-            setTimeout(function () {
-            location.reload()// Reload halaman setelah 1 detik
-             }, 1000);
-           
-          } else {
-            // Tampilkan pesan error jika ada
-            alert(response.msg);
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Terjadi kesalahan: " + error);
-        }
-      });
-    });
-  });
-  $(document).ready(function() {
-    // Tangkap event submit form checkout
-    $("#order").submit(function(event) {
-      event.preventDefault(); // Mencegah submit form secara default
-
-      $.ajax({
-        url: $(this).attr("action"),
-        type: $(this).attr("method"),
-        data: $(this).serialize(),
-        success: function(response) {
-          // Cek apakah checkout berhasil
-          if (response.msg === "Checkout berhasil, pesanan telah dibuat!") {
-            // Tampilkan pesan sukses
-            Swal.fire({
-            title: 'Sukses',
-            text: 'Checkout berhasil, Terimakasih! .',
-            icon: 'success',
-            customClass: {
-              title: 'custom-swal-title',
-              popup: 'custom-swal-popup',
-              htmlContainer: 'custom-swal-text', // Pastikan menggunakan htmlContainer
-            },
-          });
-            // Redirect ke halaman konfirmasi pesanan
-            // window.location.href = "/";
-            setTimeout(function () {
-            location.reload()// Reload halaman setelah 1 detik
-             }, 1000);
-           
-          } else {
-            // Tampilkan pesan error jika ada
-            alert(response.msg);
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Terjadi kesalahan: " + error);
-        }
-      });
-    });
-  });
-  $(document).ready(function() {
-    // Tangkap event submit form dengan ID plus
-    $("#plus").submit(function(event) {
-        event.preventDefault(); // Mencegah submit form secara default
-
-        $.ajax({
-            url: $(this).attr("action"), // URL yang dituju
-            type: $(this).attr("method"), // Metode request (POST)
-            data: $(this).serialize(), // Data form yang dikirim
-            success: function(response) {
-                // Jika respon sukses dari server
-                if (response.msg === "Jumlah produk berhasil diperbarui!") {
-                    // Tampilkan alert sukses menggunakan SweetAlert
-                    Swal.fire({
-                        title: 'Sukses!',
-                        text: response.msg,
-                        icon: 'success',
-                        customClass: {
-                            title: 'custom-swal-title',
-                            popup: 'custom-swal-popup',
-                            htmlContainer: 'custom-swal-text'
-                        },
-                        timer: 1500, // Waktu auto-close alert (ms)
-                        showConfirmButton: false // Hilangkan tombol OK
-                    });
-
-                    // Reload halaman setelah 1,5 detik untuk menyegarkan data
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    // Jika gagal, tampilkan pesan error
-                    Swal.fire({
-                        title: 'Error!',
-                        text: response.msg,
-                        icon: 'error',
-                        showConfirmButton: true
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                // Tampilkan alert error jika request gagal
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan pada server. Coba lagi nanti.',
-                    icon: 'error',
-                    showConfirmButton: true
-                });
-            }
-        });
-    });
-  });
- </script>
   </head>
   <body>
     <!-- Navbar -->
@@ -317,8 +118,8 @@
     <!-- End Navbar -->
 
     <!-- Keranjang -->
-    <section style="margin-top: 10em">
-      <div class="container">
+    <section style="margin-top: 10em" >
+      <div class="container" >
         <h2 class="text-center">Keranjang Belanja</h2>
     
         <!-- Deskripsi Keranjang hanya muncul sekali -->
@@ -333,42 +134,47 @@
         <div class="row m-3 justify-content-center">
           {% if produk_keranjang %}
           {% for produk in produk_keranjang %}
-          <div class="card m-4 col-md-6">
-            <div class="row d-flex align-items-center">
-              <div class="col-md-4">
-                <img src="/{{ produk.file }}" class="img-fluid rounded mt-2 mb-2" alt="{{ produk.nama }}" />
-              </div>
-              <div class="col">
-                <div class="card-body">
-                  <h5 class="card-title">{{ produk.nama }}</h5>
-                  <p class="card-text fw-bold"><span>Harga : Rp {{ produk.harga }}</span></p>
-                  <div class="row d-flex">
-                    <div class="col-md-4">
-                      <form action="/keranjang/update" id="plus" method="POST">
-                        <input type="hidden" name="nama_produk" value="{{ produk.nama }}" />
-                        <input type="hidden" name="jumlah" value="1" />  <!-- Kurangi jumlah -->
-                        <button type="submit" class="btn d-flex align-items-center mb-3 text-dark" style="background-color: transparent; border: 1px solid black">
-                          <p class="card-text">Qty : {{ produk.jumlah }} <i class="bi bi-plus-lg"></i></p>
-                        </button>
-                      </form>
-                    </div>         
-                    <div class="col-md-2">
-                      <form action="/keranjang/delete" id="delete-form" method="POST">
-                        <input type="hidden"  name="nama_produk" value="{{ produk.nama }}" />
-                        <button type="submit" class="btn btn-danger mb-3" style="background-color: red"><i class="bi bi-trash3"></i></button>
-                      </form>
+          <div class="card m-4 col-md-6 rounded">
+            <div class="row align-items-center m-3">
+                     <div class="col-md-6">
+                    <img src="{{ produk.file }}" class="img-fluid rounded mt-1 mb-1" alt="{{ produk.nama }}">
                     </div>
+                    <div class="col mt-2">
+                      <h5 class="card-title">{{ produk.nama }}</h5>
+                      <p class="card-text fw-bold">Harga : Rp {{ produk.harga }}</p>
+                      <!-- <p class="card-text">Jumlah : {{ produk.jumlah }} </p> -->
+                      <div class="col mb-3">
+                        <form id="form-{{ produk.nama }}" onsubmit="updateKeranjang(event, '{{ produk.nama }}')">
+                            <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                            <input type="hidden" name="jumlah" value="1">
+                            <button type="submit" class="btn-sm btn" style="background: transparent; color: black;">
+                                <i class="bi bi-plus fst-normal"> {{ produk.jumlah }}</i>
+                            </button>
+                           
+                        </form>
+                    </div>
+                      <div class="row d-flex rowws">
+                          
+                          <div class="col">
+                              <form id="delete-{{ produk.nama }}" onsubmit="deleteProduk(event, '{{ produk.nama }}')">
+                                  <input type="hidden" name="nama_produk" value="{{ produk.nama }}">
+                                  <button type="submit" class="btn btn-danger"  style="background-color: red;">
+                                      <i class="bi bi-trash3"></i>
+                                  </button>
+                              </form>
+                          </div>
+                          <div class="col ">
+                             <!-- Tombol untuk Order satu produk -->
+                             <form method="POST" action="{{ url_for('checkout_add', produk=produk['nama']) }}" id="order-form-{{ produk.nama }}">
+                              <button type="submit" class="btn" id="order-btn-{{ produk.nama }}">Pesan</button>
+                            </form>
+                          </div>
+                        </div>
                   </div>
-                  <div class="col-md-2">
-                    <form method="POST" id="order" action="/checkout/{{ produk.nama }}">
-                      <button type="submit" class="btn mb-3" style="background-color: green">Order</button>
-                    </form>
-                  </div>
-                </div>
               </div>
-            </div>
           </div>
-          {% endfor %}
+      {% endfor %}
+      
           {% else %}
           <p class="text-center">Keranjang Anda kosong.</p>
           {% endif %}
@@ -376,18 +182,26 @@
     
         <!-- Total Harga -->
         {% if produk_keranjang %}
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="card mt-5">
-              <div class="card-body text-center">
-                <h5 class="fw-bold">Total Harga : Rp {{ total_harga }}</h5>
-                <form method="POST" id="checkout-form" action="/checkout">
-                  <button type="submit" class="btn m-2" style="background-color: green" onclick="reloadPage()">Checkout Semua</button>
-                </form>
-              </div>
+        <!-- <div class="row d-flex justify-content-center">
+          <div class="col">
+         <h5 class="fw-bold"> Total Harga : Rp {{ total_harga }}</h5>
+        <form method="POST" id="checkout-form" action="/checkout">
+         <button type="submit" class="btn m-2"  onclick="reloadPage()">Checkout Semua</button>
+        </form>
+      </div>
+      </div> -->
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <h3 class="checkoutAll">Total Harga : Rp {{ total_harga }}</h3>
+              <form method="POST" id="checkout-form" action="/checkout">
+                <button type="submit" class="btn m-2"  onclick="reloadPage()">Pesan Semua</button>
+              </form>
             </div>
           </div>
         </div>
+      </div>
         {% endif %}
       </div>
     </section>
@@ -464,8 +278,12 @@
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../static/script.js"></script>
     <!-- My AOS -->
-    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>

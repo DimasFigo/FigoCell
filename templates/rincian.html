@@ -21,9 +21,9 @@
 
   <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
+    <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
+        <a class="navbar-brand fw-bold" href="/" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -35,33 +35,40 @@
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link active" aria-current="page" href="/"><i class="bi bi-house-door-fill me-3"></i>Home</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/product">Produk</a>
+                <a class="nav-link" aria-current="page" href="/product"><i class="bi bi-tags-fill me-3"></i> Produk</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/contact">Kontak</a>
+                <a class="nav-link" aria-current="page" href="/contact"> <i class="bi bi-person-lines-fill me-3"></i> Kontak</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
+                <a class="nav-link" aria-current="page" href="/keranjang"><i class="bi bi-cart-check-fill me-3"> </i>Keranjang </a>
               </li>
 
               {% if 'username' in session %}
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/profile/{{username}}"
-                  >{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
+
+              <div class="profile-dropdown">
+                <a class="nav-link" aria-current="page" href="/profile/{{username}}"
+                  >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
                 /></a>
-              </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-danger" aria-current="page" href="/logout">Logout</a>
-              </li>
+                <div class="dropdown-content">
+                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Edit Profile</i></a>
+                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
+                </div>
+              </div>
+
               {% else %}
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
+                  ><span><i class="bi bi-box-arrow-in-right"> Login</i> </span></a
+                >
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+                  ><span><i class="bi bi-person-plus"> Register</i></span>
+                </a>
               </li>
               {% endif %}
             </ul>
