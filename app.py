@@ -21,6 +21,7 @@ reviews_collection = db['reviews']
 def home():
     reviews = reviews_collection.find()
     return render_template('index.html', reviews=reviews, username=session.get('username'))
+
 @app.route('/total_pengguna', methods=['GET'])
 def total_pengguna():
     # Mengambil jumlah pengguna dari koleksi 'pengguna'
@@ -41,6 +42,14 @@ def total_produk():
     jumlah_produk = db.produk.count_documents({})
     
     return jsonify({'total_produk': jumlah_produk})
+
+@app.route('/total_review', methods=['GET'])
+def total_review():
+    # Mengambil jumlah review dari koleksi 'pengguna'
+    jumlah_review = db.reviews.count_documents({})
+    
+    return jsonify({'total_review': jumlah_review})
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -502,8 +511,6 @@ def checkout_add(produk):
         return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
     return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
 
-
-
 @app.route('/order', methods=["GET"])
 def order():
    if 'username' in session and session['role'] == 'admin':
@@ -563,7 +570,6 @@ def user():
    else :
     return render_template('login.html')
 
-
 @app.route('/users', methods=["GET"])
 def users():
    user_list = list(db.users.find({}, {'_id': False}))
@@ -597,6 +603,27 @@ def users_update():
         }}
     )
     return jsonify({'msg': 'Data user updated successfully'})
+
+# Review Collection
+@app.route('/review', methods=["GET"])
+def review():
+   if 'username' in session and session['role'] == 'admin':
+    return render_template('review.html', username=session.get('username'))
+   else :
+    return render_template('login.html')
+
+@app.route('/reviews', methods=["GET"])
+def reviews():
+   review_list = list(db.reviews.find({}, {'_id': False}))
+   return jsonify({'reviews': review_list})
+
+@app.route("/reviews/delete", methods=['POST'])
+def reviews_delete():
+    email_receive = request.form['email_give']
+    db.reviews.delete_one( {
+        'email': email_receive
+    } )
+    return jsonify({'msg': 'Delete review success!'})
 
 @app.route('/profile/<username>', methods=["GET"])
 def profile(username):
