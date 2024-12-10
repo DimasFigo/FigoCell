@@ -46,6 +46,15 @@
         });
       });
       $(document).ready(function () {
+        $.get('/total_review', function (data) {
+          // Menampilkan jumlah review di halaman
+          $('#totalReview').text(data.total_review);
+        }).fail(function () {
+          // Jika gagal mengambil data
+          $('#totalReview').text('Gagal mengambil data');
+        });
+      });
+      $(document).ready(function () {
         $.get('/total_order', function (data) {
           // Menampilkan jumlah order di halaman
           $('#totalorder').text(data.total_order);
@@ -82,6 +91,9 @@
         <li class="nav-item">
           <a href="/order" class="nav-link">Kelola Order</a>
         </li>
+        <li class="nav-item">
+          <a href="/review" class="nav-link">Kelola Review</a>
+        </li>
         <li class="nav-item" data-bs-dismiss="offcanvas" aria-label="Close">
           <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}}</a>
         </li>
@@ -114,7 +126,7 @@
       <h1>Selamat Datang, Admin!</h1>
       <p>Ini adalah dashboard utama Anda.</p>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card text-bg-primary mb-3">
             <div class="card-body">
               <h5 class="card-title">Pengguna</h5>
@@ -122,7 +134,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card text-bg-success mb-3">
             <div class="card-body">
               <h5 class="card-title">Order</h5>
@@ -130,11 +142,19 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card text-bg-warning mb-3">
             <div class="card-body">
               <h5 class="card-title">Product</h5>
               <p class="card-text" id="totalproduk">Total Product:</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-bg-danger mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Review</h5>
+              <p class="card-text" id="totalReview">Total Review:</p>
             </div>
           </div>
         </div>

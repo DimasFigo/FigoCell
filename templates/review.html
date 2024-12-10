@@ -47,36 +47,24 @@
         function listing() {
         $.ajax({
             type: 'GET',
-            url: '/orders',
+            url: '/reviews',
             data: {},
             success: function (response) {
-            let rows = response['orders'];
+            let rows = response['reviews'];
             for (let i = 0; i < rows.length; i++) {
                 let nomor = i + 1;
-                let orderId = rows[i]['order_id'];
-                let username = rows[i]['username'];  // Menggunakan order_id
-                let totalHarga = rows[i]['total_harga'];  // Menggunakan total_harga
-                let status = rows[i]['status'];  // Menggunakan status
-                let tanggalPesan = new Date(rows[i]['tanggal_pesan']).toLocaleString();  // Menggunakan tanggal_pesan
+                let email = rows[i]['email'];
+                let review = rows[i]['review'];  
+                let created_at = rows[i]['created_at'];  
                 let temp_html = `
                     <tr>
                         <td>${nomor}</td>
-                        <td>${orderId}</td>
-                        <td>${username}</td>
-                        <td>Rp ${totalHarga}</td>
-                        <td>${status}</td>
-                        <td>${tanggalPesan}</td>
+                        <td>${email}</td>
+                        <td>${review}</td>
+                        <td>${created_at}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['order_id']}', '${rows[i]['status']}')">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm" onClick="hapusData('${orderId}')">
+                            <button class="btn btn-danger btn-sm" onClick="hapusData('${email}')">
                                 <i class="bi bi-trash3"></i> Hapus
-                            </button>
-                            <button class="btn btn-primary btn-sm">
-                              <a href="/rincian/${orderId}" class="text-white text-decoration-none">
-                                <i class="bi bi-info-circle"></i> Rincian
-                              </a>
                             </button>
                         </td>
                     </tr>
@@ -87,55 +75,17 @@
         });
     }
 
-    function hapusData(orderId) {
+    function hapusData(email) {
         $.ajax({
           type: 'POST',
-          url: '/orders/delete',
-          data: { orderId_give: orderId },
+          url: '/reviews/delete',
+          data: { email_give: email },
           success: function (response) {
             alert(response['msg']);
             window.location.reload();
           },
         });
       }
-
-      function editData(orderId, newStatus) {
-        $('#editId').val(orderId);
-        $('#editStatus').val(newStatus);
-
-        // Tampilkan modal
-        $('#editModal').modal('show');
-
-        // Tangani submit form
-        $('#editForm')
-          .off('submit')
-          .on('submit', function (e) {
-            e.preventDefault(); // Cegah pengiriman form bawaan
-
-            let formData = new FormData(this); // Ambil data dari form
-            formData.append('orderId', $('#editId').val()); // pastikan ID ikut terkirim
-            // console.log(formData);
-            console.log(orderId);
-
-            $.ajax({
-              type: 'POST',
-              url: '/orders/update',
-              data: formData,
-              processData: false, // Untuk FormData
-              contentType: false, // Untuk FormData
-              success: function (response) {
-                alert(response['msg']); // Tampilkan pesan
-                $('#editModal').modal('hide'); // Tutup modal
-                window.location.reload(); // Reload halaman
-              },
-              error: function (xhr, status, error) {
-                console.error('Error:', error); // Log error di konsol
-                alert('Terjadi kesalahan saat menyimpan perubahan.');
-              },
-            });
-          });
-      }
-
       </script>
   </head>
   <body>
@@ -186,18 +136,16 @@
       </nav>
 
 
-      <h1>Kelola Order</h1>
+      <h1>Kelola Review</h1>
 
       <div class="table-responsive">
         <table class="table table-striped table-bordered">
           <thead class="table-dark">
             <tr>
               <th>No</th>
-              <th>Order ID</th>
-              <th>Username</th>
-              <th>Total Harga</th>
-              <th>Status</th>
-              <th>Tanggal Pesan</th>
+              <th>Email</th>
+              <th>Review</th>
+              <th>Tanggal Buat</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -206,35 +154,6 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Edit Order</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="editForm">
-                <div class="mb-3">
-                  <label for="editUsername" class="form-label">Order ID</label>
-                  <input type="text" class="form-control" id="editId" name="id" readonly />
-                </div>
-                <div class="input-group mb-3">
-                  <label class="input-group-text" for="inputGroupSelect01">Status</label>
-                  <select class="form-select" id="editStatus" name="status">
-                    <option value="Pending">Pending</option>
-                    <option value="Complete">Complete</option>
-                    <option value="Failed">Failed</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
