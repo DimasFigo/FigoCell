@@ -287,8 +287,6 @@ def add_to_cart():
     else:
         return jsonify({'msg': 'Produk tidak ditemukan!'}), 404
 
-
-
 @app.route('/keranjang/delete', methods=['POST'])
 def delete_from_cart():
     if 'username' in session:  # Cek apakah user sudah login
@@ -619,9 +617,9 @@ def reviews():
 
 @app.route("/reviews/delete", methods=['POST'])
 def reviews_delete():
-    email_receive = request.form['email_give']
+    review_id_receive = request.form['review_id_give']
     db.reviews.delete_one( {
-        'email': email_receive
+        'review_id': review_id_receive
     } )
     return jsonify({'msg': 'Delete review success!'})
 
@@ -670,8 +668,7 @@ def profile_update():
     if result.matched_count == 0:
         return jsonify({"msg": "Gagal memperbarui data pengguna!"}), 500
 
-    return jsonify({'msg': 'Data pengguna berhasil diperbarui!'}), 200
-
+    return render_template('update_success.html', username=session.get('username'))
 
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
@@ -694,6 +691,7 @@ def contact():
         name = request.form.get('name')
         review = request.form.get('review')
         rating = request.form.get('rating')
+        review_id = str(datetime.utcnow().timestamp())
         
         # Validasi input form
         if not name or not review:
@@ -705,7 +703,8 @@ def contact():
             'name': name,
             'review': review,
             'rating': int(rating),
-            'created_at': datetime.now()
+            'created_at': datetime.now(),
+            'review_id': review_id
         }
         reviews_collection.insert_one(new_review)
 
