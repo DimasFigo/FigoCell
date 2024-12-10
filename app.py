@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, flash,redirect, url_for, session, jsonify
 from pymongo import MongoClient
+import locale
 from flask_bcrypt import Bcrypt
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
 
+# Set locale ke Indonesia
+locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')
 app = Flask(__name__)
 app.secret_key = '12092004'
 bcrypt = Bcrypt(app)
@@ -100,8 +103,9 @@ def admin_dashboard():
 
 @app.route('/user_dashboard')
 def user_dashboard():
+    reviews = reviews_collection.find()
     if 'username' in session and session['role'] == 'user':
-        return render_template('index.html', username=session['username'])
+        return render_template('index.html', username=session['username'], reviews=reviews)
     flash('Unauthorized access!')
     return redirect(url_for('login'))
 
@@ -311,43 +315,46 @@ def update_keranjang():
     if 'username' in session:
         username = session['username']
         nama_produk = request.form.get('nama_produk')
-        jumlah = int(request.form.get('jumlah'))
+        jumlah = int(request.form.get('jumlah'))  # Ambil jumlah dari form
 
         # Cek apakah produk ada di keranjang user
         keranjang_item = db.keranjang.find_one({'username': username, 'produk.nama': nama_produk})
-
         if keranjang_item:
             for produk in keranjang_item['produk']:
                 if produk['nama'] == nama_produk:
                     jumlah_sekarang = int(produk['jumlah'])
-                    jumlah_total = jumlah_sekarang + jumlah
+                    jumlah_total = jumlah_sekarang + jumlah  # Tambah atau kurangi jumlah produk
 
-                    # Validasi stok produk (opsional)
+                    # Validasi stok
                     produk_db = db.produk.find_one({'nama': nama_produk})
                     if not produk_db:
                         return jsonify({'msg': 'Produk tidak ditemukan di database!'}), 404
-                    
-                    stok_tersedia = produk_db.get('stok', 0)
+
+                    stok_tersedia = int(produk_db.get('stok', 0))
+                    if jumlah_total < 0:
+                        return jsonify({'msg': 'Jumlah tidak bisa kurang dari 0!'}), 400
                     if jumlah_total > stok_tersedia:
-                        return jsonify({'msg': f'Stok tidak mencukupi! Stok tersedia: {stok_tersedia}.'}), 400
+                        return jsonify({'msg': f'Stok tidak mencukupi! Stok tersedia : {stok_tersedia}.'}), 400
 
-                    harga_produk = float(produk_db['harga'])  # pastikan harga adalah angka
-                    jumlah_total = int(jumlah_total)  # pastikan jumlah adalah integer
+                    harga_produk = float(produk_db['harga'])
+                    total_harga = jumlah_total * harga_produk
 
+                    # Update jumlah di keranjang
                     result = db.keranjang.update_one(
                         {'username': username, 'produk.nama': nama_produk},
-                        {'$set': {
-                            'produk.$.jumlah': jumlah_total,
-                            'produk.$.total': jumlah_total * harga_produk
-                        }}
+                        {'$set': {'produk.$.jumlah': jumlah_total, 'produk.$.total': total_harga}}
                     )
 
+    #                 if result.modified_count > 0:
+    #                     return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
+    #                 return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
+    #     return jsonify({'msg': 'Produk tidak ada di keranjang!'}), 404
+    # return jsonify({'msg': 'Anda harus login untuk memperbarui keranjang!'}), 401
                     if result.modified_count > 0:
-                        return jsonify({'msg': 'Jumlah produk berhasil diperbarui!'})
-                    return jsonify({'msg': 'Gagal memperbarui produk di keranjang!'}), 400
-
-            return jsonify({'msg': 'Produk tidak ditemukan dalam keranjang!'}), 404
-    return jsonify({'msg': 'Anda harus login untuk memperbarui produk!'}), 401
+                          return jsonify({'status': 'success', 'msg': 'Jumlah produk berhasil diperbarui!'}), 200
+        else:
+            return jsonify({'status': 'error', 'msg': 'Gagal memperbarui produk di keranjang!'}), 400
+    return jsonify({'status': 'error', 'msg': 'Anda harus login untuk mengubah keranjang!'}), 401
 
 # Order Collection
 @app.route('/order', methods=['POST'])
@@ -433,8 +440,8 @@ def checkout():
 
             # Menghapus produk dari keranjang setelah pemesanan
             db.keranjang.delete_one({'username': username})
-
-            return jsonify({'msg': 'Checkout berhasil, pesanan telah dibuat!', 'order_id': order_id})
+            
+            return render_template('checkout_success.html', produk=produk_keranjang)
         else:
             return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
     return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
@@ -492,6 +499,8 @@ def checkout_add(produk):
                 {'$pull': {'produk': {'nama': {'$regex': f'^{produk}$', '$options': 'i'}}}}
             )
 
+            # Alihkan ke halaman yang memberi tahu bahwa pemesanan berhasil
+            return render_template('checkout_success.html', produk=produk_keranjang)
             # Debugging hasil update
             print("Modified count:", result.modified_count)
             if result.modified_count == 0:
@@ -541,34 +550,9 @@ def orders_update():
 def product():
    return render_template ('product.html', username=session.get('username'))
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    if request.method == 'POST':
-        # Ambil data dari form
-        name = request.form.get('name')
-        review = request.form.get('review')
-        rating = request.form.get('rating')
-        
-        # Validasi input form
-        if not name or not review:
-            flash('Nama dan ulasan harus diisi!', 'error')
-            return redirect(url_for('contact'))
-
-        # Simpan data ke MongoDB
-        new_review = {
-            'name': name,
-            'review': review,
-            'rating': int(rating),
-            'created_at': datetime.now()
-        }
-        reviews_collection.insert_one(new_review)
-
-        # Tampilkan pesan sukses
-        flash('Ulasan berhasil dikirim!', 'success')
-        return redirect(url_for('home'))
-    
-    # Jika GET, tampilkan halaman kontak
-    return render_template('contact.html', username=session.get('username'))
+# @app.route('/contact', methods=["GET"])
+# def contact():
+#    return render_template ('contact.html',username=session.get('username'))
 
 @app.route('/pulsa/regular', methods=["GET"])
 def regular():
@@ -703,5 +687,35 @@ def rincian(orderId):
         return render_template('rincian.html', rincian=rincian_data, username=session.get('username'))
     return render_template('login.html')
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        # Ambil data dari form
+        name = request.form.get('name')
+        review = request.form.get('review')
+        rating = request.form.get('rating')
+        
+        # Validasi input form
+        if not name or not review:
+            flash('Nama dan ulasan harus diisi!', 'error')
+            return redirect(url_for('contact'))
+
+        # Simpan data ke MongoDB
+        new_review = {
+            'name': name,
+            'review': review,
+            'rating': int(rating),
+            'created_at': datetime.now()
+        }
+        reviews_collection.insert_one(new_review)
+
+        # Tampilkan pesan sukses
+        flash('Ulasan berhasil dikirim!', 'success')
+        return redirect(url_for('home'))
+    
+    # Jika GET, tampilkan halaman kontak
+    return render_template('contact.html', username=session.get('username'))
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+

@@ -18,7 +18,16 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
+  <script>
+    // Ambil tombol dengan id 'refreshButton'
+    const refreshButton = document.getElementById('refreshButton');
 
+    // Tambahkan event listener untuk event 'click'
+    refreshButton.addEventListener('click', function () {
+      // Me-refresh halaman
+      location.reload();
+    });
+  </script>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
@@ -35,16 +44,16 @@
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/product">Produk</a>
+                <a class="nav-link" aria-current="page" href="/product">Produk</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/contact">Kontak</a>
+                <a class="nav-link" aria-current="page" href="/contact">Kontak</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
+                <a class="nav-link" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
               </li>
 
               {% if 'username' in session %}
@@ -58,7 +67,7 @@
               </div>
               {% else %}
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
+                <a class="nav-link text-light btn btn-transparent" aria-current="page" href="/login">Login</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Register</a>
@@ -132,7 +141,7 @@
                 <label for="bio" class="form-label">Bio</label>
                 <textarea class="form-control" id="bio" name="bio" rows="3">{{ user_data['bio'] if 'bio' in user_data else '' }}</textarea>
               </div>
-              <button type="submit" class="btn w-100">Simpan Perubahan</button>
+              <button type="submit" class="btn w-100" id="refreshButton">Simpan Perubahan</button>
             </form>
           </div>
         </div>
