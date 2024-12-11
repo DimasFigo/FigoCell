@@ -709,10 +709,17 @@ def profile_update():
     nama_receive = request.form.get('nama')
     email_receive = request.form.get('email')
     bio_receive = request.form.get('bio')
-    
+
     # Path gambar default
     default_image = "static/testi/person1.jpg"
-    file_path = default_image  # Inisialisasi file_path dengan nilai default
+
+    # Ambil data pengguna dari database
+    user = db.users.find_one({"username": username_receive})
+    if not user:
+        return jsonify({"msg": "Pengguna tidak ditemukan!"}), 404
+
+    # Cek apakah ada gambar profil yang sudah ada di database
+    current_image = user.get('profile_image', default_image)
 
     today = datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
@@ -720,24 +727,23 @@ def profile_update():
     # Logika upload file
     file = request.files.get("file_give")
     if file and file.filename != "":
-        exntension = file.filename.split('.')[-1]
-        file_path = f'static/uploads/post-{mytime}.{exntension}'
+        extension = file.filename.split('.')[-1]
+        file_path = f'static/uploads/post-{mytime}.{extension}'
         file.save(file_path)
+        profile_image = file_path  # Gunakan file baru jika ada yang diupload
+    else:
+        profile_image = current_image  # Jika tidak ada file yang diupload, gunakan gambar dari database
 
     # Validasi field
     if not nama_receive or not email_receive or not bio_receive:
         return jsonify({'msg': 'Semua field harus diisi!'}), 400
 
     # Update ke database
-    user = db.users.find_one({"username": username_receive})
-    if not user:
-        return jsonify({"msg": "Pengguna tidak ditemukan!"}), 404
-
     update_data = {
         'nama': nama_receive,
         'email': email_receive,
         'bio': bio_receive,
-        'profile_image': file_path  # Simpan path file (baik file baru atau gambar default)
+        'profile_image': profile_image  # Simpan path file (baik file baru atau gambar lama dari database)
     }
 
     result = db.users.update_one(
@@ -749,7 +755,6 @@ def profile_update():
         return jsonify({"msg": "Gagal memperbarui data pengguna!"}), 500
 
     return render_template('update_success.html', username=session.get('username'))
-
 
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
