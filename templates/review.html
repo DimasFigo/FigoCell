@@ -11,7 +11,7 @@
     <!-- BS Icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <!-- Favicon -->
-  <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon/favicon.png') }}" type="image/x-icon" />
     <style>
       body {
         min-height: 100vh;
@@ -41,23 +41,23 @@
       }
     </style>
     <script>
-        $(document).ready(function () {
-          listing();
-        });
-        function listing() {
+      $(document).ready(function () {
+        listing();
+      });
+      function listing() {
         $.ajax({
-            type: 'GET',
-            url: '/reviews',
-            data: {},
-            success: function (response) {
+          type: 'GET',
+          url: '/reviews',
+          data: {},
+          success: function (response) {
             let rows = response['reviews'];
             for (let i = 0; i < rows.length; i++) {
-                let nomor = i + 1;
-                let nama = rows[i]['name'];
-                let review = rows[i]['review'];  
-                let created_at = rows[i]['created_at'];  
-                let review_id = rows[i]['review_id'];
-                let temp_html = `
+              let nomor = i + 1;
+              let nama = rows[i]['name'];
+              let review = rows[i]['review'];
+              let created_at = rows[i]['created_at'];
+              let review_id = rows[i]['review_id'];
+              let temp_html = `
                     <tr>
                         <td>${nomor}</td>
                         <td>${nama}</td>
@@ -70,13 +70,13 @@
                         </td>
                     </tr>
                 `;
-                $('#tbody').append(temp_html);  // Menambahkan baris ke dalam tbody
-                }
-            },
+              $('#tbody').append(temp_html); // Menambahkan baris ke dalam tbody
+            }
+          },
         });
-    }
+      }
 
-    function hapusData(review_id) {
+      function hapusData(review_id) {
         $.ajax({
           type: 'POST',
           url: '/reviews/delete',
@@ -87,7 +87,7 @@
           },
         });
       }
-      </script>
+    </script>
   </head>
   <body>
     <!-- Sidebar -->
@@ -129,13 +129,14 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
+                <a class="nav-link active" aria-current="page" href="/profile/{{username}}"
+                  >{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
+                /></a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-
 
       <h1>Kelola Review</h1>
 
@@ -159,4 +160,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
-

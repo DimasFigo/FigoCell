@@ -179,6 +179,11 @@ nav span .bi {
   background-size: cover;
 }
 
+.nav-link img {
+  border: 3px solid #685e5e;
+  margin-left: 3px;
+}
+
 @media (max-width: 768px) {
   .col img {
     width: 100%;
