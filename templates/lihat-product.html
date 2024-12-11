@@ -173,7 +173,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em" /></a>
+                <a class="nav-link active" aria-current="page" href="/profile/{{username}}">{{username}} <img class="rounded-circle" src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="My Image" width="40em" height="40em" /></a>
               </li>
             </ul>
           </div>

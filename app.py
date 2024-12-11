@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash,redirect, url_for, session, jsonify
 from pymongo import MongoClient
 import locale
+import os
 from flask_bcrypt import Bcrypt
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -19,8 +20,14 @@ reviews_collection = db['reviews']
 
 @app.route('/')
 def home():
-    reviews = reviews_collection.find()
-    return render_template('index.html', reviews=reviews, username=session.get('username'))
+    if 'username' in session:
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
+        reviews = reviews_collection.find()
+        return render_template('index.html', reviews=reviews, username=session.get('username'), user_data=user_data)
+    else :
+        reviews = reviews_collection.find()
+        return render_template('index.html', reviews=reviews, username=session.get('username'))
 
 @app.route('/total_pengguna', methods=['GET'])
 def total_pengguna():
@@ -58,17 +65,33 @@ def register():
         password = request.form['password']
         email = request.form['email']
         role = request.form['role']
+        default_image = "static/testi/person1.jpg"  # Gambar default
+        bio = "Tidak ada bio."
 
-        if users_collection.find_one({'username': username,}):
+        # Cek apakah username sudah terdaftar
+        if users_collection.find_one({'username': username}):
             flash('Username already exists')
             return redirect(url_for('register'))
         
+        # Cek apakah email sudah terdaftar
         if users_collection.find_one({'email': email}):
             flash('Email already registered')
             return redirect(url_for('register'))
 
+        # Hash password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        users_collection.insert_one({'nama':nama, 'username': username, 'password': hashed_password, 'role': role, 'email':email})
+
+        # Simpan data user ke database dengan gambar default
+        users_collection.insert_one({
+            'nama': nama,
+            'username': username,
+            'password': hashed_password,
+            'role': role,
+            'email': email,
+            'profile_image': default_image,  # Menyimpan path gambar default
+            'bio': bio
+        })
+        
         flash('Registration successful! Please login.')
         return redirect(url_for('login'))
 
@@ -97,7 +120,9 @@ def login():
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if 'username' in session and session['role'] == 'admin':
-        return render_template('dashboard_admin.html', username=session['username'])
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
+        return render_template('dashboard_admin.html', username=session['username'], user_data=user_data)
     flash('Unauthorized access!')
     return redirect(url_for('login'))
 
@@ -105,7 +130,9 @@ def admin_dashboard():
 def user_dashboard():
     reviews = reviews_collection.find()
     if 'username' in session and session['role'] == 'user':
-        return render_template('index.html', username=session['username'], reviews=reviews)
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
+        return render_template('index.html', username=session['username'], reviews=reviews, user_data=user_data)
     flash('Unauthorized access!')
     return redirect(url_for('login'))
 
@@ -156,13 +183,17 @@ def produk_post():
 @app.route("/daftar-produk", methods=["GET"])
 def daftar_produk():
     if 'username' in session and session['role'] == 'admin':
-        return render_template('lihat-product.html', username=session.get('username'))
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
+        return render_template('lihat-product.html', username=session.get('username'), user_data=user_data)
     else :
         return render_template('login.html')
 
 @app.route("/tambah-produk", methods=["GET"])
 def tambah_produk():
-    return render_template('tambah-product.html', username=session.get('username'))
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template('tambah-product.html', username=session.get('username'), user_data=user_data)
 
 @app.route("/produk/delete", methods=['POST'])
 def produk_delete():
@@ -174,14 +205,11 @@ def produk_delete():
 
 @app.route("/produk/update", methods=["POST"])
 def produk_update():
-    
     nama_receive = request.form.get('nama')
-    
     # Cek jika nama kosong
     if not nama_receive:
         return jsonify({'msg': 'ID tidak valid atau tidak ditemukan!'}), 400
-
-
+    
     nama_receive = request.form.get('nama')
     jenis_receive = request.form.get('jenis')
     stok_receive = request.form.get('stok')
@@ -204,12 +232,13 @@ def view_cart():
     if 'username' in session:
         username = session['username']
         keranjang = db.keranjang.find_one({'username': username})
+        user_data = users_collection.find_one({'username': username})
         if keranjang:
             produk_keranjang = keranjang.get('produk', [])
             # Pastikan harga dikonversi menjadi integer/float sebelum dijumlahkan
             total_harga = sum(int(produk['total']) for produk in produk_keranjang)
-            return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga, username=session.get('username'))
-        return render_template('keranjang.html', produk_keranjang=[], total_harga=0, username=session.get('username'))
+            return render_template('keranjang.html', produk_keranjang=produk_keranjang, total_harga=total_harga, username=session.get('username'),user_data=user_data)
+        return render_template('keranjang.html', produk_keranjang=[], total_harga=0, username=session.get('username'),user_data=user_data) 
     flash('Anda harus login untuk melihat keranjang!')
     return redirect(url_for('login'))
 
@@ -512,7 +541,9 @@ def checkout_add(produk):
 @app.route('/order', methods=["GET"])
 def order():
    if 'username' in session and session['role'] == 'admin':
-    return render_template('order.html', username=session.get('username'))
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template('order.html', username=session.get('username'), user_data=user_data)
    else :
     return render_template('login.html')
 
@@ -546,7 +577,12 @@ def orders_update():
 
 @app.route('/product', methods=["GET"])
 def product():
-   return render_template ('product.html', username=session.get('username'))
+   if 'username' in session:
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template ('product.html', username=session.get('username'), user_data=user_data)
+   else :
+    return render_template ('product.html', username=session.get('username'))
 
 # @app.route('/contact', methods=["GET"])
 # def contact():
@@ -554,17 +590,29 @@ def product():
 
 @app.route('/pulsa/regular', methods=["GET"])
 def regular():
-   return render_template ('pulsa-regular.html', username=session.get('username'))
+   if 'username' in session:
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template ('pulsa-regular.html', username=session.get('username'), user_data=user_data)
+   else :
+    return render_template ('pulsa-regular.html', username=session.get('username'))
 
 @app.route('/pulsa/listrik', methods=["GET"])
 def listrik():
-   return render_template ('pulsa-listrik.html', username=session.get('username'))
+   if 'username' in session:
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template ('pulsa-listrik.html', username=session.get('username'), user_data=user_data)
+   else :
+    return render_template ('pulsa-listrik.html', username=session.get('username'))
 
 # Users Collcetion
 @app.route('/user', methods=["GET"])
 def user():
    if 'username' in session and session['role'] == 'admin':
-    return render_template('user.html', username=session.get('username'))
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template('user.html', username=session.get('username'), user_data=user_data)
    else :
     return render_template('login.html')
 
@@ -606,7 +654,9 @@ def users_update():
 @app.route('/review', methods=["GET"])
 def review():
    if 'username' in session and session['role'] == 'admin':
-    return render_template('review.html', username=session.get('username'))
+    username = session['username']
+    user_data = users_collection.find_one({'username': username})
+    return render_template('review.html', username=session.get('username'), user_data=user_data)
    else :
     return render_template('login.html')
 
@@ -627,7 +677,21 @@ def reviews_delete():
 def profile(username):
     # Mengambil data profil pengguna
     if 'username' in session and session['username'] == username:
-        user_data = db.users.find_one({'username': username})
+        user_data = users_collection.find_one({'username': username})
+    
+        if not user_data:
+            flash("User not found!")
+            return redirect(url_for('login'))
+    
+        # Render template profile dengan data pengguna dan pesanan
+        return render_template('profile.html', user_data=user_data, username=session.get('username'))
+    return render_template('login.html')
+
+@app.route('/riwayat/<username>', methods=["GET"])
+def riwayat(username):
+    # Mengambil data order pengguna
+    if 'username' in session and session['username'] == username:
+        user_data = users_collection.find_one({'username': username})
     
         if not user_data:
             flash("User not found!")
@@ -636,7 +700,7 @@ def profile(username):
         orders = list(db.orders.find({'username': username}))
     
         # Render template profile dengan data pengguna dan pesanan
-        return render_template('profile.html', user_data=user_data, orders=orders)
+        return render_template('riwayat.html', user_data=user_data, orders=orders, username=session.get('username'))
     return render_template('login.html')
 
 @app.route("/profile/update", methods=["POST"])
@@ -645,20 +709,36 @@ def profile_update():
     nama_receive = request.form.get('nama')
     email_receive = request.form.get('email')
     bio_receive = request.form.get('bio')
+    
+    # Path gambar default
+    default_image = "static/testi/person1.jpg"
+    file_path = default_image  # Inisialisasi file_path dengan nilai default
 
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+    # Logika upload file
+    file = request.files.get("file_give")
+    if file and file.filename != "":
+        exntension = file.filename.split('.')[-1]
+        file_path = f'static/uploads/post-{mytime}.{exntension}'
+        file.save(file_path)
+
+    # Validasi field
     if not nama_receive or not email_receive or not bio_receive:
         return jsonify({'msg': 'Semua field harus diisi!'}), 400
 
+    # Update ke database
     user = db.users.find_one({"username": username_receive})
     if not user:
         return jsonify({"msg": "Pengguna tidak ditemukan!"}), 404
 
     update_data = {
         'nama': nama_receive,
-        'email' : email_receive,
-        'bio': bio_receive
+        'email': email_receive,
+        'bio': bio_receive,
+        'profile_image': file_path  # Simpan path file (baik file baru atau gambar default)
     }
-
 
     result = db.users.update_one(
         {'username': username_receive},
@@ -670,50 +750,70 @@ def profile_update():
 
     return render_template('update_success.html', username=session.get('username'))
 
+
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
     # Mengambil data profil pengguna
     if 'username' in session:
         rincian_data = db.orders.find_one({'order_id': orderId})
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
     
         if not rincian_data:
             flash("Order not found!")
             return redirect(url_for('login'))
     
         # Render template profile dengan data pengguna dan pesanan
-        return render_template('rincian.html', rincian=rincian_data, username=session.get('username'))
+        return render_template('rincian.html', rincian=rincian_data, username=session.get('username'), user_data=user_data)
     return render_template('login.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    if request.method == 'POST':
-        # Ambil data dari form
-        name = request.form.get('name')
-        review = request.form.get('review')
-        rating = request.form.get('rating')
-        review_id = str(datetime.utcnow().timestamp())
+    # Periksa apakah pengguna sudah login
+    if 'username' in session:
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
         
-        # Validasi input form
-        if not name or not review:
-            flash('Nama dan ulasan harus diisi!', 'error')
-            return redirect(url_for('contact'))
+        if not user_data:
+            flash('Data pengguna tidak ditemukan!', 'error')
+            return redirect(url_for('home'))
 
-        # Simpan data ke MongoDB
-        new_review = {
-            'name': name,
-            'review': review,
-            'rating': int(rating),
-            'created_at': datetime.now(),
-            'review_id': review_id
-        }
-        reviews_collection.insert_one(new_review)
+        if request.method == 'POST':
+            # Ambil data dari form
+            review = request.form.get('review')
+            rating = request.form.get('rating', 0)  # Default rating 0 jika tidak diisi
+            
+            # Validasi input form
+            if not review:
+                flash('Ulasan tidak boleh kosong!', 'error')
+                return redirect(url_for('contact'))
 
-        # Tampilkan pesan sukses
-        flash('Ulasan berhasil dikirim!', 'success')
-        return redirect(url_for('home'))
+            # Simpan data ke MongoDB
+            new_review = {
+                'name': user_data.get('nama', username),  # Ambil nama dari data pengguna atau username
+                'profile_image': user_data.get('profile_image', 'static/testi/person1.jpg'),
+                'review': review,
+                'rating': int(rating),
+                'created_at': datetime.now(),
+                'review_id': str(datetime.utcnow().timestamp())
+            }
+            reviews_collection.insert_one(new_review)
+
+            # Tampilkan pesan sukses
+            flash('Ulasan berhasil dikirim!', 'success')
+            return redirect(url_for('home'))
+
+        # Jika GET dan login, tampilkan halaman kontak dengan form ulasan
+        return render_template('contact.html', username=username, user_data=user_data, is_logged_in=True)
     
-    # Jika GET, tampilkan halaman kontak
-    return render_template('contact.html', username=session.get('username'))
+    # Jika pengguna tidak login
+    if request.method == 'POST':
+        flash('Anda harus login untuk memberikan ulasan!', 'error')
+        return redirect(url_for('login'))
+
+    # Jika GET dan tidak login, tampilkan halaman kontak tanpa form ulasan
+    return render_template('contact.html', is_logged_in=False)
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
