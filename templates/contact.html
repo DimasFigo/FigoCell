@@ -66,20 +66,20 @@
                   >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename='testi/person1.jpg') }}" alt="My Image" width="40em" height="40em"
                 /></a>
                 <div class="dropdown-content">
-                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Edit Profile</i></a>
-                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
+                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Edit Profil</i></a>
+                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Keluar</i></a>
                 </div>
               </div>
 
               {% else %}
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
-                  ><span><i class="bi bi-box-arrow-in-right"> Login</i> </span></a
+                  ><span><i class="bi bi-box-arrow-in-right"> Masuk</i> </span></a
                 >
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
                 <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
-                  ><span><i class="bi bi-person-plus"> Register</i></span>
+                  ><span><i class="bi bi-person-plus"> Daftar</i></span>
                 </a>
               </li>
               {% endif %}
@@ -97,7 +97,7 @@
             <img src="{{ url_for('static', filename='Asset/foto-1.jpg') }}" width="400px" height="500px" alt="Figo Cell" />
           </div>
           <div class="col">
-            <h2>Tentang Kami <span>Figo Cell</span></h2>
+            <h2>Tentang <span>Figo Cell</span></h2>
             <hr class="col-md-8 mb-3 mt-3" />
             <p class="paragraf">
               "Hubungi kami di Figo Cell untuk berbagai kebutuhan produk pulsa, sembako dan rokok . Tim kami siap membantu Anda dengan layanan pelanggan yang ramah dan responsif. Jika Anda memiliki pertanyaan atau membutuhkan informasi
@@ -164,32 +164,12 @@
     <br />
     <br />
     <!-- End Location -->
-    <!-- form -->
-    <!-- <div class="row rounded m-auto" style="max-width: 30em">
-      <div class="col">
-        <div class="container">
-          <h2 class="m-5 text-center">Ulasan Anda</h2>
-          <form method="POST" action="/register" autocomplete="off">
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-            </div>
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <button class="btn btn-dark mt-3 mb-3 d-grid gap-2 col-12" type="submit" style="background-color: black">Kirim</button>
-          </form>
-        </div>
-      </div>
-    </div> -->
-    <!-- end form -->
     <!-- Footer -->
     <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
       <div class="container">
         <div class="row ms-auto">
           <div class="col-lg-4 mt-3">
-            <h3 style="color: #825b32">FIgo Cell</h3>
+            <h3 style="color: #825b32">Figo Cell</h3>
             <p>Figo Cell adalah toko yang menyediakan berbagai kebutuhan harian Anda, dengan menawarkan tiga jenis produk utama : Pulsa, Rokok , dan Sembako.</p>
             <a href="https://www.instagram.com/figocahyo_/"><i class="bi bi-instagram"></i></a>
             <a href="https://www.facebook.com/dimasdwi.figocahyo/"><i class="bi bi-facebook"></i></a>

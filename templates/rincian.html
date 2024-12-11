@@ -18,7 +18,17 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
-
+  <style>
+    @media (min-width: 768px) {
+      footer {
+        position: fixed;
+        width: 100%;
+        padding: auto;
+        margin: auto;
+        bottom: 0;
+      }
+    }
+  </style>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
@@ -79,11 +89,11 @@
     <!-- End Navbar -->
 
     <!-- Start Profile -->
-    <div style="margin: 120px 0; padding-top: 50px">
+    <!-- <div style="margin: 120px 0; padding-top: 50px">
       <div class="container mt-4">
-        <h2 class="titleSection">Detail Order</h2>
-        <!-- Tampilkan informasi utama order -->
-        <div class="card mb-4">
+        <h2 class="titleSection">Detail Order</h2> -->
+    <!-- Tampilkan informasi utama order -->
+    <!-- <div class="card mb-4">
           <div class="card-body">
             <h4>Informasi Order</h4>
             <p><strong>Order ID:</strong> {{ rincian['order_id'] }}</p>
@@ -91,10 +101,10 @@
             <p><strong>Total Harga:</strong> Rp {{ rincian['total_harga'] }}</p>
             <p><strong>Status:</strong> {{ rincian['status'] }}</p>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Tampilkan daftar produk dalam order -->
-        <h2 class="titleSection">Daftar Produk</h2>
+    <!-- Tampilkan daftar produk dalam order -->
+    <!-- <h2 class="titleSection">Daftar Produk</h2>
         <div class="table-responsive">
           <table class="table table-striped table-bordered">
             <thead class="table-dark">
@@ -126,6 +136,91 @@
           </table>
         </div>
       </div>
+    </div> -->
+    <!-- <div class="container mt-5" style="margin-top: 300vh">
+      <div class="row">
+        <div class="col">
+          {% for produk in rincian['produk'] %}
+          <div class="col">{{ loop.index }}</div>
+          <div class="col">{{ produk['nama'] }}</div>
+          <div class="col">{{ produk['jenis'] }}</div>
+          <div class="col">Rp {{ produk['harga'] }}</div>
+          <div class="col">{{ produk['jumlah'] }}</div>
+          <div class="col">Rp {{ produk['total'] }}</div>
+        </div>
+        <div class="col"><img src="{{ url_for('static', filename=produk['file'].replace('static/', '')) }}" alt="{{ produk['nama'] }}" width="100" /></div>
+        {% endfor %}
+      </div>
+    </div> -->
+    <!-- <div class="container mt-5">
+      <div class="row" style="margin-top: 20vh">
+        {% for produk in rincian['produk'] %}
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+          
+            <img src="{{ url_for('static', filename=produk['file'].replace('static/', '')) }}" class="card-img-top" alt="{{ produk['nama'] }}" width="100%" height="200" />
+
+            
+            <div class="card-body">
+              <h5 class="card-title">{{ produk['nama'] }}</h5>
+              <p class="card-text">
+                <strong>Jenis:</strong> {{ produk['jenis'] }} <br />
+                <strong>Harga:</strong> Rp {{ produk['harga'] }} <br />
+                <strong>Jumlah:</strong> {{ produk['jumlah'] }} <br />
+                <strong>Total Harga:</strong> Rp {{ produk['total'] }}
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div> -->
+    <div class="container mt-5" style="padding-top: 10vh">
+      <!-- Informasi Pesanan -->
+      <!-- <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Selesai</h5>
+          <div class="row">
+            <div class="col">
+              <p>INV/20211125/MPL/1792455653</p>
+              <p>Tanggal Pembelian: 25 November 2021, 15:11 WIB</p>
+            </div>
+            <div class="col text-end">
+              <a href="#" class="text-success">Lihat Detail</a><br />
+              <a href="#" class="text-success">Lihat Invoice</a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Detail Produk -->
+      <div class="row m-3">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Detail Produk</h6>
+            {% for produk in rincian['produk'] %}
+            <div class="row">
+              <div class="col-auto">
+                <img src="{{ url_for('static', filename=produk['file'].replace('static/', '')) }}" alt="{{ produk['nama'] }}" class="img-fluid" style="width: 80px" />
+              </div>
+              <div class="col">
+                <h6>{{ produk['nama'] }}</h6>
+                <p>Jenis: {{ produk['jenis'] }}</p>
+                <p>{{ produk['jumlah'] }} x Rp{{ produk['harga'] }}</p>
+                <p>Total Harga : <strong>Rp{{ produk['total'] }}</strong></p>
+
+                <a href="/" class="btn btn-outline-success btn-sm">Beli Lagi</a>
+              </div>
+            </div>
+            <hr />
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% for order in orders %}
+      <!-- <p class="text-success fw-bold">Status : Succes</p> -->
+      <p>{{ order['status'] }}</p>
+      {% endfor %}
     </div>
 
     <!-- End Profile-->
@@ -146,7 +241,7 @@
           <div class="col-lg-4 mt-3">
             <h3 style="color: #825b32">Hubungi Kami</h3>
             <a href="https://wa.me/6288216733959" class="text-light"><i class="bi bi-telephone-fill"></i>+6288216733959</a>
-            <br/><a href="https://wa.me/6288216733959"><i class="bi bi-chat-left-fill"></i>+6288216733959</a>
+            <br /><a href="https://wa.me/6288216733959"><i class="bi bi-chat-left-fill"></i>+6288216733959</a>
           </div>
           <div class="col-lg-4 mt-3">
             <li class="" style="list-style-type: none">
