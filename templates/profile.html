@@ -146,7 +146,14 @@
               <div class="mb-3">
                 <label for="file_give" class="form-label">Foto Profil</label>
                 <input type="file" class="form-control" id="file_give" name="file_give" accept="image/*" />
+                
+                <!-- Menampilkan gambar profil yang ada -->
+                <div class="mt-2">
+                  <img src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '') if user_data['profile_image'] else 'default-profile.jpg') }}" 
+                       alt="Foto Profil" class="rounded-circle mb-3" width="150em" height="150em" />
+                </div>
               </div>
+              
               <div class="mb-3">
                 <label for="password" class="form-label">Password Baru (Opsional)</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru jika ingin mengubah" />
