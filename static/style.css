@@ -193,16 +193,28 @@ nav span .bi {
   .login {
     display: none;
   }
+
+  .dropdown-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-content span {
+    margin-left: 1.5vh;
+  }
   .dropdown-content a {
     text-decoration: none !important;
   }
+
   .dropdown-content .bi {
     color: white !important;
     display: block;
-    margin: 10px 5px;
+    margin: 10px 10px;
+    margin-top: 2vh;
   }
 
-  .dropdown-content .bi-pencil-square {
+  .dropdown-content .bi-pencil-square,
+  .bi-clock {
     opacity: 50%;
   }
 
@@ -271,6 +283,9 @@ nav span .bi {
     display: block;
   }
 
+  .dropdown-content hr {
+    display: none;
+  }
   .profile-dropdown:hover .dropdown-content {
     display: block;
     text-decoration: none !important;

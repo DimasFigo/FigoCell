@@ -30,9 +30,9 @@
   </script>
   <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
+    <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
+        <a class="navbar-brand fw-bold" href="/" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -44,34 +44,46 @@
           <div class="offcanvas-body text-light">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/">Home</a>
+                <a class="nav-link" aria-current="page" href="/"><i class="bi bi-house-door-fill me-3"></i>Home</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/product">Produk</a>
+                <a class="nav-link" aria-current="page" href="/product"><i class="bi bi-tags-fill me-3"></i> Produk</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/contact">Kontak</a>
+                <a class="nav-link" aria-current="page" href="/contact"> <i class="bi bi-person-lines-fill me-3"></i> Kontak</a>
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
+                <a class="nav-link" aria-current="page" href="/keranjang"><i class="bi bi-cart-check-fill me-3"> </i>Keranjang </a>
               </li>
 
               {% if 'username' in session %}
+
               <div class="profile-dropdown">
                 <a class="nav-link" aria-current="page" href="/profile/{{username}}"
                   >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="My Image" width="40em" height="40em"
                 /></a>
                 <div class="dropdown-content">
-                  <a class="" href="/riwayat/{{username}}"><i class="bi bi-clock d-block fst-normal"> Order</i></a>
-                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
+                  <hr />
+
+                  <a class="" href="/riwayat/{{username}}"
+                    ><i class="bi bi-clock d-block fst-normal"> <span>Order</span></i></a
+                  >
+                  <a class="text-danger logout" href="/logout"
+                    ><i class="bi bi-box-arrow-left d-block fst-normal"> <span>Logout</span></i></a
+                  >
                 </div>
               </div>
+
               {% else %}
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn btn-transparent" aria-current="page" href="/login"> Masuk</a>
+                <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
+                  ><span><i class="bi bi-box-arrow-in-right"> Masuk</i> </span></a
+                >
               </li>
               <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Daftar</a>
+                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+                  ><span><i class="bi bi-person-plus"> Daftar</i></span>
+                </a>
               </li>
               {% endif %}
             </ul>
@@ -90,8 +102,7 @@
           <div class="col-md-4">
             <div class="card shadow-sm">
               <div class="card-body text-center">
-                <img src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" 
-                alt="Foto Profil" class="rounded-circle mb-3" width="150em" height="150em" />
+                <img src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150em" height="150em" />
                 <h3>{{ user_data['username'] }}</h3>
                 <p class="text-muted">{{ user_data['bio'] if 'bio' in user_data else 'Belum ada bio.' }}</p>
                 <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil-square"></i> Edit Profil</button>
@@ -146,14 +157,19 @@
               <div class="mb-3">
                 <label for="file_give" class="form-label">Foto Profil</label>
                 <input type="file" class="form-control" id="file_give" name="file_give" accept="image/*" />
-                
+
                 <!-- Menampilkan gambar profil yang ada -->
                 <div class="mt-2">
-                  <img src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '') if user_data['profile_image'] else 'default-profile.jpg') }}" 
-                       alt="Foto Profil" class="rounded-circle mb-3" width="150em" height="150em" />
+                  <img
+                    src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '') if user_data['profile_image'] else 'default-profile.jpg') }}"
+                    alt="Foto Profil"
+                    class="rounded-circle mb-3"
+                    width="150em"
+                    height="150em"
+                  />
                 </div>
               </div>
-              
+
               <div class="mb-3">
                 <label for="password" class="form-label">Password Baru (Opsional)</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru jika ingin mengubah" />
