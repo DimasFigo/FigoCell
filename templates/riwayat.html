@@ -94,15 +94,13 @@
     <!-- Start Order -->
     <div style="margin: 120px 50px 0;">
       <h2 class="titleSection mb-4">Order List</h2>
-      
+      {% if orders %}
       <!-- Filter Buttons -->
       <div class="d-flex justify-content-start mb-3">
         <button class="btn btn-outline-primary me-2" onclick="filterOrders('Pending')">Pending</button>
         <button class="btn btn-outline-success me-2" onclick="filterOrders('Complete')">Complete</button>
         <button class="btn btn-outline-danger" onclick="filterOrders('Failed')">Failed</button>
       </div>
-      
-      {% if orders %}
       <div class="table-responsive">
         <table class="table table-striped table-bordered" id="orderTable">
           <thead class="table-dark">
