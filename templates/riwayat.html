@@ -29,57 +29,68 @@
     });
   </script>
   <body>
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg text-white p-3 shadow navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="#" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body text-light">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/product">Produk</a>
-              </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/contact">Kontak</a>
-              </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link" aria-current="page" href="/keranjang">Keranjang <i class="bi bi-cart-check"></i></a>
-              </li>
-
-              {% if 'username' in session %}
-              <div class="profile-dropdown">
-                <a class="nav-link" aria-current="page" href="/profile/{{username}}"
-                  >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="My Image" width="40em" height="40em"
-                /></a>
-                <div class="dropdown-content">
-                    <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Profile</i></a>
-                    <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
-                </div>
-              </div>
-              {% else %}
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn btn-transparent" aria-current="page" href="/login"> Masuk</a>
-              </li>
-              <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
-                <a class="nav-link text-light btn" style="background-color: #825b32" href="/register">Daftar</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
+ <!-- Navbar -->
+ <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/" style="letter-spacing: 3px"> <img width="100px" height="50px" src="{{ url_for('static', filename='logo/logoFigo.png') }}" alt="My Image" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-    </nav>
-    <!-- End Navbar -->
+      <div class="offcanvas-body text-light">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link" aria-current="page" href="/"><i class="bi bi-house-door-fill me-3"></i>Home</a>
+          </li>
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link" aria-current="page" href="/product"><i class="bi bi-tags-fill me-3"></i> Produk</a>
+          </li>
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link " aria-current="page" href="/contact"> <i class="bi bi-person-lines-fill me-3"></i> Kontak</a>
+          </li>
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link" aria-current="page" href="/keranjang"><i class="bi bi-cart-check-fill me-3"> </i>Keranjang </a>
+          </li>
+
+          {% if 'username' in session %}
+
+          <div class="profile-dropdown">
+            <a class="nav-link" aria-current="page" href="/profile/{{username}}"
+              >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="My Image" width="40em" height="40em"
+            /></a>
+            <div class="dropdown-content">
+              <hr />
+              <a class="" href="/profile/{{username}}"
+                ><i class="bi bi-pencil-square d-block fst-normal"> <span>Profile</span></i></a
+              >
+              <a class="text-danger logout" href="/logout"
+                ><i class="bi bi-box-arrow-left d-block fst-normal"> <span>Logout</span></i></a
+              >
+            </div>
+          </div>
+
+          {% else %}
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link active text-light btn btn-lg btn-transparent" aria-current="page" href="/login"
+              ><span><i class="bi bi-box-arrow-in-right"> Masuk</i> </span></a
+            >
+          </li>
+          <li class="nav-item m-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <a class="nav-link text-light btn" style="background-color: #825b32" href="/register"
+              ><span><i class="bi bi-person-plus"> Daftar</i></span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->
 
 
 
@@ -124,9 +135,9 @@
 
     <!-- Start Footer -->
     {% if orders %}
-    <footer class="p-1 text-light bg-dark" style="border-top: 1px solid rgb(133, 127, 127)">
+    <footer class="p-1 text-light bg-dark fixed-bottom" style="border-top: 1px solid rgb(133, 127, 127)">
     {% else %}
-    <footer class="p-1 text-light bg-dark fixed-bottom">
+    <footer class="p-1 text-light bg-dark ">
     {% endif %}
       <div class="container">
         <div class="row ms-auto">

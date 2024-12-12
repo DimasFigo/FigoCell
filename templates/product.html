@@ -237,9 +237,16 @@
                   >{{username}} <img class="rounded-circle profile-icon" src="{{ url_for('static', filename=user_data['profile_image'].replace('static/', '')) }}" alt="My Image" width="40em" height="40em"
                 /></a>
                 <div class="dropdown-content">
-                  <a class="" href="/profile/{{username}}"><i class="bi bi-pencil-square d-block fst-normal"> Profile</i></a>
-                  <a class="" href="/riwayat/{{username}}"><i class="bi bi-clock d-block fst-normal"> Order</i></a>
-                  <a class="text-danger logout" href="/logout"><i class="bi bi-box-arrow-left d-block fst-normal"> Logout</i></a>
+                  <hr />
+                  <a class="" href="/profile/{{username}}"
+                    ><i class="bi bi-pencil-square d-block fst-normal"> <span>Profile</span></i></a
+                  >
+                  <a class="" href="/riwayat/{{username}}"
+                    ><i class="bi bi-clock d-block fst-normal"> <span>Order</span></i></a
+                  >
+                  <a class="text-danger logout" href="/logout"
+                    ><i class="bi bi-box-arrow-left d-block fst-normal"> <span>Logout</span></i></a
+                  >
                 </div>
               </div>
 
