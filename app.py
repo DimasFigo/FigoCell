@@ -70,12 +70,12 @@ def register():
 
         # Cek apakah username sudah terdaftar
         if users_collection.find_one({'username': username}):
-            flash('Username already exists')
+            flash('Username sudah terdaftar.')
             return redirect(url_for('register'))
         
         # Cek apakah email sudah terdaftar
         if users_collection.find_one({'email': email}):
-            flash('Email already registered')
+            flash('Email sudah terdaftar.')
             return redirect(url_for('register'))
 
         # Hash password
@@ -92,7 +92,7 @@ def register():
             'bio': bio
         })
         
-        flash('Registration successful! Please login.')
+        flash('Pendaftaran Sukses.')
         return redirect(url_for('login'))
 
     return render_template('register.html')
@@ -112,7 +112,7 @@ def login():
             else:
                 return redirect(url_for('user_dashboard'))
         else:
-            flash('Invalid username or password')
+            flash('Invalid username atau password')
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -705,6 +705,8 @@ def riwayat(username):
 
 @app.route("/profile/update", methods=["POST"])
 def profile_update():
+    username = session.get('username')  # Ambil username dari session
+    user = users_collection.find_one({'username': username})
     username_receive = request.form.get('username')
     nama_receive = request.form.get('nama')
     email_receive = request.form.get('email')
@@ -750,7 +752,7 @@ def profile_update():
         {'username': username_receive},
         {'$set': update_data}
     )
-
+ 
     if result.matched_count == 0:
         return jsonify({"msg": "Gagal memperbarui data pengguna!"}), 500
 
@@ -818,6 +820,45 @@ def contact():
 
     # Jika GET dan tidak login, tampilkan halaman kontak tanpa form ulasan
     return render_template('contact.html', is_logged_in=False)
+
+@app.route('/ubah-password', methods=['POST'])
+def ubah_password():
+    # Cek apakah user sudah login
+    if 'username' not in session:
+        flash("Anda harus login terlebih dahulu.", "error")
+        return redirect(url_for('login'))
+
+    # Ambil username dari session dan form data
+    username = session['username']
+    current_password = request.form['current_password']
+    new_password = request.form['new_password']
+    confirm_new_password = request.form['confirm_new_password']
+
+    # Cari pengguna berdasarkan username
+    user = users_collection.find_one({'username': username})
+
+    # Cek apakah user ditemukan
+    if not user:
+        flash("User tidak ditemukan", "error")
+        return redirect(url_for('profile', username=username))  
+
+    # Cek apakah password lama benar
+    if not bcrypt.check_password_hash(user['password'], current_password):
+        flash("Password lama salah", "error")
+        return redirect(url_for('profile', username=username))  
+
+    # Cek apakah password baru dan konfirmasi password cocok
+    if new_password != confirm_new_password:
+        flash("Password baru dan konfirmasi tidak cocok", "error")
+        return redirect(url_for('profile', username=username))  
+
+    # Hash password baru dan update di database
+    hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    users_collection.update_one({'username': username}, {'$set': {'password': hashed_password}})
+
+    # Jika berhasil
+    flash("Password berhasil diubah", "success")
+    return redirect(url_for('login'))  
 
 
 if __name__ == '__main__':
