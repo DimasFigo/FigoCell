@@ -857,6 +857,7 @@ def ubah_password():
     users_collection.update_one({'username': username}, {'$set': {'password': hashed_password}})
 
     # Jika berhasil
+    session.clear()
     flash("Password berhasil diubah", "success")
     return redirect(url_for('login'))  
 
