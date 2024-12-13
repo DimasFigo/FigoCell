@@ -18,16 +18,7 @@
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
-  <script>
-    // Ambil tombol dengan id 'refreshButton'
-    const refreshButton = document.getElementById('refreshButton');
 
-    // Tambahkan event listener untuk event 'click'
-    refreshButton.addEventListener('click', function () {
-      // Me-refresh halaman
-      location.reload();
-    });
-  </script>
   <body>
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg text-white p-2 shadow navbar-dark bg-dark">
@@ -106,6 +97,7 @@
                 <h3>{{ user_data['username'] }}</h3>
                 <p class="text-muted">{{ user_data['bio'] if 'bio' in user_data else 'Belum ada bio.' }}</p>
                 <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil-square"></i> Edit Profil</button>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubahPasswordModal"><i class="bi bi-key"></i> Ubah Password</button>
               </div>
             </div>
           </div>
@@ -169,11 +161,6 @@
                   />
                 </div>
               </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password Baru (Opsional)</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru jika ingin mengubah" />
-              </div>
               <button type="submit" class="btn w-100">Simpan Perubahan</button>
             </form>
           </div>
@@ -181,6 +168,44 @@
       </div>
     </div>
     <!-- End Edit Profile Modal -->
+    <!-- Modal Ubah Password -->
+    <div class="modal fade" id="ubahPasswordModal" tabindex="-1" aria-labelledby="ubahPasswordModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <div class="alert alert-info">
+              <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %} {% endwith %}
+
+            <h5 class="modal-title" id="ubahPasswordModalLabel">Ubah Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/ubah-password" method="POST">
+              <div class="mb-3">
+                <label for="current_password" class="form-label">Password Lama</label>
+                <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Masukkan password lama" required />
+              </div>
+              <div class="mb-3">
+                <label for="new_password" class="form-label">Password Baru</label>
+                <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Masukkan password baru" required />
+              </div>
+              <div class="mb-3">
+                <label for="confirm_new_password" class="form-label">Konfirmasi Password Baru</label>
+                <input type="password" class="form-control" id="confirm_new_password" name="confirm_new_password" placeholder="Konfirmasi password baru" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- End Profile-->
 
@@ -221,6 +246,13 @@
     <!-- End Footer -->
 
     <!-- My AOS -->
+    <script>
+      document.getElementById('ubahPasswordButton').addEventListener('click', function () {
+        var form = document.getElementById('ubahPasswordForm');
+        // Toggle display form
+        form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+      });
+    </script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

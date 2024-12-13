@@ -117,6 +117,15 @@
           Selamat Datang Kembali
         </h2>
         <form method="POST" action="/login" autocomplete="off">
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <div class="alert alert-info">
+            <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %} {% endwith %}
           <div class="form-floating mb-3">
             <input type="text" name="username" class="form-control brutal-input" id="floatingInput" required placeholder="name@example.com" />
             <label for="floatingInput">Username</label>

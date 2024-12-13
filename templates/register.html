@@ -99,6 +99,15 @@
       <div class="col">
         <div class="container">
           <h2 class="m-5 text-center brutal-heading">Daftar Sekarang</h2>
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <div class="alert alert-info">
+            <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %} {% endwith %}
           <form method="POST" action="/register" autocomplete="off">
             <div class="form-floating mb-3">
               <input type="text" name="nama" class="form-control brutal-input" id="floatingInput" placeholder="" required />
