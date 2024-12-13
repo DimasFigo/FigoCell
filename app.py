@@ -402,7 +402,7 @@ def create_order():
                 'produk': produk_keranjang,
                 'total_harga': sum(produk['total'] for produk in produk_keranjang),
                 'status': 'Pending',  # Status awal pesanan
-                'tanggal_pesan': datetime.utcnow(),
+                'tanggal_pesan': datetime.utcnow().strftime('%d-%m-%Y %H:%M'),
                 'order_id': order_id
             }
 
@@ -451,7 +451,7 @@ def checkout():
                 'produk': produk_keranjang,
                 'total_harga': total_harga,
                 'status': 'Pending',  # Status awal pesanan
-                'tanggal_pesan': datetime.utcnow(),
+                'tanggal_pesan': datetime.utcnow().strftime('%d-%m-%Y %H:%M'),
                 'order_id': order_id
             }
 
@@ -507,7 +507,7 @@ def checkout_add(produk):
                 'produk': produk_keranjang,
                 'total_harga': total_harga,
                 'status': 'Pending',
-                'tanggal_pesan': datetime.utcnow(),
+                'tanggal_pesan': datetime.utcnow().strftime('%d-%m-%Y %H:%M'),
                 'order_id': order_id
             }
 
