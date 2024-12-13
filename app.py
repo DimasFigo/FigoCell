@@ -112,7 +112,7 @@ def login():
             else:
                 return redirect(url_for('user_dashboard'))
         else:
-            flash('Invalid username atau password')
+            flash('Username atau Password salah')
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -139,7 +139,7 @@ def user_dashboard():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You have been logged out.')
+    flash('Berhasil keluar.')
     return redirect(url_for('login'))
 
 @app.route("/produk", methods=["GET"])
