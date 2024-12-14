@@ -468,7 +468,7 @@ def checkout():
             # Menghapus produk dari keranjang setelah pemesanan
             db.keranjang.delete_one({'username': username})
             
-            return render_template('checkout_success.html', produk=produk_keranjang)
+            return render_template('checkout_success.html', produk=produk_keranjang, username=session.get('username'))
         else:
             return jsonify({'msg': 'Keranjang tidak ditemukan!'}), 404
     return jsonify({'msg': 'Anda harus login untuk melakukan checkout!'}), 401
@@ -527,7 +527,7 @@ def checkout_add(produk):
             )
 
             # Alihkan ke halaman yang memberi tahu bahwa pemesanan berhasil
-            return render_template('checkout_success.html', produk=produk_keranjang)
+            return render_template('checkout_success.html', produk=produk_keranjang, username=session.get('username'))
             # Debugging hasil update
             print("Modified count:", result.modified_count)
             if result.modified_count == 0:
