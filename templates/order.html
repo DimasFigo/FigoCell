@@ -44,6 +44,19 @@
         $(document).ready(function () {
           listing();
         });
+        function parseTanggal(tanggal) {
+        // Jika format ISO, langsung parse
+        if (tanggal.includes('T')) {
+          return new Date(tanggal).toLocaleString();
+       }
+        // Jika format lokal, ubah ke format ISO terlebih dahulu
+        let parts = tanggal.split(' ');
+        let dateParts = parts[0].split('-'); // Pisahkan hari, bulan, tahun
+        let time = parts[1]; // Ambil waktu
+        let isoDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
+        return new Date(isoDate).toLocaleString();
+        }
+
         function listing() {
         $.ajax({
             type: 'GET',
@@ -57,7 +70,7 @@
                 let username = rows[i]['username'];  // Menggunakan order_id
                 let totalHarga = rows[i]['total_harga'];  // Menggunakan total_harga
                 let status = rows[i]['status'];  // Menggunakan status
-                let tanggalPesan = new Date(rows[i]['tanggal_pesan']).toLocaleString();  // Menggunakan tanggal_pesan
+                let tanggalPesan = parseTanggal(rows[i]['tanggal_pesan']);  // Menggunakan tanggal_pesan
                 let temp_html = `
                     <tr>
                         <td>${nomor}</td>
