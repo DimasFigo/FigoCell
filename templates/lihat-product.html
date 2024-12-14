@@ -68,7 +68,7 @@
             <td>${stok}</td>
             <td><img src="../${file}" alt="${nama}" class="img-fluid rounded mt-2" style="width: 100px; height: 100px; object-fit: cover;"></td>
             <td>
-              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${jenis}', '${stok}', '${harga}')"><i class="bi bi-pencil-square"></i>Edit</button>
+              <button class="btn btn-warning btn-sm" onclick="editData('${rows[i]['id']}', '${nama}', '${jenis}', '${stok}', '${harga}')"><i class="bi bi-pencil-square"></i> Edit</button>
               <button class="btn btn-danger btn-sm" onClick="hapusData('${nama.replace(/'/g, "\\'")}')"> <i class="bi bi-trash3"></i> Hapus</button>
             </td>
           </tr>

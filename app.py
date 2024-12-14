@@ -191,9 +191,12 @@ def daftar_produk():
 
 @app.route("/tambah-produk", methods=["GET"])
 def tambah_produk():
-    username = session['username']
-    user_data = users_collection.find_one({'username': username})
-    return render_template('tambah-product.html', username=session.get('username'), user_data=user_data)
+    if 'username' in session and session['role'] == 'admin':
+        username = session['username']
+        user_data = users_collection.find_one({'username': username})
+        return render_template('tambah-product.html', username=session.get('username'), user_data=user_data)
+    else :
+        return render_template('login.html')
 
 @app.route("/produk/delete", methods=['POST'])
 def produk_delete():
