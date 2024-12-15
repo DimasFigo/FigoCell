@@ -96,7 +96,6 @@
     </nav>
     <!-- End Navbar -->
     <!-- Tampilkan daftar produk dalam order -->
-
     <div class="container mt-5" style="padding-top: 10vh">
       <!-- Detail Produk -->
       <div class="row m-3">
@@ -104,7 +103,7 @@
           <div class="card-body">
             <h6 class="card-subtitle mb-2 text-muted">Detail Produk</h6>
             {% for produk in rincian['produk'] %}
-            <div class="row">
+            <div class="row produk" data-harga="{{ produk['harga'] }}" data-jumlah="{{ produk['jumlah'] }}">
               <div class="col-auto">
                 <img src="{{ url_for('static', filename=produk['file'].replace('static/', '')) }}" alt="{{ produk['nama'] }}" class="img-fluid" style="width: 80px" />
               </div>
@@ -112,21 +111,47 @@
                 <h6>{{ produk['nama'] }}</h6>
                 <p>Jenis: {{ produk['jenis'] }}</p>
                 <p>{{ produk['jumlah'] }} x Rp{{ produk['harga'] }}</p>
-                <p>Total Harga : <strong>Rp{{ produk['total'] }}</strong></p>
-
-                <a href="/" class="btn btn-outline-success btn-sm">Beli Lagi</a>
+                <p>Harga : <strong>Rp{{ produk['total'] }}</strong></p>
               </div>
             </div>
             <hr />
             {% endfor %}
+            <!-- Total Harga -->
+            <div class="row">
+              <div class="col">
+                <h5>
+                  Total Harga : <strong>Rp<span id="total-harga">0</span></strong>
+                </h5>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      {% for order in orders %}
-      <!-- <p class="text-success fw-bold">Status : Succes</p> -->
-      <p>{{ order['status'] }}</p>
-      {% endfor %}
     </div>
+
+    <!-- JavaScript untuk menghitung total harga -->
+    <script>
+      // Fungsi untuk menghitung total harga
+      function hitungTotalHarga() {
+        let totalHarga = 0;
+
+        // Ambil semua elemen produk
+        let produkElements = document.querySelectorAll('.produk');
+
+        // Loop untuk menghitung total harga berdasarkan data-harga dan data-jumlah
+        produkElements.forEach(function (produk) {
+          let harga = parseInt(produk.getAttribute('data-harga'));
+          let jumlah = parseInt(produk.getAttribute('data-jumlah'));
+          totalHarga += harga * jumlah;
+        });
+
+        // Tampilkan total harga di elemen dengan id "total-harga" tanpa koma
+        document.getElementById('total-harga').textContent = totalHarga.toString();
+      }
+
+      // Panggil fungsi untuk menghitung total harga setelah halaman dimuat
+      window.onload = hitungTotalHarga;
+    </script>
 
     <!-- End Profile-->
 

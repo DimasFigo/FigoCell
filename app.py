@@ -763,19 +763,25 @@ def profile_update():
 
 @app.route('/rincian/<orderId>', methods=["GET"])
 def rincian(orderId):
-    # Mengambil data profil pengguna
     if 'username' in session:
         rincian_data = db.orders.find_one({'order_id': orderId})
         username = session['username']
         user_data = users_collection.find_one({'username': username})
-    
+        orders = list(db.orders.find({'username': username}))
+
         if not rincian_data:
             flash("Order not found!")
             return redirect(url_for('login'))
-    
-        # Render template profile dengan data pengguna dan pesanan
-        return render_template('rincian.html', rincian=rincian_data, username=session.get('username'), user_data=user_data)
+
+        # Menghitung total harga per order
+        total_harga = sum([produk['jumlah'] * produk['harga'] for produk in rincian_data.get('produk', [])])
+
+        # Debugging untuk memeriksa total_harga
+        print(f"Total Harga: {total_harga}")  # Debugging output total_harga
+
+        return render_template('rincian.html', rincian=rincian_data, orders=orders, username=session.get('username'), user_data=user_data, total=total_harga)
     return render_template('login.html')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():

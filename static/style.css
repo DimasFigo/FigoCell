@@ -292,3 +292,20 @@ nav span .bi {
     font-style: normal !important;
   }
 }
+
+/* Style untuk tombol scroll ke atas */
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 99;
+  display: none; /* Disembunyikan sampai discroll */
+  font-size: 40px;
+  color: #ffffff; /* Warna biru untuk panah */
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.scroll-to-top:hover {
+  color: #ffffff; /* Warna lebih gelap saat hover */
+}
