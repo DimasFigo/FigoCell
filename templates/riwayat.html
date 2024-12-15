@@ -158,7 +158,11 @@
           </tbody>
         </table>
         <!-- Note: SILAKAN AMBIL PESANAN KE TOKO -->
-        <p class="card-text text-danger" style="font-size: 1em"><strong>Note:</strong> Silakan ambil pesanan anda langsung ke toko.</p>
+        <div class="alert alert-danger col-md-3">
+          <marquee behavior="" direction=""
+            ><p class="card-text" style="font-size: 1em"><strong>Note :</strong> Silakan ambil pesanan anda langsung ke toko.</p></marquee
+          >
+        </div>
       </div>
 
       <!-- Cards untuk tampilan Mobile -->
@@ -193,7 +197,11 @@
 
         {% endfor %}
         <!-- Note: SILAKAN AMBIL PESANAN KE TOKO -->
-        <p class="card-text text-danger" style="font-size: 1em"><strong>Note:</strong> Silakan ambil pesanan anda langsung ke toko.</p>
+        <div class="alert alert-danger col-md-3">
+          <marquee behavior="" direction=""
+            ><p class="card-text" style="font-size: 1em"><strong>Note :</strong> Silakan ambil pesanan anda langsung ke toko.</p></marquee
+          >
+        </div>
       </div>
       {% else %}
       <p class="text-center">Order List Anda Kosong.</p>
