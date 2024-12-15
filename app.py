@@ -590,10 +590,6 @@ def product():
    else :
     return render_template ('product.html', username=session.get('username'))
 
-# @app.route('/contact', methods=["GET"])
-# def contact():
-#    return render_template ('contact.html',username=session.get('username'))
-
 @app.route('/pulsa/regular', methods=["GET"])
 def regular():
    if 'username' in session:
