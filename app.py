@@ -7,14 +7,19 @@ from flask_bcrypt import Bcrypt
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
+from dotenv import load_dotenv
 
+load_dotenv()
 # Set locale ke Indonesia
 locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')
+
 app = Flask(__name__)
-app.secret_key = '12092004'
+app.secret_key = os.getenv('SECRET_KEY')
 bcrypt = Bcrypt(app)
 
-client = MongoClient('mongodb+srv://figoood99:figocell17@figocell.wxlz7.mongodb.net/')
+mongo_uri = os.getenv('MONGO_URI')
+client = MongoClient(mongo_uri)
+
 db = client['user_management']
 users_collection = db['users']
 reviews_collection = db['reviews']
