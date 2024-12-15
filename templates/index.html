@@ -179,6 +179,32 @@
         </div>
       </div>
     </section>
+
+    <!-- Tombol Scroll ke Atas -->
+    <a href="#" class="scroll-to-top" id="scrollToTopButton"> scroll </a>
+
+    <!-- JavaScript untuk Scroll -->
+    <script>
+      // Ketika pengguna scroll 200px dari atas, tampilkan tombol
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        const scrollButton = document.getElementById('scrollToTopButton');
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+          scrollButton.style.display = 'block';
+        } else {
+          scrollButton.style.display = 'none';
+        }
+      }
+
+      // Ketika tombol diklik, scroll ke atas
+      document.getElementById('scrollToTopButton').addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
     <!-- End Kategori section -->
 
     <!-- Testimonial Section -->
