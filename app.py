@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash,redirect, url_for, sess
 from pymongo import MongoClient
 import locale
 import os
+import pytz
 from flask_bcrypt import Bcrypt
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -448,13 +449,16 @@ def checkout():
             order_id = str(datetime.utcnow().timestamp())  # Gunakan timestamp untuk ID pesanan
             # total_harga = sum(produk['total'] for produk in produk_keranjang)
             total_harga = sum(int(produk['total']) for produk in produk_keranjang)
+
+            timezone = pytz.timezone('Asia/Jakarta')
+            tanggal_pesan = datetime.now(timezone).strftime('%d-%m-%Y %H:%M')
             
             order = {
                 'username': username,
                 'produk': produk_keranjang,
                 'total_harga': total_harga,
                 'status': 'Pending',  # Status awal pesanan
-                'tanggal_pesan': datetime.utcnow().strftime('%d-%m-%Y %H:%M'),
+                'tanggal_pesan': tanggal_pesan,
                 'order_id': order_id
             }
 
@@ -488,10 +492,6 @@ def checkout_add(produk):
                 p for p in keranjang.get('produk', []) if p['nama'].strip().lower() == produk
             ]
 
-            # Debug: Cek isi produk di keranjang
-            print("Produk dalam keranjang:", keranjang.get('produk', []))
-            print("Produk yang cocok:", produk_keranjang)
-
             if not produk_keranjang:
                 return jsonify({'msg': 'Produk tidak ditemukan di keranjang!'}), 400
 
@@ -505,12 +505,15 @@ def checkout_add(produk):
             order_id = str(datetime.utcnow().timestamp())
             total_harga = sum(int(p['total']) for p in produk_keranjang)
 
+            timezone = pytz.timezone('Asia/Jakarta')
+            tanggal_pesan = datetime.now(timezone).strftime('%d-%m-%Y %H:%M')
+
             order = {
                 'username': username,
                 'produk': produk_keranjang,
                 'total_harga': total_harga,
                 'status': 'Pending',
-                'tanggal_pesan': datetime.utcnow().strftime('%d-%m-%Y %H:%M'),
+                'tanggal_pesan': tanggal_pesan,
                 'order_id': order_id
             }
 
@@ -775,9 +778,6 @@ def rincian(orderId):
 
         # Menghitung total harga per order
         total_harga = sum([produk['jumlah'] * produk['harga'] for produk in rincian_data.get('produk', [])])
-
-        # Debugging untuk memeriksa total_harga
-        print(f"Total Harga: {total_harga}")  # Debugging output total_harga
 
         return render_template('rincian.html', rincian=rincian_data, orders=orders, username=session.get('username'), user_data=user_data, total=total_harga)
     return render_template('login.html')
